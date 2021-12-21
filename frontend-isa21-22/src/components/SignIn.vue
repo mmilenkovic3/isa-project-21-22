@@ -19,7 +19,11 @@
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Create account?</button>
+                
+                <button class="btn btn-lg btn-primary btn-block btn-signin" 
+                type="submit"
+                @click.prevent="createAcc()"
+                > Create account? </button>
             </form><!-- /form -->
             <a href="#" class="forgot-password">
                 Forgot the password?
@@ -36,8 +40,35 @@
 </template>
 
 <script>
- import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+//import { required } from 'vuelidate/lib/validators'
+export default
+{
+   data()
+   {
+      return{
+            username: "A"
+      }
+   },
+   methods:
+   {
+      createAcc()
+      {     console.log(this.username);
+            console.log("A");
+      },
+   }
+
+  
+    
+}
+
+
+
+
+
+
 </script>
 <style>
 body, html {
