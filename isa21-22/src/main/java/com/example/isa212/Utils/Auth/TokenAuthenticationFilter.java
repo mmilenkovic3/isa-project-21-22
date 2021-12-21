@@ -1,6 +1,6 @@
 package com.example.isa212.Utils.Auth;
 
-import com.isaProject.isa.Config.Utils.TokenUtils;
+import com.example.isa212.Utils.TokenUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
