@@ -20,11 +20,12 @@
                 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
                 
-                <button class="btn btn-lg btn-primary btn-block btn-signin" 
-                type="submit"
-                @click.prevent="createAcc()"
-                > Create account? </button>
-            </form><!-- /form -->
+                
+            </form><!-- /form -->            
+            <a href="http://localhost:3000/Registration" 
+            class="btn btn-lg btn-primary btn-block btn-signin" 
+            style="text-align: center; padding-top: 5px;" > Create account? </a>
+
             <a href="#" class="forgot-password">
                 Forgot the password?
             </a>
@@ -57,6 +58,7 @@ export default
       createAcc()
       {     console.log(this.username);
             console.log("A");
+           
       },
    }
 

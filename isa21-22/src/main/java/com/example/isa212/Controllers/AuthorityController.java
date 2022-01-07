@@ -35,23 +35,20 @@ public class AuthorityController {
     @Autowired
     private UserService userService;
 
-
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                     HttpServletResponse response) {
-        System.out.println("Zaglavlje? " + authenticationRequest.getUsername() + " Response: " + response );
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()));
 
-        // Ubaci korisnika u trenutni security kontekst
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
-        // Vrati token kao odgovor na uspesnu autentifikaciju
+
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 }

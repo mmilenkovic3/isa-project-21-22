@@ -5,6 +5,8 @@ import SignIn from '../components/SignIn.vue'
 //import HelloWorld from '../components/HelloWorld.vue'
 import { BootstrapVue } from 'bootstrap-vue'
 import Registration from '../components/Registration.vue'
+import Verify from '../components/Verify.vue'
+
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 //Vue.use(IconsPlugin)
@@ -27,6 +29,12 @@ const routes = [
       path: '/Registration',
       name: 'Registration',
       component: Registration
+    }
+    ,
+    {
+      path: '/Verify/:id',
+      name: 'Verify',
+      component: Verify
     }
 ]
     

@@ -9,22 +9,24 @@
             <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
              <form class="form-signin">
                 <span id="reauth-email" class="reauth-email"></span>
-                 <input type="text" id="inputName" class="form-control" placeholder="Name" required>
-               <input type="text" id="inputSurName" class="form-control" placeholder="Surname" required>
-               <input type="text" id="inputAddress" class="form-control" placeholder="Address" required>
-               <input type="text" id="inputPhoneNum" class="form-control" placeholder="Phone number" required>
-               <input type="text" id="inputCity" class="form-control" placeholder="City" required>
-               <input type="text" id="inputCountry" class="form-control" placeholder="Country" required>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <input type="password" id="inputRepeatPassword" class="form-control" placeholder="Repeat Password" required>
-                
+                <input type="text"  v-model="inputName" class="form-control" placeholder="Name" required>
+                <input type="text" v-model="inputSurName" class="form-control" placeholder="Surname" required>
+               <input type="text" v-model="inputAddress" class="form-control" placeholder="Address" required>
+               <input type="text" v-model="inputPhoneNum" class="form-control" placeholder="Phone number" required>
+               <input type="text" v-model="inputCity" class="form-control" placeholder="City" required>
+               <input type="text" v-model="inputCountry" class="form-control" placeholder="Country" required>
+                <input type="email" v-model="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                <input type="password" v-model="inputPassword" class="form-control" placeholder="Password" required>
+                <input type="password" v-model="inputRepeatPassword" class="form-control" placeholder="Repeat Password" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click.prevent="registrateNewUser();"> Create account </button>
+            
 
 
-
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"> Create account </button>
-                
+   
+                  
             </form><!-- /form -->
+
+              
             
         </div><!-- /card-container -->
       
@@ -40,7 +42,101 @@
 <script>
  import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
+export default {
+  data() {
+    return {
+      inputName: "",
+      inputSurName: "",
+      inputAddress: "",
+      inputPhoneNum: "",
+      inputCity: "",
+      inputCountry: "",
+      inputEmail: "",
+      inputPassword: "",
+      inputRepeatPassword: ""
+     
+    }
+  },
+  mounted() {
+       
+    },
+     methods:{              
+    doLogin() {
+         if (this.emailLogin === "" || this.passwordLogin === "") {
+            this.emptyFields = true;
+         } else {
+            alert("You are now logged in");
+         }
+      },
+      registrateNewUser: function()
+      {
+          console.log("pozvana");
+          
+
+            if(this.inputName != "" && this.inputSurName != "" && this.inputAddress != ""
+            && this.inputCity != "" && this.inputCountry != "" && this.inputEmail != "" 
+            && this.inputPassword != "" && this.inputRepeatPassword != "" && this.inputPhoneNum != "")
+            {
+                    if(this.inputPassword != this.inputRepeatPassword) 
+                    {
+                        alert("Password are not the same!");
+                        this.inputRepeatPassword = "";
+                        this.inputPassword = "";
+                        event.preventDefault();
+                    }
+                    else
+                {
+                    console.log("SVE POPUNJENO? " ); 
+                const user = 
+                            {
+                                name : this.inputName,
+                                surname : this.inputSurName,
+                                email : this.inputEmail,   
+                                password: this.inputPassword,             
+                                address : this.inputAddress,
+                                phoneNumber : this.inputPhoneNum,
+                                city : this.inputCity,
+                                country : this.inputCountry
+                            }  
+
+                    console.log(user); 
+                
+                this.axios.post('user/saveUser', user,
+                {
+                    headers: 
+                    {
+                        //'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                    }}).then(response => 
+                    {
+                        alert("Success! Email verification is send to " + this.inputEmail);
+                        console.log(response);
+                        this.$router.push('/SignIn');  
+
+                    }).catch(res => {
+                        console.log(res);
+                        alert("User with this email already existas!");
+                        event.preventDefault();
+
+                    });     
+                }
+
+            }
+            else
+            {
+                alert("Please, fill the fields!");
+            }
+                 
+             
+      
+      }
+   
+}
+}
+
 </script>
+
 <style>
 
 .container-registration2
@@ -200,33 +296,3 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 </style>
 
 
-<script>
-export default {
-  data() {
-    return {
-      registerActive: false,
-      emailLogin: "",
-      passwordLogin: "",
-      emailReg: "",
-      passwordReg: "",
-      confirmReg: "",
-      emptyFields: false
-     
-    }
-  },
-  mounted() {
-       
-    },
-     methods:{              
-    doLogin() {
-         if (this.emailLogin === "" || this.passwordLogin === "") {
-            this.emptyFields = true;
-         } else {
-            alert("You are now logged in");
-         }
-      }
-      
-      }
-   
-}
-</script>

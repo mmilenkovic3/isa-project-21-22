@@ -64,11 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
                 .authorizeRequests().antMatchers("/h2-console/**")
-                //.permitAll().antMatchers("/api/foo")
-                //.permitAll().antMatchers("/pharmacy/findAll")
-                //.permitAll().antMatchers("/adminstrator/updateAdminPharmacy")
-                .permitAll()
-                .antMatchers("/user/saveUser")
+                .permitAll().antMatchers("/user/saveUser")
+                .permitAll().antMatchers("/user/getUserByID/*")
+                .permitAll().antMatchers("/user/changeEnabledStatus/*")
+
 
 
 
