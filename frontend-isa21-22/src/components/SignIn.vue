@@ -15,13 +15,17 @@
             <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
              <form class="form-signin">
                 <span id="reauth-email" class="reauth-email"></span>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <input type="email" v-model="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                <input type="password" v-model="inputPassword" class="form-control" placeholder="Password" required>
                 
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+              <button class="btn btn-lg btn-primary btn-block btn-signin"
+               type="submit" 
+                v-on:click.prevent="signIn()"
+                > Sign in </button>  
                 
                 
-            </form><!-- /form -->            
+            </form><!-- /form -->     
+                   
             <a href="http://localhost:3000/Registration" 
             class="btn btn-lg btn-primary btn-block btn-signin" 
             style="text-align: center; padding-top: 5px;" > Create account? </a>
@@ -31,7 +35,10 @@
             </a>
         </div><!-- /card-container -->
       </div>
-    
+    <button class="btn btn-lg btn-primary btn-block btn-signin"
+               type="submit" 
+                v-on:click.prevent="signIn2()"
+                > Sign in </button> 
   </div>
 
 
@@ -40,38 +47,110 @@
     </div><!-- /container -->
 </template>
 
+
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
+ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-//import { required } from 'vuelidate/lib/validators'
-export default
-{
-   data()
-   {
-      return{
-            username: "A"
-      }
-   },
-   methods:
-   {
-      createAcc()
-      {     console.log(this.username);
-            console.log("A");
-           
-      },
-   }
 
-  
-    
+
+export default {
+  data() {
+    return {
+       inputEmail: "",
+       inputPassword: "",      
+     
+    }
+  },
+  mounted() {
+       
+    },
+     methods:
+     {     
+         signIn2: function()
+         {
+            console.log("AAAA");
+         }   ,      
+        signIn: function()
+      {
+          if(this.inputEmail!="" && this.inputPassword != "")
+          {
+               const userLogin = 
+                {
+                    username: this.username,
+                    password: this.password
+                }
+
+              this.axios.post('/user/login', userLogin, {
+                    headers: 
+                    {          
+                         
+                        
+                    }}).then(response => 
+                    {                        
+                        localStorage.setItem('accessToken', response.data.accessToken);
+                        localStorage.setItem('expiresIn', new Date(new Date().getTime() + response.data.expiresIn).getTime());
+                        this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
+                        //console.log(response.data);
+                                
+                                this.axios.get('/user/loggedUser', {
+                                headers: 
+                                {          
+                                    //'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {    
+                                    console.log("ENABLE: " + response.data.accountEnabled);
+                                    console.log("Autoritu: " + response.data.authorityRole);
+                                    if(response.data.authorityRole === "ROLE_ADMIN")
+                                    {
+                                        console.log("Prijava admina");
+                                        console.log(response.data);
+                                        //this.$router.push('SystemAdminProfile/' + response.data.id);
+                                        
+                                    }
+                                    else if(response.data.authorityRole === "ROLE_PATIENT")
+                                    {
+                                            this.$router.push('HomePagePatient/'+ response.data.id);
+                                    }
+                                    
+                                    else
+                                    {
+                                        console.log(response.data);
+                                        alert("User has no authority!");
+                                    }
+                                                                                                           
+                                }).catch(res => {                 
+                                    
+                                    console.log("GRESKA");
+                                    console.log(res.response);
+                                    this.errorMessage = res.response.data.message;
+                                });       
+                                 }).catch(res => { 
+                        if(res.response.status === 401)
+                           alert("Wrong password or email.");
+                        
+                        console.log(res.response);
+                        this.errorMessage = res.response.data.message;
+                       
+                    });    
+          }
+          else
+          {
+              alert("Please, you didnt fill the fields!");
+          }
+      },
+      
+   
+}
 }
 
-
-
-
-
-
 </script>
+
+
+
+
+
 <style>
 body, html {
     
