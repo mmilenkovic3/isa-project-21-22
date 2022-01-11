@@ -129,7 +129,10 @@ public class UserService implements IUserService {
 
     @Override
     public User changePassword(PasswordDTO passwordDTO) {
-        User user = (User) authentication.getPrincipal();
+        User user = getLoggedUser();
+        System.out.println(passwordEncoder.encode(passwordDTO.getPassword()));
+        System.out.println("USER");
+        System.out.println(user.getPassword());
         if(passwordEncoder.encode(passwordDTO.getPassword()) == user.getPassword())
             user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
         else

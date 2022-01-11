@@ -170,15 +170,14 @@ export default {
             const passwordChange = 
             {
                 password: this.password,
-                newPassword: this.newPassword,
-                newPasswordRepeat: this.newPasswordRepeat
+                newPassword: this.newPassword
             }
 
             this.axios.post('user/changePassword', passwordChange,
                 {
                     headers: 
                     {
-                        //'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
                     }}).then(response => 
                     {
                         alert("Successeffully changed password!");

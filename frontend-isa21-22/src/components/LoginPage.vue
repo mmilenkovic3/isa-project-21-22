@@ -66,11 +66,10 @@ export default{
                                         //this.$router.push('SystemAdminProfile/' + response.data.id);
                                         
                                     }
-                                    else if(response.data.authorityRole === "ROLE_PATIENT")
+                                    else if(response.data.authorityRole === "ROLE_USER")
                                     {
-                                            this.$router.push('HomePagePatient/'+ response.data.id);
-                                    }
-                                    
+                                            this.$router.push('HomePageUser/'+ response.data.id);
+                                    }                                    
                                     else
                                     {
                                         console.log(response.data);
