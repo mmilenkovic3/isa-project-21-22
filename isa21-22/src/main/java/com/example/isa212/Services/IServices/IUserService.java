@@ -1,5 +1,6 @@
 package com.example.isa212.Services.IServices;
 
+import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.User;
@@ -17,6 +18,7 @@ public interface IUserService {
     UserTokenState Login(String email, String password);
     User getLoggedUser();
     User editUser(UserDTO userDTO);
+    User changePassword(PasswordDTO passwordDTO);
 
 
 }

@@ -5,6 +5,7 @@
     <div class="col-8 col-md-3">
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Edit account </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="offersFunction();"> Show offers</button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
     </div>
     <div class="col">
       <div v-if='this.info' class="container-info">
@@ -30,10 +31,24 @@
                         </div>
                     </div>
                     </div>
-
+    <h2> penality </h2>
+    <h2> loyaliti program </h2>
       </div>
+
+      <!-- SHOW ALL OFFER SECTIOn -->
       <div v-if='this.offers' class="container-offers">
         <h1> OFFERS </h1>
+                 
+      </div>
+
+    <!-- CHANGE PASSWORD -->
+      <div v-if='this.pass' class="container-pass">
+        <h1> Change password: </h1>
+        
+        <input type="text"  v-model="password" class="form-control" placeholder="Password" required>
+        <input type="text" v-model="newPassword" class="form-control" placeholder="New password" required>
+        <input type="text" v-model="newPasswordRepeat" class="form-control" placeholder="Repeat new password" required>
+       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="newPasswordSave()"> Save password </button>
       </div>
     </div>
     
@@ -53,6 +68,7 @@ export default {
     return {
       info: true,
       offers: false,
+      pass: false,
       disabledButtons: true,
       user: {},
 
@@ -64,7 +80,12 @@ export default {
       inputCountry: "",
       inputEmail: "",
       inputPassword: "",
-      inputRepeatPassword: ""
+      inputRepeatPassword: "",
+
+
+      password: "",
+      newPassword: "",
+      newPasswordRepeat: "",
       
     }
   },
@@ -74,18 +95,26 @@ export default {
         {
             this.info = true;
             this.offers = false;
+            this.pass = false;
             console.log("INFO");
         },
         offersFunction: function()
         {
             this.info = false;
             this.offers = true;
+            this.pass = false;
             console.log("OFFERS");
         },
         enabledFields: function()
         {
             this.disabledButtons = false;
             console.log(this.disabledButtons);
+        },
+        changePass: function()
+        {
+            this.info = false;
+            this.offers = false;
+            this.pass = true;
         },
         cancelEdit: function()
         {
@@ -135,8 +164,37 @@ export default {
                         event.preventDefault();
 
                     });     
+        },
+        newPasswordSave: function()
+        {
+            const passwordChange = 
+            {
+                password: this.password,
+                newPassword: this.newPassword,
+                newPasswordRepeat: this.newPasswordRepeat
+            }
+
+            this.axios.post('user/changePassword', passwordChange,
+                {
+                    headers: 
+                    {
+                        //'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                    }}).then(response => 
+                    {
+                        alert("Successeffully changed password!");
+                        console.log(response);
+                        this.password = "";
+                        this.newPasswordRepeat = "";
+                        this.newPassword = "";
+                        //this.$router.push('/SignIn');  
+
+                    }).catch(res => {
+                        console.log(res);
+                        alert(res.data);
+                        event.preventDefault();
+
+                    }); 
         }
-    
 
       
    
@@ -180,6 +238,11 @@ mounted() {
     margin-left:10px;
     height: 100%;
     
+}
+.container-pass
+{
+    margin-right: 10px;
+    padding: 10px;
 }
 
 .container-offers

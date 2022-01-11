@@ -1,5 +1,6 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.Authority;
@@ -124,5 +125,17 @@ public class UserService implements IUserService {
 
         userRepository.save(u);
         return u;
+    }
+
+    @Override
+    public User changePassword(PasswordDTO passwordDTO) {
+        User user = (User) authentication.getPrincipal();
+        if(passwordEncoder.encode(passwordDTO.getPassword()) == user.getPassword())
+            user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
+        else
+            return null;
+
+        userRepository.save(user);
+        return user;
     }
 }

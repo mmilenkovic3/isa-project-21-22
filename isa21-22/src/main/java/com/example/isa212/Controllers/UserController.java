@@ -1,5 +1,6 @@
 package com.example.isa212.Controllers;
 
+import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.User;
@@ -79,6 +80,14 @@ public class UserController {
         User u = userService.editUser(userDTO);
         return u != null ? new ResponseEntity<User>(u, HttpStatus.OK) :
         new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
+    @PostMapping(value= "/changePassword")
+    public ResponseEntity changePassword(@RequestBody PasswordDTO passwordDTO) {
+        User u = userService.changePassword(passwordDTO);
+        return u != null ? new ResponseEntity<User>(u, HttpStatus.OK) :
+                new ResponseEntity("Password are not maching! ", HttpStatus.BAD_REQUEST);
 
     }
 
