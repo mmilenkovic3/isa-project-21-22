@@ -7,12 +7,13 @@ import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
+import  com.example.isa212.Model.Reservation;
 
 
 @Entity
 @Table(name = "Cotagge")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Cottage  implements Serializable {
+public class Cottage  {
 
     @Id
     //@Column(name = "id_cottage")
@@ -40,7 +41,6 @@ public class Cottage  implements Serializable {
             joinColumns = @JoinColumn(name ="cottage_id", referencedColumnName = "id_cottage"),
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
     private List<Reservation> reservations;
-
 
 
     @Column

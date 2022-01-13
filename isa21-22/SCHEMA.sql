@@ -19,3 +19,4 @@ insert into booking_db.user_authority (user_id, authority_id) values(2,2)
 #COTTAGE
 INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `name`, `num_bed`, `num_room`, `promo_description`, `grade`) VALUES (1, 'Gunduliceva 2', 'Vila Vilica', 5, 2, 'Zdravo ', 8);
 INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `name`, `num_bed`, `num_room`, `promo_description`, `grade`) VALUES (2, 'Krfska 1', 'Nonta', 2, 1, 'Veoma povoljno ', 10);
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES (3, 'Andromedina', 8.6, 'ccc', 'Besti', 2, 2, 150, 'Nanaa');

@@ -33,6 +33,52 @@ public class CottageController {
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/sortByNameAsc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByNameAsc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByNameAsc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/sortByNameDesc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByNameDesc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByNameDesc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+    @GetMapping(value = "/sortByAddressAsc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByAddressAsc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByAddressAsc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+    @GetMapping(value = "/sortByAddressDesc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByAddressDesc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByAddressDesc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+    @GetMapping(value = "/sortByGradeAsc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByGradeAsc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByGradeAsc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+    @GetMapping(value = "/sortByGradeDesc")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> sortByGradeDesc(@RequestBody List<Cottage> cottages_list)
+    {
+        List<Cottage> cottages = cottageService.sortByGradeDesc(cottages_list);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+
+
+
     @GetMapping(value = "/try")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> proba()
