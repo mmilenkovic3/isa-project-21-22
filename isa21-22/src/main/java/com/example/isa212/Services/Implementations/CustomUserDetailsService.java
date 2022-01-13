@@ -1,6 +1,6 @@
 package com.example.isa212.Services.Implementations;
 
-import com.example.isa212.Model.Users.User;
+import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Repositories.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        Users user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", email));
         } else { return user; }
@@ -52,7 +52,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         LOGGER.debug("Changing password for user '" + username + "'");
-        User user = (User) loadUserByUsername(username);
+        Users user = (Users) loadUserByUsername(username);
 
         // pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
         // ne zelimo da u bazi cuvamo lozinke u plain text formatu

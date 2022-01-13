@@ -3,7 +3,7 @@ package com.example.isa212.Controllers;
 import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
-import com.example.isa212.Model.Users.User;
+import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Services.Implementations.UserService;
 import com.example.isa212.Utils.Auth.JwtAuthenticationRequest;
 import com.google.zxing.WriterException;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -40,11 +39,11 @@ public class UserController {
     }
 
     @GetMapping(value = "/loggedUser")
-    public ResponseEntity<User> getLoggedUser()
+    public ResponseEntity<Users> getLoggedUser()
     {
         System.out.println("Nasao logovanog usera?");
 
-        User u = userService.getLoggedUser();
+        Users u = userService.getLoggedUser();
         return  u == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
                 new ResponseEntity<>(u, HttpStatus.OK);
     }
@@ -52,8 +51,8 @@ public class UserController {
 
     @PostMapping(value =  "/saveUser")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> saveUser(@RequestBody UserDTO userDTO) throws MessagingException, IOException, WriterException {
-        User user = userService.save(userDTO);
+    public ResponseEntity<Users> saveUser(@RequestBody UserDTO userDTO) throws MessagingException, IOException, WriterException {
+        Users user = userService.save(userDTO);
         return user == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
                 new ResponseEntity<>(user, HttpStatus.CREATED);
 
@@ -61,8 +60,8 @@ public class UserController {
 
     @PostMapping(value= "/getUserByID/{ID}")
 
-    public ResponseEntity<User> getUserByID(@PathVariable int ID) {
-        User user = userService.getUserByID(ID);
+    public ResponseEntity<Users> getUserByID(@PathVariable int ID) {
+        Users user = userService.getUserByID(ID);
         return user == null ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) :
                 new ResponseEntity<>(user, HttpStatus.OK);
 
@@ -77,16 +76,16 @@ public class UserController {
 
     @PostMapping(value= "/editUser")
     public ResponseEntity changeEnabledStatus(@RequestBody UserDTO userDTO) {
-        User u = userService.editUser(userDTO);
-        return u != null ? new ResponseEntity<User>(u, HttpStatus.OK) :
+        Users u = userService.editUser(userDTO);
+        return u != null ? new ResponseEntity<Users>(u, HttpStatus.OK) :
         new ResponseEntity(HttpStatus.BAD_REQUEST);
 
     }
 
     @PostMapping(value= "/changePassword")
     public ResponseEntity changePassword(@RequestBody PasswordDTO passwordDTO) {
-        User u = userService.changePassword(passwordDTO);
-        return u != null ? new ResponseEntity<User>(u, HttpStatus.OK) :
+        Users u = userService.changePassword(passwordDTO);
+        return u != null ? new ResponseEntity<Users>(u, HttpStatus.OK) :
                 new ResponseEntity("Password are not maching! ", HttpStatus.BAD_REQUEST);
 
     }

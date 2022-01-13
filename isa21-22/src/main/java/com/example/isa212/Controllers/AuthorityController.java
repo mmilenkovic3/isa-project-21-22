@@ -1,7 +1,7 @@
 package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.UserTokenState;
-import com.example.isa212.Model.Users.User;
+import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Services.Implementations.CustomUserDetailsService;
 import com.example.isa212.Services.Implementations.UserService;
 import com.example.isa212.Utils.Auth.JwtAuthenticationRequest;
@@ -45,7 +45,7 @@ public class AuthorityController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Kreiraj token za tog korisnika
-        User user = (User) authentication.getPrincipal();
+        Users user = (Users) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 

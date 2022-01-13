@@ -59,14 +59,15 @@ export default{
                                 {    
                                     console.log("ENABLE: " + response.data.accountEnabled);
                                     console.log("Autoritu: " + response.data.authorityRole);
+                                   
                                     if(response.data.authorityRole === "ROLE_ADMIN")
                                     {
                                         console.log("Prijava admina");
                                         console.log(response.data);
-                                        //this.$router.push('SystemAdminProfile/' + response.data.id);
+                                        this.$router.push('HomePageAdmin/' + response.data.id);
                                         
                                     }
-                                    else if(response.data.authorityRole === "ROLE_USER")
+                                    else if(response.data.authorityRole === "ROLE_USERS")
                                     {
                                             this.$router.push('HomePageUser/'+ response.data.id);
                                     }                                    

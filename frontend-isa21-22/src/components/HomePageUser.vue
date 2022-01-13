@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-8 col-md-3">
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Edit account </button>
-      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="offersFunction();"> Show offers</button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Cottages </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
     </div>
     <div class="col">
@@ -36,8 +36,8 @@
       </div>
 
       <!-- SHOW ALL OFFER SECTIOn -->
-      <div v-if='this.offers' class="container-offers">
-        <h1> OFFERS </h1>
+      <div v-if='this.Cottages' class="container-Cottages">
+        <h1> Cottages </h1>
                  
       </div>
 
@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       info: true,
-      offers: false,
+      Cottages: false,
       pass: false,
       disabledButtons: true,
       user: {},
@@ -86,6 +86,8 @@ export default {
       password: "",
       newPassword: "",
       newPasswordRepeat: "",
+
+      allCotages: [],
       
     }
   },
@@ -94,16 +96,16 @@ export default {
      infoFunction: function()
         {
             this.info = true;
-            this.offers = false;
+            this.Cottages = false;
             this.pass = false;
             console.log("INFO");
         },
-        offersFunction: function()
+        cottagesFunction: function()
         {
             this.info = false;
-            this.offers = true;
+            this.Cottages = true;
             this.pass = false;
-            console.log("OFFERS");
+            console.log("Cottages");
         },
         enabledFields: function()
         {
@@ -113,7 +115,7 @@ export default {
         changePass: function()
         {
             this.info = false;
-            this.offers = false;
+            this.Cottages = false;
             this.pass = true;
         },
         cancelEdit: function()
@@ -193,6 +195,27 @@ export default {
                         event.preventDefault();
 
                     }); 
+        },
+        getAllCottage: function()
+        { 
+            console.log("Token: " + localStorage.getItem('accessToken'));
+            this.axios.get('/cottage/findAll',
+                {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.allCotages = response.data;
+                        console.log(this.allCotages);
+                        //this.$router.push('/SignIn');  
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
         }
 
       
@@ -216,6 +239,8 @@ mounted() {
                         this.inputCity = this.user.city;
                         this.inputCountry = this.user.country;
                         this.inputPhoneNum = this.user.phoneNumber;
+
+                        this.getAllCottage();
 
                     }).catch(res => {
                         console.log(res);
@@ -244,7 +269,7 @@ mounted() {
     padding: 10px;
 }
 
-.container-offers
+.container-Cottages
 {
     background-color: red;
     

@@ -2,6 +2,7 @@ package com.example.isa212.Config;
 
 import com.example.isa212.Services.Implementations.CustomUserDetailsService;
 import com.example.isa212.Utils.Auth.RestAuthenticationEntryPoint;
+import com.example.isa212.Utils.Auth.TokenAuthenticationFilter;
 import com.example.isa212.Utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -347,12 +348,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
+
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
-                .cors()/*.and()
+                .cors().and()
 
                 // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
-                        BasicAuthenticationFilter.class)*/;
+                        BasicAuthenticationFilter.class);
         // zbog jednostavnosti primera
         http.csrf().disable();
     }

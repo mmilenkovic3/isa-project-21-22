@@ -4,7 +4,7 @@ import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.Authority;
-import com.example.isa212.Model.Users.User;
+import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Repositories.UserRepository;
 import com.example.isa212.Services.IServices.IUserService;
 import com.example.isa212.Utils.TokenUtils;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,16 +43,17 @@ public class UserService implements IUserService {
     @Autowired
     private ServiceForEmail serviceForEmail;
 
+
     @Override
-    public User save(UserDTO userDTO) throws MessagingException, IOException, WriterException {
+    public Users save(UserDTO userDTO) throws MessagingException, IOException, WriterException {
         List<Authority> authority = authorityService.findByName("ROLE_USER");
 
-        for(User u : userRepository.findAll()) {
+        for(Users u : userRepository.findAll()) {
             if(u.getEmail().equals(userDTO.getEmail()))
                 return null;
         }
 
-        User user = new User(
+        Users user = new Users(
                 userDTO.getName(),
                 userDTO.getSurname(),
                 userDTO.getEmail(),
@@ -69,18 +71,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void update(User user) {
+    public void update(Users user) {
 
     }
 
     @Override
-    public User getUserByID(int ID) {
+    public Users getUserByID(int ID) {
         return  userRepository.findOneById(ID);
     }
 
     @Override
     public void changeAccoundEnabledStatus(int user_id) {
-        User user = getUserByID(user_id);
+        Users user = getUserByID(user_id);
         if(user != null)
         {
             user.setAccountEnabled(true);
@@ -88,32 +90,36 @@ public class UserService implements IUserService {
         }
 
     }
-    Authentication authentication;
 
+    private SecurityContext sc;
     @Override
     public UserTokenState Login(String email, String password) {
 
-        authentication = authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(authentication);
 
-        User user = (User) authentication.getPrincipal();
+        Users user = (Users) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
         return new UserTokenState(jwt, expiresIn);
     }
 
     @Override
-    public User getLoggedUser() {
-        Authentication loggedUser = authentication; //SecurityContextHolder.getContext().getAuthentication();
+    public Users getLoggedUser() {
+        //Authentication loggedUser = authentication; //SecurityContextHolder.getContext().getAuthentication();
+
+
+        Authentication loggedUser = sc.getAuthentication();
         String email = loggedUser.getName();
-        User u = userRepository.findByEmail(email);
+        Users u = userRepository.findByEmail(email);
         return  u;
     }
 
     @Override
-    public User editUser(UserDTO userDTO) {
-       User u = userRepository.findByEmail(userDTO.getEmail());
+    public Users editUser(UserDTO userDTO) {
+       Users u = userRepository.findByEmail(userDTO.getEmail());
 
         u.setName(userDTO.getName());
         u.setSurname(userDTO.getSurname());
@@ -128,8 +134,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User changePassword(PasswordDTO passwordDTO) {
-        User user = getLoggedUser();
+    public Users changePassword(PasswordDTO passwordDTO) {
+        Users user = getLoggedUser();
         System.out.println(passwordEncoder.encode(passwordDTO.getPassword()));
         System.out.println("USER");
         System.out.println(user.getPassword());

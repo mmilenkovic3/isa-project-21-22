@@ -1,30 +1,19 @@
 package com.example.isa212.Services.Implementations;
 
-import com.example.isa212.Model.Users.User;
-import com.google.zxing.BarcodeFormat;
+import com.example.isa212.Model.Users.Users;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.Properties;
 
 @Component
@@ -41,7 +30,7 @@ public class ServiceForEmail {
     //https://docs.spring.io/spring-framework/docs/3.0.0.M3/reference/html/ch26s03.html
 
 
-    public void emailForValidationAccount(User user) throws MessagingException, IOException, WriterException {
+    public void emailForValidationAccount(Users user) throws MessagingException, IOException, WriterException {
 
         Properties props = new Properties();
         //props.setProperty("mail.transport.protocol", "smtp");

@@ -14,7 +14,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 //@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 
-public class User  implements UserDetails {
+public class Users implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,10 +57,10 @@ public class User  implements UserDetails {
     private List<Authority> authorities;
 
 
-    public User() {
+    public Users() {
     }
 
-    public User(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country) {
+    public Users(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -71,7 +71,7 @@ public class User  implements UserDetails {
         this.country = country;
     }
 
-    public User(Integer id, String name, String surname, String email, String password, String address, String phoneNumber, String city, String country) {
+    public Users(Integer id, String name, String surname, String email, String password, String address, String phoneNumber, String city, String country) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -84,7 +84,7 @@ public class User  implements UserDetails {
         this.accountEnabled = true;
     }
 
-    public User(Integer id)
+    public Users(Integer id)
     {
         this.id = id;
     }
