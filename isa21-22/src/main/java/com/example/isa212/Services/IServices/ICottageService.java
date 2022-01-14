@@ -9,7 +9,7 @@ import java.util.List;
 public interface ICottageService {
 
     List<Cottage> findAll();
-    Cottage findOneByid_cottage(int id);
+    Cottage findOneById(int id);
 
     List<Cottage> sortByNameAsc(List<Cottage> cottages);
     List<Cottage> sortByNameDesc(List<Cottage> cottages);

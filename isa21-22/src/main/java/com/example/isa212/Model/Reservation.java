@@ -40,6 +40,9 @@ public class Reservation {
     @Column
     private ReservationStatus reservationStatus;
 
+    @Column
+    private ReservationType reservationType;
+
     public Reservation(){}
 
 

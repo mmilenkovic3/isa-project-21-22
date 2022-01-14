@@ -21,8 +21,8 @@ public class CottageService implements ICottageService {
     }
 
     @Override
-    public Cottage findOneByid_cottage(int id) {
-        return null;
+    public Cottage findOneById(int id) {
+        return cottageRepository.getOne(id);
     }
 
     @Override

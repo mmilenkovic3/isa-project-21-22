@@ -14,6 +14,6 @@ public interface CottageRepository extends JpaRepository<Cottage, Integer> {
 
 
 
-    //Cottage findOneByid_cottage(Integer id);
+    //Cottage findOneById(Integer id);
     //Cottage findByName(String name);
 }
