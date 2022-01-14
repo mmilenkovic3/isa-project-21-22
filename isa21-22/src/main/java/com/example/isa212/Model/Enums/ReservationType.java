@@ -1,4 +1,4 @@
-package com.example.isa212.Model;
+package com.example.isa212.Model.Enums;
 
 public enum ReservationType {
     COTTAGE, BOAT, INSTRUCTOR

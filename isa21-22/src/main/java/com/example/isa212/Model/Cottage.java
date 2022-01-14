@@ -42,6 +42,8 @@ public class Cottage  {
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
     private List<Reservation> reservations;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Rules> rules;
 
     @Column
     private double price;

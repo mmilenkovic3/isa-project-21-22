@@ -1,15 +1,13 @@
 package com.example.isa212.Model;
 
+import com.example.isa212.Model.Enums.ReservationFatsType;
 import com.example.isa212.Model.Enums.ReservationStatus;
-import com.example.isa212.Model.Users.Authority;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.isa212.Model.Enums.ReservationType;
 
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Reservation")
@@ -42,6 +40,16 @@ public class Reservation {
 
     @Column
     private ReservationType reservationType;
+
+    @Column
+    private ReservationFatsType reservationFastType;
+
+    /*@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="rules_reservation",
+            joinColumns = @JoinColumn(name ="reservation_id", referencedColumnName = "id_reservation"),
+            inverseJoinColumns = @JoinColumn(name="rules_id", referencedColumnName = "id_rules"))
+*/
+
 
     public Reservation(){}
 
