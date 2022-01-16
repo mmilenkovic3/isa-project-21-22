@@ -20,13 +20,13 @@
     <div class="container">
             <div class="row">
                 <div class="col-sm">
-               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortName(Cottages)"> Sort by Name </button>
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortName()"> Sort by Name </button>
                 </div>
                 <div class="col-sm">
-               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortAddress(Cottages)"> Sort by Name </button>
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortAddress()"> Sort by Address </button>
                 </div>
                 <div class="col-sm">
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortGrade(Cottages)"> Sort by Name </button>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortGrade()"> Sort by Grade </button>
                 </div>
             </div>
     </div>
@@ -49,7 +49,7 @@
         </tr>
         <tr>
             <td> <p> Cottage reservation price: </p> </td>
-            <td> <p> {{ showPriceCottage(a)}} </p> </td>
+            <td> <p> {{ showPriceCottage(a)}} e </p> </td>
         </tr>
         <tr>
             <td> <p> Address: </p> </td>
@@ -68,7 +68,42 @@
         </div>
     </div>
     
-   
+    <!-- BOAT SHOW FOR RESERVATION --> 
+    <div v-show="this.reservationType === 'BOAT'">
+        <div v-for="a in this.Boats" v-bind:key="a.id_boat" style="background-color:orange;">
+        <table>
+        <tr>
+            <td> <p> Boat name: </p> </td>
+            <td> <p> {{a.name}} </p></td>
+        </tr>
+        <tr>
+            <td> <p> Boat max speed: </p> </td>
+            <td> <p> {{ a.maxSpeed }} km/h </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Boat grade: </p> </td>
+            <td> <p> {{ a.grade }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Boat reservation price: </p> </td>
+            <td> <p> {{ showPriceBoat(a)}} e </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Address: </p> </td>
+            <td> <p> {{  a.address }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Capacity: </p> </td>
+            <td> <p> {{  a.capacity }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p>Promo description: </p> </td>
+            <td> <p> {{  a.promoDescriptionBoat }} </p> </td>
+        </tr>   
+        </table>     
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(a)"> Reserve </button>
+        </div>
+    </div>
     
     
    
@@ -86,6 +121,7 @@ export default {
     return {
       id: this.$route.params.id,
       Cottages: [],
+      Boats: [],
       reservationType: "",
       date: "",
       time: "",
@@ -117,17 +153,29 @@ export default {
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(cottage.reservations[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate())
+                if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
                 { 
                     return cottage.reservations[r].price;                  
                 }
             }
             return 0;
         }, 
+        showPriceBoat: function(boat)
+        {           
+            for (var r in boat.reservationsBoat)
+            { 
+                var dateFront = new Date(this.date);
+                var dateRes = new Date(boat.reservationsBoat[r].startDate)
+                
+                if(dateFront.getDate() === dateRes.getDate() && boat.reservationsBoat[r].reservationStatus == "FREE" && boat.reservationsBoat[r].reservationType == "BOAT")
+                { 
+                    return boat.reservationsBoat[r].price;                  
+                }
+            }
+            return 0;
+        }, 
         getFreeReservation: function()
         {
-            console.log(this.reservationType);
-
             const infoRes = 
             {
                 date: this.date,
@@ -136,9 +184,10 @@ export default {
                 address: this.address,
                 grade: this.grade,
 
-            }           
-
-            console.log(infoRes);
+            }  
+            if(this.reservationType == "COTTAGE")
+            {
+                this.Cottages = [];              
            
             this.axios.post('/cottage/cottageSearchForReservation', infoRes,{
                     headers: 
@@ -156,6 +205,32 @@ export default {
                         event.preventDefault();
 
                     });
+            }else if(this.reservationType =="BOAT")
+            {
+            this.Boats = [];              
+           
+            this.axios.post('/boat/boatSearchForReservation', infoRes,{
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.Boats = response.data;
+                        console.log(this.Boats);                 
+                        event.preventDefault(); 
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    });
+            }
+            else if(this.reservationType == "INSTRUCTOR")
+            {
+                    console.log(this.reservationType);      
+            }
+            
         },
         getAllCottage: function()
         { 
@@ -190,134 +265,276 @@ export default {
                     return true;
                 }
 },
-    sortName: function(Cottages)
+    sortName: function()
+
     {
-        console.log("SORT");
-        if(this.sortByNameAsc){
-            
-             this.sortByNameAsc = false;
-            this.axios.post('/cottage/sortByNameAsc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
-                        
-                    }}).then(response => 
-                    {
-                       this.Cottages = response.data;   
-                       
-
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
-
-                    });
-        }else
+        if(this.reservationType == "COTTAGE")
         {
-            this.sortByNameAsc = true;
-
-            this.axios.post('/cottage/sortByNameDesc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+            console.log("SORT");
+                    if(this.sortByNameAsc){
                         
-                    }}).then(response => 
+                        this.sortByNameAsc = false;
+                        this.axios.post('/cottage/sortByNameAsc',this.Cottages,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Cottages = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
                     {
-                       this.Cottages = response.data;   
-                       
+                        this.sortByNameAsc = true;
 
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
+                        this.axios.post('/cottage/sortByNameDesc',this.Cottages,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Cottages = response.data;   
+                                
 
-                    });
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
 
+                                });
+
+                    }
+        }else if(this.reservationType == "BOAT")
+        {
+        if(this.sortByNameAsc){
+                        
+                        this.sortByNameAsc = false;
+                        this.axios.post('/boat/sortByNameAsc',this.Boats,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Boats = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
+                    {
+                        this.sortByNameAsc = true;
+
+                        this.axios.post('/boat/sortByNameDesc',this.Boats,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Boats = response.data;                                   
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+
+                    }
+        }else if(this.reservationType == "INSTRUCTOR")
+        {
+            console.log("BOAT");
         }
+        
     },
 
-      sortAddress: function(Cottages)
+      sortAddress: function()
     {
-        console.log("SORT");
-        if(this.sortByAddress){
-            
-             this.sortByAddress = false;
-            this.axios.post('/cottage/sortByAddressAsc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
-                        
-                    }}).then(response => 
-                    {
-                       this.Cottages = response.data;   
-                       
-
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
-
-                    });
-        }else
+        if(this.reservationType == "COTTAGE")
         {
-            this.sortByAddress = true;
+                if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/cottage/sortByAddressAsc',this.Cottages,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Cottages = response.data;   
+                                    
 
-            this.axios.post('/cottage/sortByAddressDesc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
-                        
-                    }}).then(response => 
-                    {
-                       this.Cottages = response.data;   
-                       
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
 
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
 
-                    });
+                            this.axios.post('/cottage/sortByAddressDesc',this.Cottages,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Cottages = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
+        }else if(this.reservationType == "BOAT")
+        {
+            if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/boat/sortByAddressAsc',this.Boats,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Boats = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
+
+                            this.axios.post('/boat/sortByAddressDesc',this.Boats,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Boats = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
+        }else if(this.reservationType == "INSTRUCTOR")
+        {
+            console.log("BOAT");
+        }
+        
+    },  sortGrade: function()
+    {
+        if(this.reservationType == "COTTAGE")
+        {
+                    if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/cottage/sortByGradeAsc',this.Cottages,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Cottages = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
+
+                    this.axios.post('/cottage/sortByGradeDesc',this.Cottages,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Cottages = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
 
         }
-    },  sortGrade: function(Cottages)
-    {
-        console.log("SORT");
-        if(this.sortByGrade){
-            
-             this.sortByGrade = false;
-            this.axios.post('/cottage/sortByGradeAsc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
-                        
-                    }}).then(response => 
-                    {
-                       this.Cottages = response.data;   
-                       
-
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
-
-                    });
-        }else
+        }else if(this.reservationType == "BOAT")
         {
-            this.sortByGrade = true;
+            if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/boat/sortByGradeAsc',this.Boats,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Boats = response.data;   
+                            
 
-            this.axios.post('/cottage/sortByGradeDesc',Cottages,{
-                    headers: 
-                    {
-                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
-                        
-                    }}).then(response => 
-                    {
-                       this.Cottages = response.data;   
-                       
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
 
-                    }).catch(res => {
-                        console.log(res);                       
-                        event.preventDefault();
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
 
-                    });
+                    this.axios.post('/boat/sortByGradeDesc',this.Boats,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Boats = response.data;   
+                            
 
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+            }
         }
+        else if(this.reservationType == "INSTRUCTOR")
+        {
+            console.log("BOAT");
+        }
+        
     },
     
 
@@ -329,7 +546,7 @@ export default {
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(cottage.reservations[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE")
+                if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
                 { 
                     reservation_id = cottage.reservations[r].id_reservation;                  
                 }

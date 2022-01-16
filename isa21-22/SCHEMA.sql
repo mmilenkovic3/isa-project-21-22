@@ -37,6 +37,8 @@ INSERT INTO `booking_db`.`reservation` (`id_reservation`, `max_persons`, `price`
 INSERT INTO `booking_db`.`reservation` (`id_reservation`,  `max_persons`, `price`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `reservation_cancel_type`,`cancellation_type`,`num_days`) VALUES (12,  4, 300, 'STANDARD', 'FREE', 'COTTAGE', '2022-01-13', '14:00','NOT_CANCEL','PAYBACK',1);
 INSERT INTO `booking_db`.`reservation` (`id_reservation`,  `max_persons`, `price`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `reservation_cancel_type`,`cancellation_type`,`num_days`) VALUES (13,  4, 400, 'STANDARD', 'FREE', 'COTTAGE', '2022-01-13', '14:00','NOT_CANCEL','NOT_PAYBACK',1);
 INSERT INTO `booking_db`.`reservation` (`id_reservation`,  `max_persons`, `price`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `reservation_cancel_type`,`cancellation_type`,`num_days`) VALUES (14,  5, 400, 'STANDARD', 'FREE', 'COTTAGE', '2022-01-13', '14:00','NOT_CANCEL','NOT_PAYBACK',1);
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('15', 'PAYBACK', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'BOAT', '2022-01-23', '10:00', '0');
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('16', 'NOT_PAYBACK', '2', '3', '200', 'NOT_CANCEL', 'STANDARD', 'FREE', 'BOAT', '2022-01-23 00:00:00.000000', '10:00:00', '0');
 
 #Cottage
 INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('1', 'Novosadska 3', '8', 'Nema neke dodatne.', 'Vila Elsa', '2', '3', '120', 'Acc');
@@ -51,6 +53,14 @@ insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) valu
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (3, 1);
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (1, 11);
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (2, 4);
-insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (3, 12);
+insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (2, 12);
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (4, 13);
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (5, 14);
+
+
+#boat_reservation
+insert into booking_db.boat_reservation values (1,5);
+insert into booking_db.boat_reservation values (2,7);
+
+insert into booking_db.boat_reservation values (1,15);
+insert into booking_db.boat_reservation values (2,16);

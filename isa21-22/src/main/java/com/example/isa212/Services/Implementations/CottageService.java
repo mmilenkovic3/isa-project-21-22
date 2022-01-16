@@ -1,8 +1,10 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.Boat;
 import com.example.isa212.Model.Cottage;
-import com.example.isa212.Model.DTOs.ReservationCottageParamsDTO;
+import com.example.isa212.Model.DTOs.ReservationParamsDTO;
 import com.example.isa212.Model.Enums.ReservationCancelType;
+import com.example.isa212.Model.Enums.ReservationFatsType;
 import com.example.isa212.Model.Enums.ReservationStatus;
 import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Model.Reservation;
@@ -78,7 +80,7 @@ public class CottageService implements ICottageService {
         return null;
     }
 
-    public List<Cottage> getFreeReservationDate(ReservationCottageParamsDTO reservationParamsDTO)
+    public List<Cottage> getFreeReservationDate(ReservationParamsDTO reservationParamsDTO)
     {
         Time timeReservation = java.sql.Time.valueOf(reservationParamsDTO.getTime());
 
@@ -100,7 +102,8 @@ public class CottageService implements ICottageService {
                         && res.getNumDays() == reservationParamsDTO.getNumDays()
                         && res.getReservationType().equals( ReservationType.COTTAGE)
                         && res.getReservationStatus().equals(ReservationStatus.FREE)
-                        && res.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL))
+                        && res.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL)
+                        && res.getReservationFastType().equals(ReservationFatsType.STANDARD))
                 {
                     searchCottage.add(c);
                 }
@@ -142,6 +145,10 @@ public class CottageService implements ICottageService {
 
         return searchCottage;
     }
+
+
+
+
 
 
 }

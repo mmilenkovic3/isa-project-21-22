@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
-public class ReservationCottageParamsDTO {
+public class ReservationParamsDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
@@ -18,16 +18,16 @@ public class ReservationCottageParamsDTO {
     private String address;
     private double grade;
 
-    public ReservationCottageParamsDTO() {
+    public ReservationParamsDTO() {
     }
-    public ReservationCottageParamsDTO(int numDays) {
+    public ReservationParamsDTO(int numDays) {
         this.numDays = numDays;
     }
 
-    public ReservationCottageParamsDTO(Date date) {
+    public ReservationParamsDTO(Date date) {
         this.date = date;
     }
-    public ReservationCottageParamsDTO(Date date, LocalTime time, int numDays) {
+    public ReservationParamsDTO(Date date, LocalTime time, int numDays) {
 
         this.date = date;
         this.time = time;
@@ -35,7 +35,7 @@ public class ReservationCottageParamsDTO {
     }
 
 
-    public ReservationCottageParamsDTO( Date date, LocalTime time, int numDays,  String address, double grade) {
+    public ReservationParamsDTO(Date date, LocalTime time, int numDays, String address, double grade) {
 
         this.date = date;
         this.time = time;

@@ -1,10 +1,8 @@
 package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.Cottage;
-import com.example.isa212.Model.DTOs.ReservationCottageParamsDTO;
-import com.example.isa212.Model.Users.Users;
+import com.example.isa212.Model.DTOs.ReservationParamsDTO;
 import com.example.isa212.Services.Implementations.CottageService;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -90,9 +88,9 @@ public class CottageController {
 
     @PostMapping(value = "/cottageSearchForReservation")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<List<Cottage>> cottageSearchForReservation(@RequestBody ReservationCottageParamsDTO reservationCottageParamsDTO)
+    public ResponseEntity<List<Cottage>> cottageSearchForReservation(@RequestBody ReservationParamsDTO reservationParamsDTO)
     {
-        List<Cottage> cottages = cottageService.getFreeReservationDate(reservationCottageParamsDTO);
+        List<Cottage> cottages = cottageService.getFreeReservationDate(reservationParamsDTO);
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 

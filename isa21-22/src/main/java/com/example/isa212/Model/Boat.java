@@ -61,7 +61,165 @@ public class Boat {
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
     private List<Reservation> reservationsBoat;
 
+    @Column
+    private double grade;
 
     public Boat() {
+    }
+
+    public Boat(int id_boat, String name, String type, double length, int engingeNum, int enginePower, NavigationEquipment navigationEquipment, String address, String promoDescriptionBoat, double maxSpeed, List<Rules> rules, List<FishingKit> fishingKits, int capacity, double price, CancellationType cancellationType, List<Reservation> reservationsBoat, double grade) {
+        this.id_boat = id_boat;
+        this.name = name;
+        this.type = type;
+        this.length = length;
+        this.engingeNum = engingeNum;
+        this.enginePower = enginePower;
+        this.navigationEquipment = navigationEquipment;
+        this.address = address;
+        this.promoDescriptionBoat = promoDescriptionBoat;
+        this.maxSpeed = maxSpeed;
+        this.rules = rules;
+        this.fishingKits = fishingKits;
+        this.capacity = capacity;
+        this.price = price;
+        this.cancellationType = cancellationType;
+        this.reservationsBoat = reservationsBoat;
+        this.grade = grade;
+    }
+
+    public int getId_boat() {
+        return id_boat;
+    }
+
+    public void setId_boat(int id_boat) {
+        this.id_boat = id_boat;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public int getEngingeNum() {
+        return engingeNum;
+    }
+
+    public void setEngingeNum(int engingeNum) {
+        this.engingeNum = engingeNum;
+    }
+
+    public int getEnginePower() {
+        return enginePower;
+    }
+
+    public void setEnginePower(int enginePower) {
+        this.enginePower = enginePower;
+    }
+
+    public NavigationEquipment getNavigationEquipment() {
+        return navigationEquipment;
+    }
+
+    public void setNavigationEquipment(NavigationEquipment navigationEquipment) {
+        this.navigationEquipment = navigationEquipment;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPromoDescriptionBoat() {
+        return promoDescriptionBoat;
+    }
+
+    public void setPromoDescriptionBoat(String promoDescriptionBoat) {
+        this.promoDescriptionBoat = promoDescriptionBoat;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public List<Rules> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<Rules> rules) {
+        this.rules = rules;
+    }
+
+    public List<FishingKit> getFishingKits() {
+        return fishingKits;
+    }
+
+    public void setFishingKits(List<FishingKit> fishingKits) {
+        this.fishingKits = fishingKits;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public CancellationType getCancellationType() {
+        return cancellationType;
+    }
+
+    public void setCancellationType(CancellationType cancellationType) {
+        this.cancellationType = cancellationType;
+    }
+
+    public List<Reservation> getReservationsBoat() {
+        return reservationsBoat;
+    }
+
+    public void setReservationsBoat(List<Reservation> reservationsBoat) {
+        this.reservationsBoat = reservationsBoat;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }

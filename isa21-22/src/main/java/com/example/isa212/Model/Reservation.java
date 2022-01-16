@@ -56,6 +56,9 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private CancellationType cancellationType;
 
+    @Column
+    private double grade;
+
     public Reservation(){}
 
     public Reservation(int id_reservation, Date startDate, Time startTime, int numDays, int maxPersons, List<Staff> staffs, double price, ReservationStatus reservationStatus, ReservationType reservationType, ReservationFatsType reservationFastType, ReservationCancelType reservationCancelType, CancellationType cancellationType) {
@@ -73,6 +76,21 @@ public class Reservation {
         this.cancellationType = cancellationType;
     }
 
+    public Reservation(int id_reservation, Date startDate, Time startTime, int numDays, int maxPersons, List<Staff> staffs, double price, ReservationStatus reservationStatus, ReservationType reservationType, ReservationFatsType reservationFastType, ReservationCancelType reservationCancelType, CancellationType cancellationType, double grade) {
+        this.id_reservation = id_reservation;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.numDays = numDays;
+        this.maxPersons = maxPersons;
+        this.staffs = staffs;
+        this.price = price;
+        this.reservationStatus = reservationStatus;
+        this.reservationType = reservationType;
+        this.reservationFastType = reservationFastType;
+        this.reservationCancelType = reservationCancelType;
+        this.cancellationType = cancellationType;
+        this.grade = grade;
+    }
 
     public int getId_reservation() {
         return id_reservation;
@@ -168,5 +186,13 @@ public class Reservation {
 
     public void setCancellationType(CancellationType cancellationType) {
         this.cancellationType = cancellationType;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }
