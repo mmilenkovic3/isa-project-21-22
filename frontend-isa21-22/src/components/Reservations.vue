@@ -4,6 +4,7 @@
     <select v-model="reservationType" id="reservationType" class="form-control" 
                                           aria-label="Select reservation type.."
                                           :select="reservationType" style="font-size:22px;"
+                                          v-on:change="emptyList()"
                                     aria-describedby="addon-wrapping">
                                     <option  value="COTTAGE" > Cottage </option>
                                     <option  value="BOAT"> Boat </option>
@@ -145,7 +146,12 @@ export default {
     
   },
   
-     methods:{       
+     methods:{ 
+         emptyList: function()
+         {
+                this.Cottages = [];
+                this.Boats = [];
+         }   ,   
            showPriceCottage: function(cottage)
         {           
             for (var r in cottage.reservations)
@@ -538,20 +544,43 @@ export default {
     },
     
 
-    reserve: function(cottage)
+    reserve: function(entity)
     {
         var reservation_id = "";
-        for (var r in cottage.reservations)
+        if(this.reservationType == "COTTAGE")
+        {
+             for (var r in entity.reservations)
             { 
                 var dateFront = new Date(this.date);
-                var dateRes = new Date(cottage.reservations[r].startDate)
+                var dateRes = new Date(entity.reservations[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
+                if(dateFront.getDate() === dateRes.getDate() && entity.reservations[r].reservationStatus == "FREE" && entity.reservations[r].reservationType == "COTTAGE")
                 { 
-                    reservation_id = cottage.reservations[r].id_reservation;                  
+                    reservation_id = entity.reservations[r].id_reservation;                  
                 }
             }
 
+        }else if(this.reservationType == "BOAT")
+        {
+            for (var bo in entity.reservationsBoat)
+            { 
+                var dateFrontBoat = new Date(this.date);
+                var dateResBoat = new Date(entity.reservationsBoat[bo].startDate)
+                
+                if(dateFrontBoat.getDate() === dateResBoat.getDate() && entity.reservationsBoat[bo].reservationStatus == "FREE" && entity.reservationsBoat[bo].reservationType == "BOAT")
+                { 
+                    reservation_id = entity.reservationsBoat[bo].id_reservation;                  
+                }
+            }
+
+
+
+
+        }else if(this.reservationType == "INSTRUCTOR")
+            {
+                    console.log("AAA");
+            }
+                
 
         this.axios.post('/client/reservation/'+this.id+'/'+reservation_id,{
                     headers: 
