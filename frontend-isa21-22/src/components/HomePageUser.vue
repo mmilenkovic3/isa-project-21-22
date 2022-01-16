@@ -6,6 +6,7 @@
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Edit account </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Cottages </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
     </div>
     <div class="col">
       <div v-if='this.info' class="container-info">
@@ -92,7 +93,11 @@ export default {
     }
   },
   
-     methods:{              
+     methods:{   
+         reservationPage: function()
+         {
+              this.$router.push('/Reservations/'+ this.$route.params.id);
+         },           
      infoFunction: function()
         {
             this.info = true;

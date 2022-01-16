@@ -12,6 +12,8 @@ import java.io.IOException;
 public interface IUserService {
 
     Users save(UserDTO userDTO) throws MessagingException, IOException, WriterException;
+    Users save(Users users);
+
     void update(Users user);
     Users getUserByID(int ID);
     void changeAccoundEnabledStatus(int user_id);

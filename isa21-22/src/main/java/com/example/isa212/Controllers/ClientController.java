@@ -32,4 +32,12 @@ public class ClientController {
                 new ResponseEntity("You are allready subscribe on this cottage", HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/reservation/{client_id}/{reservation_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity reserveCottage(@PathVariable int client_id, @PathVariable int reservation_id)
+    {
+        clientService.reserve(client_id, reservation_id);
+        return new ResponseEntity("Successeffully reserved cottage.", HttpStatus.OK);
+    }
+
 }

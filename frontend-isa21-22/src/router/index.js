@@ -9,6 +9,7 @@ import Verify from '../components/Verify.vue'
 import LoginPage from '../components/LoginPage.vue'
 import HomePageUser from '../components/HomePageUser.vue'
 import HomePageAdmin from '../components/HomePageAdmin.vue'
+import Reservations from '../components/Reservations.vue'
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 //Vue.use(IconsPlugin)
@@ -54,6 +55,14 @@ const routes = [
       path: '/HomePageAdmin/:id',
       name: 'HomePageAdmin',
       component: HomePageAdmin
+    }
+
+    ,
+
+    {
+      path: '/Reservations/:id',
+      name: 'Reservations',
+      component: Reservations
     }
 ]
     

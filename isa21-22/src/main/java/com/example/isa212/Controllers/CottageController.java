@@ -1,6 +1,7 @@
 package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.Cottage;
+import com.example.isa212.Model.DTOs.ReservationCottageParamsDTO;
 import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Services.Implementations.CottageService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,7 +19,6 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(value="/cottage", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CottageController {
 
     @Autowired
@@ -28,12 +28,12 @@ public class CottageController {
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> findAllCottage()
     {
-        System.out.println("Find all cottage?");
+        System.out.println("Return list off all cotages!");
         List<Cottage> cottages = cottageService.findAll();
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/sortByNameAsc")
+    @PostMapping(value = "/sortByNameAsc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByNameAsc(@RequestBody List<Cottage> cottages_list)
     {
@@ -41,35 +41,35 @@ public class CottageController {
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/sortByNameDesc")
+    @PostMapping(value = "/sortByNameDesc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByNameDesc(@RequestBody List<Cottage> cottages_list)
     {
         List<Cottage> cottages = cottageService.sortByNameDesc(cottages_list);
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
-    @GetMapping(value = "/sortByAddressAsc")
+    @PostMapping(value = "/sortByAddressAsc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByAddressAsc(@RequestBody List<Cottage> cottages_list)
     {
         List<Cottage> cottages = cottageService.sortByAddressAsc(cottages_list);
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
-    @GetMapping(value = "/sortByAddressDesc")
+    @PostMapping(value = "/sortByAddressDesc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByAddressDesc(@RequestBody List<Cottage> cottages_list)
     {
         List<Cottage> cottages = cottageService.sortByAddressDesc(cottages_list);
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
-    @GetMapping(value = "/sortByGradeAsc")
+    @PostMapping(value = "/sortByGradeAsc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByGradeAsc(@RequestBody List<Cottage> cottages_list)
     {
         List<Cottage> cottages = cottageService.sortByGradeAsc(cottages_list);
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
-    @GetMapping(value = "/sortByGradeDesc")
+    @PostMapping(value = "/sortByGradeDesc")
     @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> sortByGradeDesc(@RequestBody List<Cottage> cottages_list)
     {
@@ -86,6 +86,14 @@ public class CottageController {
         System.out.println("Admin pozvao ovo?");
 
         return new ResponseEntity<String>("AUTH", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/cottageSearchForReservation")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> cottageSearchForReservation(@RequestBody ReservationCottageParamsDTO reservationCottageParamsDTO)
+    {
+        List<Cottage> cottages = cottageService.getFreeReservationDate(reservationCottageParamsDTO);
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 
 

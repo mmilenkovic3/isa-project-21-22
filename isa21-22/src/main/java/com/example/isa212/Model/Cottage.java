@@ -51,12 +51,7 @@ public class Cottage  {
     @Column
     private String info;
 
-    public Cottage() {
-
-
-    }
-
-    public Cottage(int id_cottage, String name, String address, String promoDescription, int numRoom, int numBed, double grade, double price, String info) {
+    public Cottage(int id_cottage, String name, String address, String promoDescription, int numRoom, int numBed, double grade, List<Reservation> reservations, List<Rules> rules, double price, String info) {
         this.id_cottage = id_cottage;
         this.name = name;
         this.address = address;
@@ -64,8 +59,15 @@ public class Cottage  {
         this.numRoom = numRoom;
         this.numBed = numBed;
         this.grade = grade;
+        this.reservations = reservations;
+        this.rules = rules;
         this.price = price;
         this.info = info;
+    }
+
+    public Cottage() {
+
+
     }
 
     public int getId_cottage() {
@@ -130,6 +132,14 @@ public class Cottage  {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public List<Rules> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<Rules> rules) {
+        this.rules = rules;
     }
 
     public double getPrice() {
