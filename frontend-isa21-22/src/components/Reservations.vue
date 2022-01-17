@@ -1,5 +1,6 @@
 <template>
 <div>
+<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="$router.go(-1)"> Home page </button>
     <h2> Reservation: </h2>
     <select v-model="reservationType" id="reservationType" class="form-control" 
                                           aria-label="Select reservation type.."
@@ -8,7 +9,7 @@
                                     aria-describedby="addon-wrapping">
                                     <option  value="COTTAGE" > Cottage </option>
                                     <option  value="BOAT"> Boat </option>
-                                    <option  value="INSTRUCTOR"> Instructor </option>
+                                    <option  value="ADVENTURE"> Adventure </option>
                         </select>
     <input type="date"  v-model="date" class="form-control" placeholder="Date of reservation" required>
     <input type="time" v-model="time" class="form-control" placeholder="Time" >
@@ -105,6 +106,41 @@
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(a)"> Reserve </button>
         </div>
     </div>
+
+    <!-- BOAT SHOW FOR RESERVATION --> 
+    <div v-show="this.reservationType === 'ADVENTURE'">
+        <div v-for="adv in this.Adventures" v-bind:key="adv.id_adventure" style="background-color:orange;">
+        <table>
+        <tr>
+            <td> <p> Adventure name: </p> </td>
+            <td> <p> {{adv.name}} </p></td>
+        </tr>
+       
+        <tr>
+            <td> <p> Adventure grade: </p> </td>
+            <td> <p> {{ adv.grade }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Boat reservation price: </p> </td>
+            <td> <p> {{ showPriceAdventure(adv) }}  </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Address: </p> </td>
+            <td> <p> {{  adv.address }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p> Capacity: </p> </td>
+            <td> <p> {{  adv.capacity }} </p> </td>
+        </tr>
+        <tr>
+            <td> <p>Promo description: </p> </td>
+            <td> <p> {{  adv.promoDescriptionAdventure }} </p> </td>
+        </tr>   
+        </table>     
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(adv)"> Reserve </button>
+        </div>
+    </div>
+    
     
     
    
@@ -123,6 +159,9 @@ export default {
       id: this.$route.params.id,
       Cottages: [],
       Boats: [],
+      Adventures: [],
+
+
       reservationType: "",
       date: "",
       time: "",
@@ -162,6 +201,20 @@ export default {
                 if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
                 { 
                     return cottage.reservations[r].price;                  
+                }
+            }
+            return 0;
+        }, 
+        showPriceAdventure: function(adventure)
+        {           
+            for (var r in adventure.reservationsAdventure)
+            { 
+                var dateFront = new Date(this.date);
+                var dateRes = new Date(adventure.reservationsAdventure[r].startDate)
+                
+                if(dateFront.getDate() === dateRes.getDate() && adventure.reservationsAdventure[r].reservationStatus == "FREE" && adventure.reservationsAdventure[r].reservationType == "ADVENTURE")
+                { 
+                    return adventure.reservationsAdventure[r].price;                  
                 }
             }
             return 0;
@@ -232,9 +285,25 @@ export default {
 
                     });
             }
-            else if(this.reservationType == "INSTRUCTOR")
+            else if(this.reservationType == "ADVENTURE")
             {
-                    console.log(this.reservationType);      
+                this.Adventures = [];
+                     this.axios.post('/adventure/adventureSearchForReservation', infoRes,{
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.Adventures = response.data;
+                        console.log(this.Adventures);                 
+                        event.preventDefault(); 
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    });     
             }
             
         },
@@ -356,9 +425,47 @@ export default {
                                 });
 
                     }
-        }else if(this.reservationType == "INSTRUCTOR")
+        }else if(this.reservationType == "ADVENTURE")
         {
-            console.log("BOAT");
+            if(this.sortByNameAsc){
+                        
+                        this.sortByNameAsc = false;
+                        this.axios.post('/adventure/sortByNameAsc',this.Adventures,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Adventures = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
+                    {
+                        this.sortByNameAsc = true;
+
+                        this.axios.post('/adventure/sortByNameDesc',this.Adventures,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Adventures = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+
+                    }
         }
         
     },
@@ -447,9 +554,47 @@ export default {
                                     });
 
                         }
-        }else if(this.reservationType == "INSTRUCTOR")
+        }else if(this.reservationType == "ADVENTURE")
         {
-            console.log("BOAT");
+             if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/adventure/sortByAddressAsc',this.Adventures,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Adventures = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
+
+                            this.axios.post('/adventure/sortByAddressDesc',this.Adventures,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Adventures = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
         }
         
     },  sortGrade: function()
@@ -536,9 +681,47 @@ export default {
                             });
             }
         }
-        else if(this.reservationType == "INSTRUCTOR")
+        else if(this.reservationType == "ADVENTURE")
         {
-            console.log("BOAT");
+             if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/adventure/sortByGradeAsc',this.Adventures,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Adventures = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
+
+                    this.axios.post('/adventure/sortByGradeDesc',this.Adventures,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Adventures = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+
+        }
         }
         
     },
@@ -576,9 +759,19 @@ export default {
 
 
 
-        }else if(this.reservationType == "INSTRUCTOR")
+        }else if(this.reservationType == "ADVENTURE")
             {
-                    console.log("AAA");
+                    for (var adv in entity.reservationsAdventure)
+            { 
+                var dateFrontAdv= new Date(this.date);
+                var dateResAdv = new Date(entity.reservationsAdventure[adv].startDate)
+                
+                if(dateFrontAdv.getDate() === dateResAdv.getDate() && entity.reservationsAdventure[adv].reservationStatus == "FREE" && entity.reservationsAdventure[adv].reservationType == "ADVENTURE")
+                { 
+                    reservation_id = entity.reservationsAdventure[adv].id_reservation;                  
+                }
+            }
+
             }
                 
 
@@ -590,7 +783,7 @@ export default {
                     }}).then(response => 
                     {
                        
-                        alert(response.date);                 
+                        console(response);                 
                         event.preventDefault(); 
 
                     }).catch(res => {

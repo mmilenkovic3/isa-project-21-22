@@ -25,6 +25,22 @@ insert into `booking_db`.`instructor` (id) values (1)
 insert into `booking_db`.`instructor` (id) values (3)
 INSERT INTO `booking_db`.`instructor` (id) VALUES (4);
 
+#adventure
+INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('1', 'Ribarsko 2', 'Instruktor je korektan.', 'PAYBACK', '3', 'Zmajevi Rone', '200', 'Dodji da se zabavis sa nama.');
+INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('2', 'Zaliv PF 1', 'Radost, veselje i ambicija', 'PAYBACK', '5', 'Diva Viva', '500', 'Udri grome.');
+INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('3', 'Novo Mesto 2', 'Sreca', 'PAYBACK', '2', 'SuperNova', '100', 'Sta ste hteli?');
+
+UPDATE `booking_db`.`adventure` SET `grade` = '8' WHERE (`id_adventure` = '1');
+UPDATE `booking_db`.`adventure` SET `grade` = '7' WHERE (`id_adventure` = '2');
+UPDATE `booking_db`.`adventure` SET `grade` = '9' WHERE (`id_adventure` = '3');
+#Cottage
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('1', 'Novosadska 3', '8', 'Nema neke dodatne.', 'Vila Elsa', '2', '3', '120', 'Acc');
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('2', 'Gagarinova 5', '9', 'No', 'Sonja ', '5', '2', '500', 'aaa');
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('3', 'Skolska 4', '10', 'Ambaar', 'Krofnica', '2', '1', '200', 'ccc');
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('4', 'Partizanska 1', '7', 'VOtka', 'Boska', '1', '1', '150', 'vvv');
+INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('5', 'Ambasadorska 10', '8.5', 'Ser', 'Kleopatra', '3', '2', '200', 'aaaaaaa');
+
+
 #reservation
 
 INSERT INTO `booking_db`.`reservation` (`id_reservation`,  `max_persons`, `price`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `reservation_cancel_type`,`cancellation_type`,`num_days`) VALUES (1,  4, 420, 'STANDARD', 'FREE', 'COTTAGE', '2022-01-13', '14:00','NOT_CANCEL','PAYBACK',1);
@@ -48,14 +64,8 @@ INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('16', 'NOT_PAYBACK', '2', '3', '200', 'NOT_CANCEL', 'STANDARD', 'FREE', 'BOAT', '2022-01-23 00:00:00.000000', '10:00:00', '0');
 
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES (17, 'NOT_PAYBACK', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'ADVENTURE', '2022-02-01 00:00:00.000000', '09:00:00', '0');
-INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES (18, 'PAYBACJ', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'ADVENTURE', '2022-02-01 00:00:00.000000', '09:00:00', '0');
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES (18, 'PAYBACK', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'ADVENTURE', '2022-02-01 00:00:00.000000', '09:00:00', '0');
 
-#Cottage
-INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('1', 'Novosadska 3', '8', 'Nema neke dodatne.', 'Vila Elsa', '2', '3', '120', 'Acc');
-INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('2', 'Gagarinova 5', '9', 'No', 'Sonja ', '5', '2', '500', 'aaa');
-INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('3', 'Skolska 4', '10', 'Ambaar', 'Krofnica', '2', '1', '200', 'ccc');
-INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('4', 'Partizanska 1', '7', 'VOtka', 'Boska', '1', '1', '150', 'vvv');
-INSERT INTO `booking_db`.`cotagge` (`id_cottage`, `address`, `grade`, `info`, `name`, `num_bed`, `num_room`, `price`, `promo_description`) VALUES ('5', 'Ambasadorska 10', '8.5', 'Ser', 'Kleopatra', '3', '2', '200', 'aaaaaaa');
 
 #cottage_reservation
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (1, 2);
@@ -75,13 +85,12 @@ insert into booking_db.boat_reservation values (2,7);
 insert into booking_db.boat_reservation values (1,15);
 insert into booking_db.boat_reservation values (2,16);
 
-#adventure
-INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('1', 'Ribarsko 2', 'Instruktor je korektan.', 'PAYBACK', '3', 'Zmajevi Rone', '200', 'Dodji da se zabavis sa nama.');
-INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('2', 'Zaliv PF 1', 'Radost, veselje i ambicija', 'PAYBACK', '5', 'Diva Viva', '500', 'Udri grome.');
-INSERT INTO `booking_db`.`adventure` (`id_adventure`, `address`, `bio`, `cancellation_type`, `capacity`, `name`, `price`, `promo_description_adventure`) VALUES ('3', 'Novo Mesto 2', 'Sreca', 'PAYBACK', '2', 'SuperNova', '100', 'Sta ste hteli?');
+
 
 #adventure reservation
 insert into booking_db.adventure_reservation values (1,17);
 insert into booking_db.adventure_reservation values (2,18);
 insert into booking_db.adventure_reservation values (3,8);
 insert into booking_db.adventure_reservation values (1,9);
+
+
