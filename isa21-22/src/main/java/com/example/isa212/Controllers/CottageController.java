@@ -94,5 +94,13 @@ public class CottageController {
         return new ResponseEntity<>( cottages, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/cottageSearchForReservationAction")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Cottage>> cottageSearchForReservationAction()
+    {
+        List<Cottage> cottages = cottageService.freeReservationCottageAction();
+        return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+
 
 }

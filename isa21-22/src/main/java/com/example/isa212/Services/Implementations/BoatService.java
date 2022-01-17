@@ -137,4 +137,25 @@ public class BoatService implements IBoatService {
 
         return searchBoat;
     }
+
+    public List<Boat> freeReservationBoatAction()
+    {
+        List<Boat> boats = findAll();
+        List<Boat> returnBoat = new ArrayList<Boat>();
+        for(Boat r : boats)
+        {
+            for(Reservation reservation : r.getReservationsBoat())
+            {
+                if(reservation.getReservationType().equals(ReservationType.BOAT)
+                        && reservation.getReservationStatus().equals(ReservationStatus.FREE)
+                        && reservation.getReservationFastType().equals(ReservationFatsType.ACTION))
+                {
+                    returnBoat.add(r);
+                }
+            }
+        }
+
+        return  returnBoat;
+    }
+
 }

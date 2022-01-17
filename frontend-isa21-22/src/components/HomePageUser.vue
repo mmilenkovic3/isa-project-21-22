@@ -7,6 +7,7 @@
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Cottages </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="fasteResPage();"> Fast reservation </button>
     </div>
     <div class="col">
       <div v-if='this.info' class="container-info">
@@ -94,6 +95,10 @@ export default {
   },
   
      methods:{   
+         fasteResPage: function()
+         {
+              this.$router.push('/FastReservation/'+ this.$route.params.id);
+         },
          reservationPage: function()
          {
               this.$router.push('/Reservations/'+ this.$route.params.id);

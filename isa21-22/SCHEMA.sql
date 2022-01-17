@@ -84,6 +84,7 @@ insert into booking_db.boat_reservation values (2,7);
 
 insert into booking_db.boat_reservation values (1,15);
 insert into booking_db.boat_reservation values (2,16);
+insert into booking_db.boat_reservation values (1,6)
 
 
 

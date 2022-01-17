@@ -197,6 +197,9 @@ export default {
             { 
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(cottage.reservations[r].startDate)
+
+                console.log(dateFront.getDate());
+                console.log(dateRes.getDate());
                 
                 if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
                 { 
@@ -783,7 +786,9 @@ export default {
                     }}).then(response => 
                     {
                        
-                        console(response);                 
+                        alert("Success!"); 
+                         console.log(response.data); 
+                        this.$router.go();              
                         event.preventDefault(); 
 
                     }).catch(res => {

@@ -10,6 +10,8 @@ import LoginPage from '../components/LoginPage.vue'
 import HomePageUser from '../components/HomePageUser.vue'
 import HomePageAdmin from '../components/HomePageAdmin.vue'
 import Reservations from '../components/Reservations.vue'
+import FastReservation from '../components/FastReservation.vue'
+
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 //Vue.use(IconsPlugin)
@@ -63,6 +65,12 @@ const routes = [
       path: '/Reservations/:id',
       name: 'Reservations',
       component: Reservations
+    },
+
+    {
+      path: '/FastReservation/:id',
+      name: 'FastReservation',
+      component: FastReservation
     }
 ]
     

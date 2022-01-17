@@ -75,4 +75,13 @@ public class BoatController {
         return new ResponseEntity<>( boats, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/boateSearchForReservationAction")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Boat>> boateSearchForReservationAction()
+    {
+        List<Boat> boats = boatService.freeReservationBoatAction();
+        return new ResponseEntity<>( boats, HttpStatus.OK);
+    }
+
+
 }

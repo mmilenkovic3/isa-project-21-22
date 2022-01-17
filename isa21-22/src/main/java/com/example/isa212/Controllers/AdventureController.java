@@ -1,6 +1,7 @@
 package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.Adventure;
+import com.example.isa212.Model.Boat;
 import com.example.isa212.Model.Cottage;
 import com.example.isa212.Model.DTOs.ReservationParamsDTO;
 import com.example.isa212.Services.Implementations.AdventureService;
@@ -75,4 +76,13 @@ public class AdventureController {
         List<Adventure> adventures = adventureService.getFreeReservationDate(reservationParamsDTO);
         return new ResponseEntity<>( adventures, HttpStatus.OK);
     }
+
+    @PostMapping(value = "/adventureSearchForReservationAction")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<List<Adventure>> adventureSearchForReservationAction()
+    {
+        List<Adventure> adventures = adventureService.freeReservationAdventureAction();
+        return new ResponseEntity<>( adventures, HttpStatus.OK);
+    }
+
 }

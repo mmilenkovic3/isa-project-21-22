@@ -138,4 +138,25 @@ public class AdventureService implements IAdventureService {
 
         return searchAdventure;
     }
+
+
+    public List<Adventure> freeReservationAdventureAction()
+    {
+        List<Adventure> adventures = findAll();
+        List<Adventure> returnAdventure = new ArrayList<Adventure>();
+        for(Adventure adventure : adventures)
+        {
+            for(Reservation reservation : adventure.getReservationsAdventure())
+            {
+                if(reservation.getReservationType().equals(ReservationType.ADVENTURE)
+                        && reservation.getReservationStatus().equals(ReservationStatus.FREE)
+                        && reservation.getReservationFastType().equals(ReservationFatsType.ACTION))
+                {
+                    returnAdventure.add(adventure);
+                }
+            }
+        }
+
+        return  returnAdventure;
+    }
 }

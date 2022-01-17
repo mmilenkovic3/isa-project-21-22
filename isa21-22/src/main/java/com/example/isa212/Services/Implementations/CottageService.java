@@ -146,6 +146,28 @@ public class CottageService implements ICottageService {
         return searchCottage;
     }
 
+    public List<Cottage> freeReservationCottageAction()
+    {
+        List<Cottage> cottages = findAll();
+        List<Cottage> returnCottages = new ArrayList<Cottage>();
+        for(Cottage cottage : cottages)
+        {
+            for(Reservation reservation : cottage.getReservations())
+            {
+                if(reservation.getReservationType().equals(ReservationType.COTTAGE)
+                && reservation.getReservationStatus().equals(ReservationStatus.FREE)
+                && reservation.getReservationFastType().equals(ReservationFatsType.ACTION))
+                {
+                    returnCottages.add(cottage);
+                }
+            }
+        }
+
+        return  returnCottages;
+    }
+
+
+
 
 
 
