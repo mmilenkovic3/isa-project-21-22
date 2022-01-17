@@ -29,6 +29,9 @@ public class Client extends Users{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
+    /*@Column
+    private int penality;*/
+
     public Client() {
     }
 

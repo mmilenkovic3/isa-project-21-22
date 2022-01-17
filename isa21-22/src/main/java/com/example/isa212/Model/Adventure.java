@@ -7,26 +7,31 @@ import java.util.List;
 
 @Table
 @Entity
-public class Instructor {
+public class Adventure {
     @Id
     @Column
-    private int id_instructor;
+    private int id_adventure;
     @Column
     private String name;
     @Column
     private String address;
     @Column
-    private String promoDescriptionBoat;
+    private String promoDescriptionAdventure;
     @Column
     private String bio;
+
+    /*
+        SLIKE?
+    */
+
     @Column
     private String capacity;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="instructor_reservation",
-            joinColumns = @JoinColumn(name ="instructor_id", referencedColumnName = "id_instructor"),
+    @JoinTable(name="adventure_reservation",
+            joinColumns = @JoinColumn(name ="adventure_id", referencedColumnName = "id_adventure"),
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
-    private List<Reservation> reservationsInstructor;
+    private List<Reservation> reservationsAdventure;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FishingKit> fishingKits;
