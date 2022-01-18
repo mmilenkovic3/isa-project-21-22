@@ -7,13 +7,16 @@ import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Repositories.ClientRepository;
+import com.example.isa212.Repositories.CottageRepository;
 import com.example.isa212.Services.IServices.IClientService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,15 +31,17 @@ public class ClientService implements IClientService {
     private ClientRepository clientRepository;
     @Autowired
     private ReservationService reservationService;
-
+    @Autowired
+    private CottageRepository cottageRepository;
 
 
 
     @Override
-    public Client subsribeOnCottage(int cottage_id) {
-        Cottage cottage = cottageService.findOneById(cottage_id);
-        Users user = userService.getLoggedUser();
-        Client client = findById(user.getId());
+    public Client subsribeOnCottage(int cottage_id, int user_id) {
+        Optional<Cottage> cottage = cottageRepository.findById(cottage_id);
+
+        Users user = userService.getUserByID(user_id);
+        Client client = findById(user_id);
 
         Set<Cottage> subscribesCottage = client.getCottageClientSubscribes();
         for(Cottage c : subscribesCottage)
@@ -47,9 +52,11 @@ public class ClientService implements IClientService {
 
         if( user!= null )
         {
-            subscribesCottage.add(cottage);
+            subscribesCottage.add(cottage.get());
             client.setCottageClientSubscribes(subscribesCottage);
         }
+
+        save(client);
         return client;
     }
 
@@ -77,4 +84,30 @@ public class ClientService implements IClientService {
 
     }
 
+
+    public Client unsubsribeOnCottage(int cottage_id, int user_id) {
+        Cottage cottage = cottageService.findOneById(cottage_id);
+        Users user = userService.getUserByID(user_id);
+        Client client = findById(user_id);
+
+        Set<Cottage> subscribesCottage = client.getCottageClientSubscribes();
+        Set<Cottage> newList = new HashSet<Cottage>();
+        newList.addAll( client.getCottageClientSubscribes());
+
+
+        for(Cottage c : subscribesCottage)
+        {
+            if(c.getId_cottage() == cottage_id)
+                newList.remove(c);
+        }
+
+        if( user!= null )
+        {
+            client.setCottageClientSubscribes(newList);
+        }
+
+        save(client);
+        return client;
+
+    }
 }

@@ -7,7 +7,7 @@ import com.example.isa212.Model.Users.Client;
 import javax.mail.MessagingException;
 
 public interface IClientService {
-    Client subsribeOnCottage(int cottage_id);
+    Client subsribeOnCottage(int cottage_id ,int user_id);
     Client findById(int id);
     Client save(Client client);
 

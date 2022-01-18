@@ -1,9 +1,6 @@
 package com.example.isa212.Model.Users;
 
-import com.example.isa212.Model.Boat;
-import com.example.isa212.Model.Cottage;
-import com.example.isa212.Model.Reservation;
-import com.example.isa212.Model.Rules;
+import com.example.isa212.Model.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +22,9 @@ public class Client extends Users{
             joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "boat_id", referencedColumnName = "id_boat"))
     private Set<Boat> boatClientSubscribe = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Adventure> adventureSubscribe;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -64,10 +64,19 @@ public class Client extends Users{
         this.reservations = reservations;
     }
 
-    public Client(Integer id, String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, List<Reservation> reservations) {
-        super(id, name, surname, email, password, address, phoneNumber, city, country);
+    public Client(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, List<Adventure> adventureSubscribe, List<Reservation> reservations) {
+        super(name, surname, email, password, address, phoneNumber, city, country);
         this.cottageClientSubscribes = cottageClientSubscribes;
         this.boatClientSubscribe = boatClientSubscribe;
+        this.adventureSubscribe = adventureSubscribe;
         this.reservations = reservations;
+    }
+
+    public List<Adventure> getAdventureSubscribe() {
+        return adventureSubscribe;
+    }
+
+    public void setAdventureSubscribe(List<Adventure> adventureSubscribe) {
+        this.adventureSubscribe = adventureSubscribe;
     }
 }

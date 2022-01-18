@@ -38,8 +38,97 @@
       </div>
 
       <!-- SHOW ALL OFFER SECTIOn -->
-      <div v-if='this.Cottages' class="container-Cottages">
+      <div v-if='this.CottagesShow' class="container-Cottages">
         <h1> Cottages </h1>
+        <div class="container">
+            <div class="row"> 
+                <div class="col-md"> <!--  Nije pretplacen -->
+                
+                                <h2> Not subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="checkIfIsSubscribe(cottage.id_cottage)"
+                 v-for=" cottage in this.Cottages" v-bind:key="cottage.id_cottage">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-success btn-block " type="submit" v-on:click="subscribe(cottage.id_cottage)"> Subscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+            
+                </div>
+                <div class="col-md"> <!-- pretplacen -->
+                              <h2> Subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="checkIfIsUnSubscribe(cottage.id_cottage)"
+                 v-for=" cottage in this.Cottages" v-bind:key="cottage.id_cottage">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ cottage.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-danger btn-block " type="submit" v-on:click="unsubscribe(cottage.id_cottage)"> Unsubscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+               
+
+
+                </div>    
+            </div>
+</div>
                  
       </div>
 
@@ -68,11 +157,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 export default {
   data() {
     return {
-      info: true,
-      Cottages: false,
+        id: this.$route.params.id,
+      info: false,
+      Cottages: [],
+      CottagesShow: true,
       pass: false,
       disabledButtons: true,
       user: {},
+      
 
       inputName: "",
       inputSurName: "",
@@ -94,7 +186,78 @@ export default {
     }
   },
   
-     methods:{   
+     methods:{  
+
+         checkIfIsSubscribe: function(id_cottage)
+         {
+                
+                for(var sub in this.user.cottageClientSubscribes)
+                {
+                     if(this.user.cottageClientSubscribes[sub].id_cottage == id_cottage)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+         } ,
+          checkIfIsUnSubscribe: function(id_cottage)
+         {
+                
+                for(var sub in this.user.cottageClientSubscribes)
+                {
+                    if(this.user.cottageClientSubscribes[sub].id_cottage == id_cottage)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+
+         } ,
+
+         unsubscribe: function(id_cottage)
+         {
+            console.log(id_cottage);
+
+            this.axios.post('/client/unsubscribeCottage/'+id_cottage+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.user = response.data;
+                        this.getAllCottage(); 
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllCottage();                      
+                        event.preventDefault();
+
+                    });
+         },
+         subscribe: function(id_cottage)
+         {
+             console.log(id_cottage);
+
+
+              this.axios.post('/client/subscribeCottage/'+id_cottage+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                       this.user = response.data;
+                        this.getAllCottage();
+                        
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllCottage();                       
+                        event.preventDefault();
+
+                    });
+         },
          fasteResPage: function()
          {
               this.$router.push('/FastReservation/'+ this.$route.params.id);
@@ -106,14 +269,14 @@ export default {
      infoFunction: function()
         {
             this.info = true;
-            this.Cottages = false;
+            this.CottagesShow = false;
             this.pass = false;
             console.log("INFO");
         },
         cottagesFunction: function()
         {
             this.info = false;
-            this.Cottages = true;
+            this.CottagesShow = true;
             this.pass = false;
             console.log("Cottages");
         },
@@ -125,7 +288,7 @@ export default {
         changePass: function()
         {
             this.info = false;
-            this.Cottages = false;
+            this.CottagesShow = false;
             this.pass = true;
         },
         cancelEdit: function()
@@ -217,8 +380,8 @@ export default {
                         
                     }}).then(response => 
                     {
-                        this.allCotages = response.data;
-                        console.log(this.allCotages);
+                        this.Cottages = response.data;
+                        console.log(this.Cottages);
                         //this.$router.push('/SignIn');  
 
                     }).catch(res => {
@@ -226,36 +389,43 @@ export default {
                         event.preventDefault();
 
                     }); 
-        }
+        },
+        loggedUser: function()
+        {
+            this.axios.post('/user/getUserByID/'+ this.$route.params.id,
+                            {
+                                headers: 
+                                {
+                                
+                                }}).then(response => 
+                                {   console.log("USER");  
+                                    console.log(response.data);            
+                                    
+                                    this.user = response.data;     
+                                    console.log("THIS.USER");  
+                                    console.log(this.user); 
+                                    this.inputName = this.user.name;
+                                    this.inputSurName = this.user.surname;
+                                    this.inputEmail = this.user.email;
+                                    this.inputAddress = this.user.address;
+                                    this.inputCity = this.user.city;
+                                    this.inputCountry = this.user.country;
+                                    this.inputPhoneNum = this.user.phoneNumber;
+
+                                    this.getAllCottage();
+
+                                }).catch(res => {
+                                    console.log(res);
+                                    event.preventDefault();
+                                }); 
+                    }
 
       
    
 },
 mounted() {
-    
-    this.axios.post('/user/getUserByID/'+ this.$route.params.id,
-                {
-                    headers: 
-                    {
-                       
-                    }}).then(response => 
-                    {                        
-                        console.log(response);
-                        this.user = response.data;                      
-                        this.inputName = this.user.name;
-                        this.inputSurName = this.user.surname;
-                        this.inputEmail = this.user.email;
-                        this.inputAddress = this.user.address;
-                        this.inputCity = this.user.city;
-                        this.inputCountry = this.user.country;
-                        this.inputPhoneNum = this.user.phoneNumber;
-
-                        this.getAllCottage();
-
-                    }).catch(res => {
-                        console.log(res);
-                        event.preventDefault();
-                    });  
+        this.loggedUser();
+     
     },
 }
 
@@ -280,9 +450,7 @@ mounted() {
 }
 
 .container-Cottages
-{
-    background-color: red;
-    
+{       
     margin-right: 10px;
 }
 </style>

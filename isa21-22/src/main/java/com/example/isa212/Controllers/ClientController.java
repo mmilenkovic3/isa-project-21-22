@@ -22,15 +22,26 @@ public class ClientController {
     private ClientService clientService;
 
 
-    @PostMapping(value = "/subscribeCottage/{cottage_id}")
+    @PostMapping(value = "/subscribeCottage/{cottage_id}/{user_id}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<Client> subscribeCottage(@PathVariable int cottage_id)
+    public ResponseEntity<Client> subscribeCottage(@PathVariable int cottage_id, @PathVariable int user_id)
     {
-        Client client = clientService.subsribeOnCottage(cottage_id);
+        Client client = clientService.subsribeOnCottage(cottage_id, user_id);
 
         return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
                 new ResponseEntity("You are allready subscribe on this cottage", HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping(value = "/unsubscribeCottage/{cottage_id}/{user_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<Client> unsubscribeCottage(@PathVariable int cottage_id, @PathVariable int user_id)
+    {
+        Client client = clientService.unsubsribeOnCottage(cottage_id, user_id);
+
+        return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
+                new ResponseEntity("Unsubscribe already!", HttpStatus.BAD_REQUEST);
+    }
+
 
     @PostMapping(value = "/reservation/{client_id}/{reservation_id}")
     @PreAuthorize("hasRole('USERS')")
