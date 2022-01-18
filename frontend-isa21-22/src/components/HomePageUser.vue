@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-8 col-md-3">
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Edit account </button>
-      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Cottages </button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Subscribe </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="fasteResPage();"> Fast reservation </button>
@@ -128,7 +128,195 @@
 
                 </div>    
             </div>
-</div>
+        </div>
+        <!-- Adventure -->
+        <h1> Adventure </h1>
+        <div class="container">
+            <div class="row"> 
+                <div class="col-md"> <!--  Nije pretplacen -->
+                
+                                <h2> Not subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="showAdventureSub(adventure.id_adventure)"
+                 v-for=" adventure in this.Adventures" v-bind:key="adventure.id_adventure">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-success btn-block " type="submit" v-on:click="subscribeAdventure(adventure.id_adventure)"> Subscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+            
+                </div>
+                <div class="col-md"> <!-- pretplacen -->
+                              <h2> Subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="adventureUnSubscribe(adventure.id_adventure)"
+                 v-for=" adventure in this.Adventures" v-bind:key="adventure.id_adventure">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ adventure.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-danger btn-block " type="submit" v-on:click="unsubscribeAdventure(adventure.id_adventure)"> Unsubscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+               
+
+
+                </div>    
+            </div>
+        </div>
+
+
+
+        <!-- BOAT FOR SUB-->
+        <h1> Boats: </h1>
+        <div class="container">
+            <div class="row"> 
+                <div class="col-md"> <!--  Nije pretplacen -->
+                
+                                <h2> Not subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="showBoatSub(boat.id_boat)"
+                 v-for=" boat in this.Boats" v-bind:key="boat.id_boat">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-success btn-block " type="submit" v-on:click="subscribeBoat(boat.id_boat)"> Subscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+            
+                </div>
+                <div class="col-md"> <!-- pretplacen -->
+                              <h2> Subscribe:  </h2>
+                <table  style="border: 1px solid black; margin-bottom:10px; padding:10px;" class="table"
+                v-show="boatUnSubscribe(boat.id_boat)"
+                 v-for=" boat in this.Boats" v-bind:key="boat.id_boat">
+                    <tbody >
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Name:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.name }}
+                            </td>
+                        </tr>  
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Address:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.address }}
+                            </td>
+                        </tr> 
+
+                        <tr style="border: 1px solid black; ">
+                            <td style="border: 1px solid black; ">
+                                Grade:
+                            </td>
+                            <td style="border: 1px solid black; ">
+                                {{ boat.grade }}
+                            </td>
+                        </tr>  
+                        <tr >
+                        <td colspan="2"> <button class="btn btn-lg btn-danger btn-block " type="submit" v-on:click="unsubscribeBoat(boat.id_boat)"> Unsubscribe </button>
+                        </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+               
+
+
+                </div>    
+            </div>
+        </div>
+
+
+
                  
       </div>
 
@@ -160,6 +348,8 @@ export default {
         id: this.$route.params.id,
       info: false,
       Cottages: [],
+      Boats: [],
+      Adventures: [],
       CottagesShow: true,
       pass: false,
       disabledButtons: true,
@@ -187,6 +377,29 @@ export default {
   },
   
      methods:{  
+        showBoatSub: function(id_boat)
+        {
+            for(var sub in this.user.boatClientSubscribe)
+                {
+                     if(this.user.boatClientSubscribe[sub].id_boat == id_boat)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+        },
+        showAdventureSub: function(id_adventure)
+        {
+                for(var sub in this.user.adventureClientSubscribe)
+                {
+                     if(this.user.adventureClientSubscribe[sub].id_adventure == id_adventure)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+        },
+
 
          checkIfIsSubscribe: function(id_cottage)
          {
@@ -199,13 +412,43 @@ export default {
                     }
                 }
                 return true;
-         } ,
+         } 
+         
+         ,
           checkIfIsUnSubscribe: function(id_cottage)
          {
                 
                 for(var sub in this.user.cottageClientSubscribes)
                 {
                     if(this.user.cottageClientSubscribes[sub].id_cottage == id_cottage)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+
+         } ,
+
+         boatUnSubscribe: function(id_boat)
+         {
+                
+                for(var sub in this.user.boatClientSubscribe)
+                {
+                    if(this.user.boatClientSubscribe[sub].id_boat == id_boat)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+
+         } ,
+
+          adventureUnSubscribe: function(id_adventure)
+         {
+                
+                for(var sub in this.user.adventureClientSubscribe)
+                {
+                    if(this.user.adventureClientSubscribe[sub].id_adventure == id_adventure)
                     {
                         return true;
                     }
@@ -235,6 +478,56 @@ export default {
 
                     });
          },
+
+         unsubscribeBoat: function(id_boat)
+         {
+            console.log(id_boat);
+
+            this.axios.post('/client/unsubscribeBoat/'+id_boat+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.user = response.data;
+                        this.getAllBoats(); 
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllBoats();                      
+                        event.preventDefault();
+
+                    });
+         },
+
+          unsubscribeAdventure: function(id_adventure)
+         {
+            console.log(id_adventure);
+
+            this.axios.post('/client/unsubscribeAdventure/'+id_adventure+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.user = response.data;
+                        this.getAllAdventures(); 
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllAdventure();                      
+                        event.preventDefault();
+
+                    });
+         },
+
+
+
+
+
+
          subscribe: function(id_cottage)
          {
              console.log(id_cottage);
@@ -258,6 +551,54 @@ export default {
 
                     });
          },
+         subscribeBoat: function(id_boat)
+         {
+             console.log(id_boat);
+
+
+              this.axios.post('/client/subscribeBoat/'+id_boat+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                       this.user = response.data;
+                        this.getAllBoats();
+                        
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllBoats();                       
+                        event.preventDefault();
+
+                    });
+         },
+         subscribeAdventure: function(id_adventure)
+         {
+              this.axios.post('/client/subscribeAdventure/'+id_adventure+'/'+this.id, {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                       this.user = response.data;
+                        this.getAllAdventures();
+                        
+
+                    }).catch(res => {
+                        console.log(res);  
+                        this.getAllAdventure();                       
+                        event.preventDefault();
+
+                    });
+         },
+
+
+
+
+
          fasteResPage: function()
          {
               this.$router.push('/FastReservation/'+ this.$route.params.id);
@@ -390,6 +731,47 @@ export default {
 
                     }); 
         },
+        getAllBoats: function()
+        { 
+            console.log("Token: " + localStorage.getItem('accessToken'));
+            this.axios.get('/boat/findAll',
+                {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.Boats = response.data;
+                        console.log(this.Boats);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+        },
+
+        getAllAdventure: function()
+        { 
+            console.log("Token: " + localStorage.getItem('accessToken'));
+            this.axios.get('/adventure/findAll',
+                {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        
+                    }}).then(response => 
+                    {
+                        this.Adventures = response.data;
+                        console.log(this.Adventures);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+        },
         loggedUser: function()
         {
             this.axios.post('/user/getUserByID/'+ this.$route.params.id,
@@ -425,6 +807,8 @@ export default {
 },
 mounted() {
         this.loggedUser();
+        this.getAllBoats();
+        this.getAllAdventure();
      
     },
 }

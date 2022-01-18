@@ -83,5 +83,13 @@ public class BoatController {
         return new ResponseEntity<>( boats, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/findAll")
+    public ResponseEntity<List<Boat>> findAllBoats()
+    {
+        System.out.println("Return list off all boats!");
+        List<Boat> boatList = boatService.findAll();
+        return new ResponseEntity<>( boatList, HttpStatus.OK);
+    }
+
 
 }

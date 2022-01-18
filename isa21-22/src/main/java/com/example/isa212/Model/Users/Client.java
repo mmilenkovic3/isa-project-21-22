@@ -23,8 +23,13 @@ public class Client extends Users{
             inverseJoinColumns = @JoinColumn(name = "boat_id", referencedColumnName = "id_boat"))
     private Set<Boat> boatClientSubscribe = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Adventure> adventureSubscribe;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "adventure_client_subscribes",
+            joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "adventure_id", referencedColumnName = "id_adventure"))
+    private Set<Adventure> adventureClientSubscribe = new HashSet<>();
+
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -64,19 +69,19 @@ public class Client extends Users{
         this.reservations = reservations;
     }
 
-    public Client(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, List<Adventure> adventureSubscribe, List<Reservation> reservations) {
+    public Client(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, Set<Adventure> adventureClientSubscribe, List<Reservation> reservations) {
         super(name, surname, email, password, address, phoneNumber, city, country);
         this.cottageClientSubscribes = cottageClientSubscribes;
         this.boatClientSubscribe = boatClientSubscribe;
-        this.adventureSubscribe = adventureSubscribe;
+        this.adventureClientSubscribe = adventureClientSubscribe;
         this.reservations = reservations;
     }
 
-    public List<Adventure> getAdventureSubscribe() {
-        return adventureSubscribe;
+    public Set<Adventure> getAdventureClientSubscribe() {
+        return adventureClientSubscribe;
     }
 
-    public void setAdventureSubscribe(List<Adventure> adventureSubscribe) {
-        this.adventureSubscribe = adventureSubscribe;
+    public void setAdventureClientSubscribe(Set<Adventure> adventureClientSubscribe) {
+        this.adventureClientSubscribe = adventureClientSubscribe;
     }
 }

@@ -85,4 +85,12 @@ public class AdventureController {
         return new ResponseEntity<>( adventures, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/findAll")
+    public ResponseEntity<List<Adventure>> findAllBoats()
+    {
+        System.out.println("Return list off all adveture!");
+        List<Adventure> adventures = adventureService.findAll();
+        return new ResponseEntity<>( adventures, HttpStatus.OK);
+    }
+
 }

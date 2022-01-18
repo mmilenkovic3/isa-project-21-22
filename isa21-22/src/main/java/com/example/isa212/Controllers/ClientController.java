@@ -1,5 +1,6 @@
 package com.example.isa212.Controllers;
 
+import com.example.isa212.Model.Boat;
 import com.example.isa212.Model.Cottage;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Services.Implementations.ClientService;
@@ -42,6 +43,47 @@ public class ClientController {
                 new ResponseEntity("Unsubscribe already!", HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/subscribeBoat/{boat_id}/{user_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<Client> subscribeBoat(@PathVariable int boat_id, @PathVariable int user_id)
+    {
+        Client client = clientService.subsribeOnBoat(boat_id, user_id);
+
+        return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
+                new ResponseEntity("You are allready subscribe on this boat", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/unsubscribeBoat/{boat_id}/{user_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<Client> unsubscribeBoat(@PathVariable int boat_id, @PathVariable int user_id)
+    {
+        Client client = clientService.unsubsribeOnBoat(boat_id, user_id);
+
+        return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
+                new ResponseEntity("Unsubscribe already!", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @PostMapping(value = "/subscribeAdventure/{adventure_id}/{user_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<Client> subscribeAdventure(@PathVariable int adventure_id, @PathVariable int user_id)
+    {
+        Client client = clientService.subsribeOnAdventure(adventure_id, user_id);
+
+        return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
+                new ResponseEntity("You are allready subscribe on this adventure", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/unsubscribeAdventure/{adventure_id}/{user_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<Client> unsubscribeAdventure(@PathVariable int adventure_id, @PathVariable int user_id)
+    {
+        Client client = clientService.unsubsribeOnAdventure(adventure_id, user_id);
+
+        return client != null ? new ResponseEntity<Client>( client, HttpStatus.OK) :
+                new ResponseEntity("Unsubscribe already!", HttpStatus.BAD_REQUEST);
+    }
+
 
     @PostMapping(value = "/reservation/{client_id}/{reservation_id}")
     @PreAuthorize("hasRole('USERS')")
@@ -50,5 +92,8 @@ public class ClientController {
         clientService.reserve(client_id, reservation_id);
         return new ResponseEntity("Successeffully reserved cottage.", HttpStatus.OK);
     }
+
+
+
 
 }

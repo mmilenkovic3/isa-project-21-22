@@ -72,6 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().antMatchers("/user/loggedUser")
                 .permitAll().antMatchers("/user/editUser") //I OVO IZMENITI
                 .permitAll().antMatchers("/user/changePassword")
+                .permitAll().antMatchers("/boat/findAll")
+                .permitAll().antMatchers("/adventure/findAll")
 
 
 
