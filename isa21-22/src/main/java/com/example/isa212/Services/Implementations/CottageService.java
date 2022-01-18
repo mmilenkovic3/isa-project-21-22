@@ -167,10 +167,31 @@ public class CottageService implements ICottageService {
     }
 
 
+    public List<Cottage> searchByName(String name) {
+        List<Cottage> cottages = findAll();
+        List<Cottage> searhcByName = new ArrayList<Cottage>();
+        for(Cottage c : cottages)
+        {
+            if(c.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT)))
+            {
+                searhcByName.add(c);
+            }
+        }
 
+        return searhcByName;
+    }
 
+    public List<Cottage> searchByAddress(String address) {
+        List<Cottage> cottages = findAll();
+        List<Cottage> searchByAddress = new ArrayList<Cottage>();
+        for(Cottage c : cottages)
+        {
+            if(c.getAddress().contains(address))
+            {
+                searchByAddress.add(c);
+            }
+        }
 
-
-
-
+        return searchByAddress;
+    }
 }

@@ -109,5 +109,19 @@ public class CottageController {
                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/searchByName/{name}")
+    public ResponseEntity<List<Cottage>> searchByName(@PathVariable String name)
+    {
+        List<Cottage> cottages = cottageService.searchByName(name);
+        return cottages != null ? new ResponseEntity<>( cottages, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping(value = "/searchByAddress/{address}")
+    public ResponseEntity<List<Cottage>> searchByAddress(@PathVariable String address)
+    {
+        List<Cottage> cottages = cottageService.searchByAddress(address);
+        return cottages != null ? new ResponseEntity<>( cottages, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 }

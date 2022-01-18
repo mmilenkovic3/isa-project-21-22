@@ -41,6 +41,15 @@
         <br> 
         <!-- COTTAGE -->
         <div v-show="this.type == 'COTTAGE'">
+        <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="nameSearch" class="form-control"
+          placeholder="Serch by name.." 
+          v-on:change="searchByName(nameSearch)">
+          <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="addressSearch" class="form-control"
+          placeholder="Serch by address.." 
+          v-on:change="searchByAddress()">
+
             <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="cottage in this.Cottages" v-bind:key="cottage.id_cottage">
                 <div  class="form-control" style="font-size:22px;"> <b>  {{cottage.name}} </b></div>
                  <div class="form-control"> Address:  {{cottage.address}}</div>
@@ -99,6 +108,7 @@ export default {
         Cottages: [],
         Adventures: [],
         Boats: [],
+        nameSerach: "",
     }
   },
   mounted() {
@@ -108,7 +118,60 @@ export default {
 
     },
      methods:
-     {     
+     {     searchByName:function(name)
+     {
+         if(this.nameSerach == "")
+         {
+              console.log(this.nameSerach);
+             this.getAllCottage();
+         }else
+         {
+        this.axios.post('/cottage/searchByName/'+name,
+                {
+                    headers: 
+                    {
+                        
+                        
+                    }}).then(response => 
+                    {
+                        this.Cottages = response.data;
+                        console.log(this.Cottages);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+         }
+        
+     },
+     searchByAddress: function()
+     {
+        if(this.addressSearch == "")
+         {
+              console.log(this.addressSearch);
+             this.getAllCottage();
+         }else
+         {
+        this.axios.post('/cottage/searchByAddress/'+this.addressSearch,
+                {
+                    headers: 
+                    {
+                        
+                        
+                    }}).then(response => 
+                    {
+                        this.Cottages = response.data;
+                        console.log(this.Cottages);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+         }
+
+     },
          signIn: function()
          {
               this.$router.push('/LoginPage');
