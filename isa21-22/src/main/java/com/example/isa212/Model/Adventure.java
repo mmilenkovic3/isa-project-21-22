@@ -3,7 +3,9 @@ package com.example.isa212.Model;
 import com.example.isa212.Model.Enums.CancellationType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table
 @Entity
@@ -33,8 +35,13 @@ public class Adventure {
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
     private List<Reservation> reservationsAdventure;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FishingKit> fishingKits;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="adventure_fishing_kit",
+            joinColumns = @JoinColumn(referencedColumnName = "id_adventure"),
+            inverseJoinColumns = @JoinColumn( referencedColumnName = "id_fishingKit"))
+
+    private Set<FishingKit> fishingKits= new HashSet<FishingKit>();
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Rules> rules;
@@ -51,7 +58,7 @@ public class Adventure {
     public Adventure() {
     }
 
-    public Adventure(int id_adventure, String name, String address, String promoDescriptionAdventure, String bio, String capacity, List<Reservation> reservationsAdventure, List<FishingKit> fishingKits, List<Rules> rules, double price, CancellationType cancellationType, double grade) {
+    public Adventure(int id_adventure, String name, String address, String promoDescriptionAdventure, String bio, String capacity, List<Reservation> reservationsAdventure, Set<FishingKit> fishingKits, List<Rules> rules, double price, CancellationType cancellationType, double grade) {
         this.id_adventure = id_adventure;
         this.name = name;
         this.address = address;
@@ -122,11 +129,11 @@ public class Adventure {
         this.reservationsAdventure = reservationsAdventure;
     }
 
-    public List<FishingKit> getFishingKits() {
+    public Set<FishingKit> getFishingKits() {
         return fishingKits;
     }
 
-    public void setFishingKits(List<FishingKit> fishingKits) {
+    public void setFishingKits(Set<FishingKit> fishingKits) {
         this.fishingKits = fishingKits;
     }
 

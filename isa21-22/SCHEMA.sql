@@ -94,4 +94,59 @@ insert into booking_db.adventure_reservation values (2,18);
 insert into booking_db.adventure_reservation values (3,8);
 insert into booking_db.adventure_reservation values (1,9);
 
+#Rules
+INSERT INTO `booking_db`.`rules` (`id_rules`, `description`) VALUES ('1', 'Zabranjeni ljubimci');
+INSERT INTO `booking_db`.`rules` (`id_rules`, `description`) VALUES ('2', 'Zabranjeno pusenje');
+INSERT INTO `booking_db`.`rules` (`id_rules`, `description`) VALUES ('3', 'Sami sredjujete svoj otpad');
+INSERT INTO `booking_db`.`rules` (`id_rules`, `description`) VALUES ('4', 'Nema buke od 13:00 do 15:00');
+
+#cottage_rules
+insert into cottage_rules values (1, 1);
+insert into cottage_rules values (1, 2);
+insert into cottage_rules values (1, 3);
+
+insert into cottage_rules values (2, 1);
+insert into cottage_rules values (2, 4);
+insert into cottage_rules values (1, 4);
+
+#Fishing kit
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('1', 'Pecaljka');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('2', 'Sesir');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('3', 'Stolica');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('4', 'Mamac');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('5', 'Hrana');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('6', 'Suncobran');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('7', 'Kanta');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('8', 'Ribolovacka mreza');
+INSERT INTO `booking_db`.`fishing_kit` (`id_fishing_kit`, `name`) VALUES ('9', 'Crvi za pecanje');
+
+#boat_fishing_kits
+insert into booking_db.boat_fishing_kit values(1,1);
+insert into booking_db.boat_fishing_kit values(1,2);
+insert into booking_db.boat_fishing_kit values(1,3);
+insert into booking_db.boat_fishing_kit values(1,4);
+insert into booking_db.boat_fishing_kit values(1,5);
+
+insert into booking_db.boat_fishing_kit values(2,2);
+insert into booking_db.boat_fishing_kit values(2,4);
+insert into booking_db.boat_fishing_kit values(2,3);
+insert into booking_db.boat_fishing_kit values(2,1);
+
+#boat_rules
+INSERT INTO `booking_db`.`boat_rules` (`boat_id_boat`, `rules_id_rules`) VALUES ('1', '2');
+INSERT INTO `booking_db`.`boat_rules` (`boat_id_boat`, `rules_id_rules`) VALUES ('1', '3');
+
+#adventure_fishing_kits
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('1', '2');
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('2', '2');
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('1', '3');
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('1', '4');
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('2', '5');
+INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('2', '7');
+
+
+
+
+
+
 

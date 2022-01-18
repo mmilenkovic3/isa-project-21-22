@@ -16,6 +16,29 @@ public class Rules {
     @Column
     private String description;
 
+    public Rules() {
+    }
+
+    public Rules(int id_rules, String description) {
+        this.id_rules = id_rules;
+        this.description = description;
+    }
+
+    public int getId_rules() {
+        return id_rules;
+    }
+
+    public void setId_rules(int id_rules) {
+        this.id_rules = id_rules;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="rules_cottage",
             joinColumns = @JoinColumn(name ="rules_id", referencedColumnName = "id_rules"),

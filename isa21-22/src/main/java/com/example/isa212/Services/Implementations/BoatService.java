@@ -32,7 +32,7 @@ public class BoatService implements IBoatService {
 
     @Override
     public Boat findOneById(int id) {
-        return boatRepository.getOne(id);
+        return boatRepository.findById(id).get();
     }
 
     @Override

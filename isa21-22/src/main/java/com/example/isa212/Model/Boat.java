@@ -40,8 +40,13 @@ public class Boat {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Rules> rules;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FishingKit> fishingKits;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="boat_fishing_kit",
+            joinColumns = @JoinColumn(referencedColumnName = "id_boat"),
+            inverseJoinColumns = @JoinColumn( referencedColumnName = "id_fishingKit"))
+
+    private Set<FishingKit> fishingKits= new HashSet<FishingKit>();
 
    /* @Column
     private Set<Image> images;*/
@@ -67,7 +72,15 @@ public class Boat {
     public Boat() {
     }
 
-    public Boat(int id_boat, String name, String type, double length, int engingeNum, int enginePower, NavigationEquipment navigationEquipment, String address, String promoDescriptionBoat, double maxSpeed, List<Rules> rules, List<FishingKit> fishingKits, int capacity, double price, CancellationType cancellationType, List<Reservation> reservationsBoat, double grade) {
+    public Set<FishingKit> getFishingKits() {
+        return fishingKits;
+    }
+
+    public void setFishingKits(Set<FishingKit> fishingKits) {
+        this.fishingKits = fishingKits;
+    }
+
+    public Boat(int id_boat, String name, String type, double length, int engingeNum, int enginePower, NavigationEquipment navigationEquipment, String address, String promoDescriptionBoat, double maxSpeed, List<Rules> rules, Set<FishingKit> fishingKits, int capacity, double price, CancellationType cancellationType, List<Reservation> reservationsBoat, double grade) {
         this.id_boat = id_boat;
         this.name = name;
         this.type = type;
@@ -175,13 +188,7 @@ public class Boat {
         this.rules = rules;
     }
 
-    public List<FishingKit> getFishingKits() {
-        return fishingKits;
-    }
 
-    public void setFishingKits(List<FishingKit> fishingKits) {
-        this.fishingKits = fishingKits;
-    }
 
     public int getCapacity() {
         return capacity;

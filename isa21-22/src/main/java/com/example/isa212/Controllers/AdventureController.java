@@ -92,5 +92,12 @@ public class AdventureController {
         List<Adventure> adventures = adventureService.findAll();
         return new ResponseEntity<>( adventures, HttpStatus.OK);
     }
+    @PostMapping(value = "/findById/{id}")
+    public ResponseEntity<Adventure> findById(@PathVariable int id)
+    {
+        Adventure adventure = adventureService.findOneById(id);
+        return adventure != null ? new ResponseEntity<>( adventure, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 }

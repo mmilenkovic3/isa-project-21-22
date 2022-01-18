@@ -11,6 +11,10 @@ import HomePageUser from '../components/HomePageUser.vue'
 import HomePageAdmin from '../components/HomePageAdmin.vue'
 import Reservations from '../components/Reservations.vue'
 import FastReservation from '../components/FastReservation.vue'
+import System from '../components/System.vue'
+import CottageInfo from '../components/CottageInfo.vue'
+import BoatInfo from '../components/BoatInfo.vue'
+import AdventureInfo from '../components/AdventureInfo.vue'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -25,11 +29,11 @@ Vue.use(BootstrapVue)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 const routes = [
-    /*{
-      path: '/SignIn',
-      name: 'SignIn',
-      component: SignIn
-    },*/
+    {
+      path: '/',
+      name: '',
+      component: System
+    },
     {
       path: '/LoginPage',
       name: 'LoginPage',
@@ -71,6 +75,26 @@ const routes = [
       path: '/FastReservation/:id',
       name: 'FastReservation',
       component: FastReservation
+    }
+    ,
+
+    {
+      path: '/CottageInfo/:id',
+      name: 'CottageInfo',
+      component: CottageInfo
+    },
+
+    {
+      path: '/BoatInfo/:id',
+      name: 'BoatInfo',
+      component: BoatInfo
+    }
+    ,
+
+    {
+      path: '/AdventureInfo/:id',
+      name: 'AdventureInfo',
+      component: AdventureInfo
     }
 ]
     

@@ -32,7 +32,7 @@ public class AdventureService implements IAdventureService {
 
     @Override
     public Adventure findOneById(int id) {
-        return adventureRepository.getOne(id);
+        return adventureRepository.findById(id).get();
     }
 
     @Override

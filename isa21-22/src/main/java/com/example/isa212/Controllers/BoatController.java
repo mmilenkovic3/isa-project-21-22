@@ -91,5 +91,13 @@ public class BoatController {
         return new ResponseEntity<>( boatList, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/findById/{id}")
+    public ResponseEntity<Boat> findById(@PathVariable int id)
+    {
+        Boat boat = boatService.findOneById(id);
+        return boat != null ? new ResponseEntity<>( boat, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
 }

@@ -23,7 +23,6 @@ public class CottageController {
     private CottageService cottageService;
 
     @GetMapping(value = "/findAll")
-    @PreAuthorize("hasRole('USERS')")
     public ResponseEntity<List<Cottage>> findAllCottage()
     {
         System.out.println("Return list off all cotages!");
@@ -100,6 +99,14 @@ public class CottageController {
     {
         List<Cottage> cottages = cottageService.freeReservationCottageAction();
         return new ResponseEntity<>( cottages, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/findById/{id}")
+    public ResponseEntity<Cottage> findById(@PathVariable int id)
+    {
+       Cottage cottage = cottageService.findOneById(id);
+       return cottage != null ? new ResponseEntity<>( cottage, HttpStatus.OK)
+               : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

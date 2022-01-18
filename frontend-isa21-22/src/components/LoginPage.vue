@@ -1,12 +1,17 @@
 <template>
-<div>
+<div style = "width:50%; margin: 0 auto;">
+    <h1> Welcome! Please login to continuee... </h1>
+    <br>
  <input type="email" v-model="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                 <input type="password" v-model="inputPassword" class="form-control" placeholder="Password" required>
-                
+                <br>
               <button class="btn btn-lg btn-primary btn-block btn-signin"
                type="submit" 
                 v-on:click.prevent="signIn()"
                 > Sign in </button>
+                <br> 
+                <p> You don't have account? </p>
+                <v-btn class="btn btn-lg btn-primary btn-block btn-signin" to="/Registration"> Registration </v-btn>
 </div>
 </template>
 

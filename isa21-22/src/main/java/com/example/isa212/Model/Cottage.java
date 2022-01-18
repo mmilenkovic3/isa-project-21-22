@@ -42,7 +42,10 @@ public class Cottage  {
             inverseJoinColumns = @JoinColumn(name="reservation_id", referencedColumnName = "id_reservation"))
     private List<Reservation> reservations;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+            @JoinTable(name="cottage_rules",
+            joinColumns = @JoinColumn(name ="cottage_id", referencedColumnName = "id_cottage"),
+            inverseJoinColumns = @JoinColumn(name="rules_id", referencedColumnName = "id_rules"))
     private List<Rules> rules;
 
     @Column

@@ -32,7 +32,7 @@ public class CottageService implements ICottageService {
 
     @Override
     public Cottage findOneById(int id) {
-        return cottageRepository.getOne(id);
+        return cottageRepository.findById(id).get();
     }
 
     @Override
