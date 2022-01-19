@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class AdventureService implements IAdventureService {
@@ -159,4 +160,35 @@ public class AdventureService implements IAdventureService {
 
         return  returnAdventure;
     }
+
+    public List<Adventure> searchByName(String name) {
+        List<Adventure> adventures = findAll();
+        List<Adventure> searhcByName = new ArrayList<Adventure>();
+        for(Adventure c : adventures)
+        {
+            if(c.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT)))
+            {
+                searhcByName.add(c);
+            }
+        }
+
+        return searhcByName;
+    }
+
+    public List<Adventure> searchByAddress(String address) {
+        List<Adventure> adventures = findAll();
+        List<Adventure> searchByAddress = new ArrayList<Adventure>();
+        for(Adventure c : adventures)
+        {
+            if(c.getAddress().toLowerCase(Locale.ROOT).contains(address.toLowerCase(Locale.ROOT)))
+            {
+                searchByAddress.add(c);
+            }
+        }
+
+        return searchByAddress;
+    }
+
+
+
 }

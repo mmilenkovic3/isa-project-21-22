@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BoatService implements IBoatService {
@@ -156,6 +157,34 @@ public class BoatService implements IBoatService {
         }
 
         return  returnBoat;
+    }
+
+    public List<Boat> searchByName(String name) {
+        List<Boat> boats = findAll();
+        List<Boat> searhcByName = new ArrayList<Boat>();
+        for(Boat c : boats)
+        {
+            if(c.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT)))
+            {
+                searhcByName.add(c);
+            }
+        }
+
+        return searhcByName;
+    }
+
+    public List<Boat> searchByAddress(String address) {
+        List<Boat> boats = findAll();
+        List<Boat> searchByAddress = new ArrayList<Boat>();
+        for(Boat c : boats)
+        {
+            if(c.getAddress().toLowerCase(Locale.ROOT).contains(address.toLowerCase(Locale.ROOT)))
+            {
+                searchByAddress.add(c);
+            }
+        }
+
+        return searchByAddress;
     }
 
 }

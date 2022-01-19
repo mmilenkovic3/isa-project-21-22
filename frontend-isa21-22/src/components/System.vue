@@ -44,7 +44,7 @@
         <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
          type="text" v-model="nameSearch" class="form-control"
           placeholder="Serch by name.." 
-          v-on:change="searchByName(nameSearch)">
+          v-on:change="searchByName()">
           <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
          type="text" v-model="addressSearch" class="form-control"
           placeholder="Serch by address.." 
@@ -65,6 +65,16 @@
         </div>
         <!-- BOAT -->
         <div v-show="this.type == 'BOAT'">
+
+<input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="nameSearch" class="form-control"
+          placeholder="Serch by name.." 
+          v-on:change="searchByName()">
+          <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="addressSearch" class="form-control"
+          placeholder="Serch by address.." 
+          v-on:change="searchByAddress()">
+
             <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="boat in this.Boats" v-bind:key="boat.id_boat">
                 <div  class="form-control" style="font-size:22px;"> <b>  {{boat.name}} </b></div>
                  <div class="form-control"> Address:  {{boat.address}}</div>
@@ -79,6 +89,15 @@
 
         <!-- ADVENTURE -->
         <div v-show="this.type == 'ADVENTURE'">
+
+        <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="nameSearch" class="form-control"
+          placeholder="Serch by name.." 
+          v-on:change="searchByName()">
+          <input  style=" width: 60%; margin:0 auto; margin-bottom:20px;"
+         type="text" v-model="addressSearch" class="form-control"
+          placeholder="Serch by address.." 
+          v-on:change="searchByAddress()">
             <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="a in this.Adventures" v-bind:key="a.id_adventure">
                     <div  class="form-control" style="font-size:22px;"> <b>  {{a.name}} </b></div>
                     <div class="form-control"> Address:  {{a.address}}</div>
@@ -108,7 +127,8 @@ export default {
         Cottages: [],
         Adventures: [],
         Boats: [],
-        nameSerach: "",
+        addressSearch: "",
+        nameSearch: "",
     }
   },
   mounted() {
@@ -118,15 +138,17 @@ export default {
 
     },
      methods:
-     {     searchByName:function(name)
+     {     searchByName:function()
      {
-         if(this.nameSerach == "")
+         if(this.type == 'COTTAGE')
          {
-              console.log(this.nameSerach);
+            if(this.nameSearch == "")
+         {
+              console.log(this.nameSearch);
              this.getAllCottage();
          }else
          {
-        this.axios.post('/cottage/searchByName/'+name,
+        this.axios.post('/cottage/searchByName/'+this.nameSearch,
                 {
                     headers: 
                     {
@@ -143,17 +165,17 @@ export default {
 
                     }); 
          }
-        
-     },
-     searchByAddress: function()
-     {
-        if(this.addressSearch == "")
+
+
+         }
+         else if(this.type == 'BOAT'){
+              if(this.nameSearch == "")
          {
-              console.log(this.addressSearch);
-             this.getAllCottage();
+              console.log(this.nameSearch);
+             this.getAllBoats();
          }else
          {
-        this.axios.post('/cottage/searchByAddress/'+this.addressSearch,
+        this.axios.post('/boat/searchByName/'+this.nameSearch,
                 {
                     headers: 
                     {
@@ -161,14 +183,118 @@ export default {
                         
                     }}).then(response => 
                     {
-                        this.Cottages = response.data;
-                        console.log(this.Cottages);
+                        this.Boats = response.data;
 
                     }).catch(res => {
                         console.log(res);                       
                         event.preventDefault();
 
                     }); 
+         }
+         }
+         else if(this.type == 'ADVENTURE'){
+                 if(this.nameSearch == "")
+         {              
+                this.getAllAdventure();
+         }else
+         {
+        this.axios.post('/adventure/searchByName/'+this.nameSearch,
+                {
+                    headers: 
+                    {                       
+                        
+                    }}).then(response => 
+                    {
+                        this.Adventures = response.data;                        
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+         }
+         }
+         
+        
+     },
+     searchByAddress: function()
+     {
+         if(this.type == 'COTTAGE'){
+            if(this.addressSearch == "")
+            {
+                console.log(this.addressSearch);
+                this.getAllCottage();
+            }else
+            {
+            this.axios.post('/cottage/searchByAddress/'+this.addressSearch,
+                    {
+                        headers: 
+                        {
+                            
+                            
+                        }}).then(response => 
+                        {
+                            this.Cottages = response.data;
+                            console.log(this.Cottages);
+
+                        }).catch(res => {
+                            console.log(res);                       
+                            event.preventDefault();
+
+                        }); 
+            }
+
+            }
+         else if(this.type == 'BOAT'){
+                if(this.addressSearch == "")
+         {
+              console.log(this.addressSearch);
+             this.getAllBoats();
+         }else
+         {
+        this.axios.post('/boat/searchByAddress/'+this.addressSearch,
+                {
+                    headers: 
+                    {
+                        
+                        
+                    }}).then(response => 
+                    {
+                        this.Boats = response.data;
+                        console.log(this.Boats);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+         }
+         }
+         else if(this.type == 'ADVENTURE'){
+                if(this.addressSearch == "")
+         {
+              console.log(this.addressSearch);
+             this.getAllAdventure();
+         }else
+         {
+        this.axios.post('/adventure/searchByAddress/'+this.addressSearch,
+                {
+                    headers: 
+                    {
+                        
+                        
+                    }}).then(response => 
+                    {
+                        this.Adventures = response.data;
+                        console.log(this.Adventures);
+
+                    }).catch(res => {
+                        console.log(res);                       
+                        event.preventDefault();
+
+                    }); 
+         }
+
          }
 
      },

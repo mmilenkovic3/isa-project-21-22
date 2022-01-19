@@ -80,6 +80,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().antMatchers("/adventure/findById/*")
                 .permitAll().antMatchers("/cottage/searchByName/*")
                 .permitAll().antMatchers("/cottage/searchByAddress/*")
+                .permitAll().antMatchers("/boat/searchByName/*")
+                .permitAll().antMatchers("/boat/searchByAddress/*")
+                .permitAll().antMatchers("/adventure/searchByName/*")
+                .permitAll().antMatchers("/adventure/searchByAddress/*")
 
 
 

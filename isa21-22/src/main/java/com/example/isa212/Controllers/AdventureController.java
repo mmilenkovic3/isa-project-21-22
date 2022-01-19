@@ -100,4 +100,19 @@ public class AdventureController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/searchByName/{name}")
+    public ResponseEntity<List<Adventure>> searchByName(@PathVariable String name)
+    {
+        List<Adventure> adventures = adventureService.searchByName(name);
+        return adventures != null ? new ResponseEntity<>( adventures, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping(value = "/searchByAddress/{address}")
+    public ResponseEntity<List<Adventure>> searchByAddress(@PathVariable String address)
+    {
+        List<Adventure> adventures = adventureService.searchByAddress(address);
+        return adventures != null ? new ResponseEntity<>( adventures, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

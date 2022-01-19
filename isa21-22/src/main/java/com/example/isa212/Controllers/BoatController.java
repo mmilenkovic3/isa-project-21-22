@@ -100,4 +100,19 @@ public class BoatController {
     }
 
 
+    @PostMapping(value = "/searchByName/{name}")
+    public ResponseEntity<List<Boat>> searchByName(@PathVariable String name)
+    {
+        List<Boat> boats = boatService.searchByName(name);
+        return boats != null ? new ResponseEntity<>( boats, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping(value = "/searchByAddress/{address}")
+    public ResponseEntity<List<Boat>> searchByAddress(@PathVariable String address)
+    {
+        List<Boat> boats = boatService.searchByAddress(address);
+        return boats != null ? new ResponseEntity<>( boats, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

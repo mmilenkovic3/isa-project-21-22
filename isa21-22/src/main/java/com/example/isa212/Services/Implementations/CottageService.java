@@ -186,7 +186,7 @@ public class CottageService implements ICottageService {
         List<Cottage> searchByAddress = new ArrayList<Cottage>();
         for(Cottage c : cottages)
         {
-            if(c.getAddress().contains(address))
+            if(c.getAddress().toLowerCase(Locale.ROOT).contains(address.toLowerCase(Locale.ROOT)))
             {
                 searchByAddress.add(c);
             }
