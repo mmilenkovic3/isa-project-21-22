@@ -56,6 +56,9 @@ public class Users implements UserDetails {
             inverseJoinColumns = @JoinColumn(name="authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
+    @Column
+    private boolean approvedByAdmin;
+
 
     public Users() {
     }
@@ -71,6 +74,21 @@ public class Users implements UserDetails {
         this.country = country;
     }
 
+    public Users(Integer id, String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Boolean accountEnabled, List<Authority> authorities, boolean approvedByAdmin) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.city = city;
+        this.country = country;
+        this.accountEnabled = accountEnabled;
+        this.authorities = authorities;
+        this.approvedByAdmin = approvedByAdmin;
+    }
+
     public Users(Integer id, String name, String surname, String email, String password, String address, String phoneNumber, String city, String country) {
         this.id = id;
         this.name = name;
@@ -82,6 +100,14 @@ public class Users implements UserDetails {
         this.city = city;
         this.country = country;
         this.accountEnabled = true;
+    }
+
+    public boolean isApprovedByAdmin() {
+        return approvedByAdmin;
+    }
+
+    public void setApprovedByAdmin(boolean approvedByAdmin) {
+        this.approvedByAdmin = approvedByAdmin;
     }
 
     public Users(Integer id)

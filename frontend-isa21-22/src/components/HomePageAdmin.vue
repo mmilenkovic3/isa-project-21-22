@@ -3,7 +3,7 @@
     <div class="container-home">
     <div class="row">
         <div class="col-8 col-md-3">
-          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="addNewAdmin();"> Add new admin </button>
+          <button class="btn btn-lg btn-primary btn-block btn-signin" v-if="this.id == 1" type="submit" v-on:click="addNewAdmin();"> Add new admin </button>
           <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Request for delete </button>
           <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"> Prihodi po rezervaciji </button>
           <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Procenat </button>
@@ -11,7 +11,7 @@
                  
       </div>
       <div class="col">
-          <div v-if='this.info' class="container-info">
+          <div v-if='this.info' class="container-info" style="background-color:white;">
         <h1> User info: </h1>
         <input type="text"  v-model="inputName" class="form-control" placeholder="Name" :disabled='this.disabledButtons' required>
             <input type="text" v-model="inputSurName" class="form-control" placeholder="Surname" :disabled='this.disabledButtons' required>
@@ -34,12 +34,51 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="container" style="padding: 10px;">
+                    <div class="row">
+                        <div class="col-sm">
+                        <hr>
+                        <h3> Request for registration: </h3>
+
+                            <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Person</th>
+      <th scope="col">Registration type</th>
+      <th scope="col">Email</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr v-for="user in this.requestUser" v-bind:key="user.id">
+      <th scope="row">1</th>
+      <td>{{user.name}} {{user.surname}}</td>
+      <td>{{user.authorityRole}}</td>
+      <td>{{user.email}}</td>
+      <td><button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="approve(user.id)"> Approve </button></td>
+       <td><button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="disapprove(user.id, disapproveText+user.id)"> Disapprove </button></td>
+      <td><textarea v-model="disapproveText"  style="background-color:white; width: 100%;"      
+       placeholder="Disapprove reson.."></textarea></td>
+    </tr>
+   
+  </tbody>
+</table>
+
+
+
+
+
+                        </div>                        
+                    </div>
                 </div>
 
 
       </div>
-
       <!--col end-->
+
     </div>
     </div>
 </div>
@@ -59,6 +98,7 @@ export default {
       pass: false,
       disabledButtons: true,
       user: {},
+      disapproveText: "",
 
       inputName: "",
       inputSurName: "",
@@ -74,6 +114,7 @@ export default {
       password: "",
       newPassword: "",
       newPasswordRepeat: "",
+      requestUser: [],
 
       
       
@@ -81,6 +122,52 @@ export default {
   },
   
      methods:{ 
+       disapprove: function(id, disapproveText)
+       {
+         if(this.disapproveText == "")
+          alert("You need to add reason for disapprove!");
+        else
+        {
+          console.log(disapproveText)
+             this.axios.post('/admin/disapprove/'+id+'/'+ this.disapproveText, 
+                {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                    }}).then(response => 
+                    {
+                               
+                        alert("User is disapproved and deleted!");
+                        console.log(response.data);
+                        this.getRequestForReg();
+
+                    }).catch(res => {
+                        console.log(res);
+                        event.preventDefault();
+
+                    }); 
+        }
+         
+       }, approve: function(id)
+       {
+        this.axios.post('/admin/approve/'+id, 
+                {
+                    headers: 
+                    {
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                    }}).then(response => 
+                    {
+                               
+                        alert("User is approved!");
+                        console.log(response.data);
+                        this.getRequestForReg();
+
+                    }).catch(res => {
+                        console.log(res);
+                        event.preventDefault();
+
+                    }); 
+       },
        
         cancelEdit: function()
         {
@@ -150,12 +237,10 @@ export default {
                                 {
                                 
                                 }}).then(response => 
-                                {   console.log("USER");  
+                                {     
                                     console.log(response.data);            
                                     
-                                    this.user = response.data;     
-                                    console.log("THIS.USER");  
-                                    console.log(this.user); 
+                                    this.user = response.data; 
                                     this.inputName = this.user.name;
                                     this.inputSurName = this.user.surname;
                                     this.inputEmail = this.user.email;
@@ -170,7 +255,25 @@ export default {
                                     console.log(res);
                                     event.preventDefault();
                                 }); 
-                    }
+                    },
+            getRequestForReg: function()
+            {
+              this.axios.post('/admin/getRequest/',
+                            {
+                                headers: 
+                                {
+                                
+                                }}).then(response => 
+                                {   console.log("REQUESTS:");
+                                    this.requestUser = response.data;  
+                                    console.log(response.data);
+
+                                }).catch(res => {
+
+                                    console.log(res);
+                                    event.preventDefault();
+                                }); 
+            }
 
       
    
@@ -178,6 +281,7 @@ export default {
 mounted() {
     
     this.loggedUser();
+    this.getRequestForReg();
 }
 }
 </script>

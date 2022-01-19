@@ -4,7 +4,9 @@ import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.Authority;
+import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Model.Users.Users;
+import com.example.isa212.Repositories.ClientRepository;
 import com.example.isa212.Repositories.UserRepository;
 import com.example.isa212.Services.IServices.IUserService;
 import com.example.isa212.Utils.TokenUtils;
@@ -42,6 +44,8 @@ public class UserService implements IUserService {
 
     @Autowired
     private ServiceForEmail serviceForEmail;
+    @Autowired
+    private ClientService clientService;
 
 
     @Override
@@ -53,7 +57,7 @@ public class UserService implements IUserService {
                 return null;
         }
 
-        Users user = new Users(
+        Client user = new Client(
                 userDTO.getName(),
                 userDTO.getSurname(),
                 userDTO.getEmail(),
@@ -65,7 +69,8 @@ public class UserService implements IUserService {
 
         user.setAccountEnabled(false);
         user.setAuthorities(authority);
-        userRepository.save(user);
+        user.setApprovedByAdmin(true);
+        clientService.save(user);
         serviceForEmail.emailForValidationAccount(user);
         return user;
     }
@@ -140,16 +145,17 @@ public class UserService implements IUserService {
 
     @Override
     public Users changePassword(PasswordDTO passwordDTO) {
-        Users user = getLoggedUser();
-        System.out.println(passwordEncoder.encode(passwordDTO.getPassword()));
-        System.out.println("USER");
-        System.out.println(user.getPassword());
-        if(passwordEncoder.encode(passwordDTO.getPassword()) == user.getPassword())
+        Users user = userRepository.findOneById(passwordDTO.getIdUser());
+        String a = passwordEncoder.encode(passwordDTO.getPassword());
+        String b = user.getPassword();
+
+        if(passwordEncoder.matches(passwordDTO.getPassword(), user.getPassword()))
             user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
         else
             return null;
 
         userRepository.save(user);
+        changeAccoundEnabledStatus(passwordDTO.getIdUser());
         return user;
     }
 }

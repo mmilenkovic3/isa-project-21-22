@@ -102,7 +102,7 @@ public class ServiceForEmail {
         BodyPart messageBodyPart = new MimeBodyPart();
         String htmlText = "<H1>Welcome to our system.Pleas sing in to change password!.</H1>" +
                 "<p> Your password now is: " + pass +" </p>" +
-                "<a href=http://localhost:3000/LoginPage> Click here! </a>";
+                "<a href=http://localhost:3000/ChangeAdminPass/"+user.getId()+"> Click here! </a>";
         messageBodyPart.setContent(htmlText, "text/html");
 
         multipart.addBodyPart(messageBodyPart);
@@ -115,6 +115,48 @@ public class ServiceForEmail {
                 message.getRecipients(Message.RecipientType.TO));
         transport.close();
 
+    }
+
+    public void disapproveEmail(Users users, String text) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Registration denid");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(users.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Your account has been denid! <h1>" +
+                "<p>"+ text+ " </p>";
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
     }
 
     /*public void sendingAnEmailToAcceptTheOffer (DrugOrder order, Offer offer) throws MessagingException {
