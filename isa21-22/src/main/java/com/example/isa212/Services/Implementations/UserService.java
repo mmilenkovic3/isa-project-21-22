@@ -46,7 +46,7 @@ public class UserService implements IUserService {
 
     @Override
     public Users save(UserDTO userDTO) throws MessagingException, IOException, WriterException {
-        List<Authority> authority = authorityService.findByName("ROLE_USER");
+        List<Authority> authority = authorityService.findByName("ROLE_USERS");
 
         for(Users u : userRepository.findAll()) {
             if(u.getEmail().equals(userDTO.getEmail()))

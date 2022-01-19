@@ -3,17 +3,19 @@
         <div class="container-home">
   <div class="row">
     <div class="col-8 col-md-3">
+    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoEntity();"> Info about cottage/adventure/boat </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Edit account </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="cottagesFunction(); getAllCottage();"> Subscribe </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="fasteResPage();"> Fast reservation </button>
+       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="logOut()"> Log out </button>
     </div>
     <div class="col">
       <div v-if='this.info' class="container-info">
         <h1> User info: </h1>
         <input type="text"  v-model="inputName" class="form-control" placeholder="Name" :disabled='this.disabledButtons' required>
-                <input type="text" v-model="inputSurName" class="form-control" placeholder="Surname" :disabled='this.disabledButtons' required>
+            <input type="text" v-model="inputSurName" class="form-control" placeholder="Surname" :disabled='this.disabledButtons' required>
                <input type="text" v-model="inputAddress" class="form-control" placeholder="Address" :disabled ='this.disabledButtons' required>
                <input type="text" v-model="inputPhoneNum" class="form-control" placeholder="Phone number" :disabled='this.disabledButtons' required>
                <input type="text" v-model="inputCity" class="form-control" placeholder="City" :disabled='this.disabledButtons' required>
@@ -35,6 +37,21 @@
                     </div>
     <h2> penality </h2>
     <h2> loyaliti program </h2>
+    <!-- delete acc -->
+        <div>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="textForDelete = !textForDelete"> Delete Account </button>
+            <div v-if="this.textForDelete">
+                <br> 
+                <p> Why you want to delete account? </p>
+                <textarea v-model="messageDelete" style="background-color:white; width: 50%;" placeholder="add multiple lines"></textarea>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="deleteAcc()"> OK </button>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="textForDelete = !textForDelete"> Cancel </button>
+            </div>
+
+        </div>
+ <!-- delete end -->
+
       </div>
 
       <!-- SHOW ALL OFFER SECTIOn -->
@@ -121,11 +138,7 @@
                         </td>
                         </tr> 
                     </tbody>
-                </table>
-
-               
-
-
+                </table>   
                 </div>    
             </div>
         </div>
@@ -221,8 +234,6 @@
             </div>
         </div>
 
-
-
         <!-- BOAT FOR SUB-->
         <h1> Boats: </h1>
         <div class="container">
@@ -313,11 +324,7 @@
 
                 </div>    
             </div>
-        </div>
-
-
-
-                 
+        </div>                 
       </div>
 
     <!-- CHANGE PASSWORD -->
@@ -329,8 +336,121 @@
         <input type="text" v-model="newPasswordRepeat" class="form-control" placeholder="Repeat new password" required>
        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="newPasswordSave()"> Save password </button>
       </div>
-    </div>
+
+
+    <!--   COTAGE/ ADVE / BOAT -->
+
+         <div v-if='this.entityInfo' class="container-pass">
+        <h2> Select waht information you want to see:  </h2>
+        <select v-model="type" id="type" class="form-control" 
+                                          
+                                          :select="type" style="font-size:22px; width: 50%; margin:0 auto;"                                         
+                                          
+                                    aria-describedby="addon-wrapping">
+                                    
+                                    <option  value="" > Selet cottage/boat/adventure... </option>
+                                    <option  value="COTTAGE" > Cottage </option>
+                                    <option  value="BOAT"> Boat </option>
+                                    <option  value="ADVENTURE"> Adventure </option>
+        </select>
+       
+      
+      <!-- COTTAGE -->
+        <div v-show="this.type == 'COTTAGE'">
     
+            <div class="container">
+            <div class="row">
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortName()"> Sort by Name </button>
+                </div>
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortAddress()"> Sort by Address </button>
+                </div>
+                <div class="col-sm">
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortGrade()"> Sort by Grade </button>
+                </div>
+            </div>
+            <br>
+        
+
+            <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="cottage in this.Cottages" v-bind:key="cottage.id_cottage">
+                <div  class="form-control" style="font-size:22px;"> <b>  {{cottage.name}} </b></div>
+                 <div class="form-control"> Address:  {{cottage.address}}</div>
+                 <div  class="form-control"> Promo descritpion:  {{cottage.promoDescription}}</div>
+                 <div  class="form-control"> Grade: {{cottage.grade}}</div>
+                 <button class="btn btn-lg btn-primary btn-block btn-signin"
+                    type="submit" 
+                        v-on:click.prevent="showMoreCottage(cottage.id_cottage)"
+                    > Show more... </button>
+            </div>
+        </div>
+
+        </div>
+        <!-- BOAT -->
+        <div v-show="this.type == 'BOAT'">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortName()"> Sort by Name </button>
+                </div>
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortAddress()"> Sort by Address </button>
+                </div>
+                <div class="col-sm">
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortGrade()"> Sort by Grade </button>
+                </div>
+            </div>
+            <br>
+            </div>
+
+
+
+            <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="boat in this.Boats" v-bind:key="boat.id_boat">
+                <div  class="form-control" style="font-size:22px;"> <b>  {{boat.name}} </b></div>
+                 <div class="form-control"> Address:  {{boat.address}}</div>
+                 <div  class="form-control"> Promo descritpion:  {{boat.promoDescriptionBoat}}</div>
+                 <div  class="form-control"> Grade: {{boat.grade}}</div>
+                 <button class="btn btn-lg btn-primary btn-block btn-signin"
+                    type="submit" 
+                        v-on:click.prevent="showMoreBoat(boat.id_boat)"
+                    > Show more... </button>
+            </div>
+        </div >
+
+        <!-- ADVENTURE -->
+        <div v-show="this.type == 'ADVENTURE'">
+<div class="container">
+            <div class="row">
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortName()"> Sort by Name </button>
+                </div>
+                <div class="col-sm">
+               <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortAddress()"> Sort by Address </button>
+                </div>
+                <div class="col-sm">
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="sortGrade()"> Sort by Grade </button>
+                </div>
+            </div>
+            <br>
+            </div>
+        
+            <div style=" width: 60%; margin:0 auto; margin-bottom:20px;" v-for="a in this.Adventures" v-bind:key="a.id_adventure">
+                    <div  class="form-control" style="font-size:22px;"> <b>  {{a.name}} </b></div>
+                    <div class="form-control"> Address:  {{a.address}}</div>
+                    <div  class="form-control"> Promo descritpion:  {{a.promoDescriptionAdventure}}</div>
+                    <div  class="form-control"> Grade: {{a.grade}}</div>
+                    <button class="btn btn-lg btn-primary btn-block btn-signin"
+                        type="submit" 
+                            v-on:click.prevent="showMoreAdventure(a.id_adventure)"
+                        > Show more... </button>
+                </div>
+        
+        </div>
+
+</div>
+    <!-- End COTTAGE /ADVE/BOAT -->
+    </div>    
   </div>
 </div>
 
@@ -347,14 +467,17 @@ export default {
     return {
         id: this.$route.params.id,
       info: false,
+      entityInfo: true,
       Cottages: [],
       Boats: [],
       Adventures: [],
-      CottagesShow: true,
+      CottagesShow: false,
       pass: false,
       disabledButtons: true,
       user: {},
-      
+      type: "",
+      textForDelete: false,
+      messageDelete: "",
 
       inputName: "",
       inputSurName: "",
@@ -372,11 +495,422 @@ export default {
       newPasswordRepeat: "",
 
       allCotages: [],
-      
+      sortByNameAsc: true,
+      sortByAddressAsc: true,
+      sortByGradeAsc: true,
     }
   },
   
      methods:{  
+         logOut: function()
+         {
+            localStorage.removeItem('accessToken');
+            this.$router.push('/');
+
+         },
+         deleteAcc: function()
+         {
+             this.axios.post('/deleteAcc/sendRequest/'+this.id+'/'+this.messageDelete, {
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                                    console.log(response.data);
+                                    alert("Success!");
+                                    this.textForDelete = !this.textForDelete;
+
+                            }).catch(res => {
+                                alert(res.response.data);  
+                                this.textForDelete = !this.textForDelete;                     
+                                event.preventDefault();
+
+                            });
+
+         },
+         sortName: function()
+         {
+             if(this.type == 'COTTAGE')
+             {
+                  if(this.sortByNameAsc){
+                        
+                        this.sortByNameAsc = false;
+                        this.axios.post('/cottage/sortByNameAsc',this.Cottages,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Cottages = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
+                    {
+                        this.sortByNameAsc = true;
+
+                        this.axios.post('/cottage/sortByNameDesc',this.Cottages,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Cottages = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+
+                    }
+             }
+              else if(this.type == 'BOAT')
+             {
+                if(this.sortByNameAsc){
+                        
+                        this.sortByNameAsc = false;
+                        this.axios.post('/boat/sortByNameAsc',this.Boats,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Boats = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
+                    {
+                        this.sortByNameAsc = true;
+
+                        this.axios.post('/boat/sortByNameDesc',this.Boats,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Boats = response.data;                                   
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+
+                    }
+
+             } else if(this.type == 'ADVENTURE')
+             {
+                if(this.sortByNameAsc){
+                        
+                        this.sortByNameAsc = false;
+                        this.axios.post('/adventure/sortByNameAsc',this.Adventures,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Adventures = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+                    }else
+                    {
+                        this.sortByNameAsc = true;
+
+                        this.axios.post('/adventure/sortByNameDesc',this.Adventures,{
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                    
+                                }}).then(response => 
+                                {
+                                this.Adventures = response.data;   
+                                
+
+                                }).catch(res => {
+                                    console.log(res);                       
+                                    event.preventDefault();
+
+                                });
+
+                    }
+
+             }
+
+         },
+         sortAddress: function()
+         {
+                 if(this.type == 'COTTAGE')
+             {
+                 if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/cottage/sortByAddressAsc',this.Cottages,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Cottages = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
+
+                            this.axios.post('/cottage/sortByAddressDesc',this.Cottages,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Cottages = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
+             }
+              else if(this.type == 'BOAT')
+             {
+                if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/boat/sortByAddressAsc',this.Boats,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Boats = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
+
+                            this.axios.post('/boat/sortByAddressDesc',this.Boats,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Boats = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
+
+             } else if(this.type == 'ADVENTURE')
+             {
+                if(this.sortByAddress){
+                            
+                            this.sortByAddress = false;
+                            this.axios.post('/adventure/sortByAddressAsc',this.Adventures,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Adventures = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+                        }else
+                        {
+                            this.sortByAddress = true;
+
+                            this.axios.post('/adventure/sortByAddressDesc',this.Adventures,{
+                                    headers: 
+                                    {
+                                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                        
+                                    }}).then(response => 
+                                    {
+                                    this.Adventures = response.data;   
+                                    
+
+                                    }).catch(res => {
+                                        console.log(res);                       
+                                        event.preventDefault();
+
+                                    });
+
+                        }
+
+             }
+         },
+         sortGrade: function()
+         {
+             if(this.type == 'COTTAGE')
+             {
+                     if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/cottage/sortByGradeAsc',this.Cottages,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Cottages = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
+
+                    this.axios.post('/cottage/sortByGradeDesc',this.Cottages,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Cottages = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+
+         }
+             }
+              else if(this.type == 'BOAT')
+             {
+                    if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/boat/sortByGradeAsc',this.Boats,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Boats = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
+
+                    this.axios.post('/boat/sortByGradeDesc',this.Boats,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Boats = response.data;   
+                            
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+
+                            });
+                    }
+             } else if(this.type == 'ADVENTURE')
+             {
+                 if(this.sortByGrade){
+                    
+                    this.sortByGrade = false;
+                    this.axios.post('/adventure/sortByGradeAsc',this.Adventures,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Adventures = response.data;                              
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+                            });
+                }else
+                {
+                    this.sortByGrade = true;
+                    this.axios.post('/adventure/sortByGradeDesc',this.Adventures,{
+                            headers: 
+                            {
+                                'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                
+                            }}).then(response => 
+                            {
+                            this.Adventures = response.data;                           
+
+                            }).catch(res => {
+                                console.log(res);                       
+                                event.preventDefault();
+                            });
+                  }
+             }
+         },
+         
         showBoatSub: function(id_boat)
         {
             for(var sub in this.user.boatClientSubscribe)
@@ -399,8 +933,6 @@ export default {
                 }
                 return true;
         },
-
-
          checkIfIsSubscribe: function(id_cottage)
          {
                 
@@ -412,8 +944,7 @@ export default {
                     }
                 }
                 return true;
-         } 
-         
+         }          
          ,
           checkIfIsUnSubscribe: function(id_cottage)
          {
@@ -428,7 +959,6 @@ export default {
                 return false;
 
          } ,
-
          boatUnSubscribe: function(id_boat)
          {
                 
@@ -442,7 +972,6 @@ export default {
                 return false;
 
          } ,
-
           adventureUnSubscribe: function(id_adventure)
          {
                 
@@ -456,7 +985,6 @@ export default {
                 return false;
 
          } ,
-
          unsubscribe: function(id_cottage)
          {
             console.log(id_cottage);
@@ -478,7 +1006,6 @@ export default {
 
                     });
          },
-
          unsubscribeBoat: function(id_boat)
          {
             console.log(id_boat);
@@ -500,7 +1027,6 @@ export default {
 
                     });
          },
-
           unsubscribeAdventure: function(id_adventure)
          {
             console.log(id_adventure);
@@ -522,12 +1048,6 @@ export default {
 
                     });
          },
-
-
-
-
-
-
          subscribe: function(id_cottage)
          {
              console.log(id_cottage);
@@ -595,10 +1115,6 @@ export default {
                     });
          },
 
-
-
-
-
          fasteResPage: function()
          {
               this.$router.push('/FastReservation/'+ this.$route.params.id);
@@ -612,8 +1128,17 @@ export default {
             this.info = true;
             this.CottagesShow = false;
             this.pass = false;
+            this.entityInfo = false;
             console.log("INFO");
         },
+        infoEntity: function()
+         {
+                this.info = false;
+            this.CottagesShow = false;
+            this.pass = false;
+            this.entityInfo = true;
+            console.log("infoEntity");
+         },
         cottagesFunction: function()
         {
             this.info = false;
@@ -630,6 +1155,7 @@ export default {
         {
             this.info = false;
             this.CottagesShow = false;
+            this.entityInfo = false;
             this.pass = true;
         },
         cancelEdit: function()

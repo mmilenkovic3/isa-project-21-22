@@ -1,5 +1,6 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Users;
 import com.google.zxing.WriterException;
 
@@ -9,10 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -72,6 +70,50 @@ public class ServiceForEmail {
         transport.close();
 
 
+
+    }
+
+    public void SendLinkWithPassword(Admin user, String pass) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Validation link");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(user.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Welcome to our system.Pleas sing in to change password!.</H1>" +
+                "<p> Your password now is: " + pass +" </p>" +
+                "<a href=http://localhost:3000/LoginPage> Click here! </a>";
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
 
     }
 

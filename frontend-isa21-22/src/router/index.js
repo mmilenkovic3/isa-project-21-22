@@ -15,6 +15,8 @@ import System from '../components/System.vue'
 import CottageInfo from '../components/CottageInfo.vue'
 import BoatInfo from '../components/BoatInfo.vue'
 import AdventureInfo from '../components/AdventureInfo.vue'
+import AddNewAdmins from '../components/AddNewAdmins.vue'
+import ChangeAdminPass from '../components/ChangeAdminPass.vue'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -49,6 +51,11 @@ const routes = [
       path: '/Verify/:id',
       name: 'Verify',
       component: Verify
+    },
+    {
+      path: '/AddNewAdmins',
+      name: 'AddNewAdmins',
+      component: AddNewAdmins
     }
     ,
     {
@@ -88,6 +95,13 @@ const routes = [
       path: '/BoatInfo/:id',
       name: 'BoatInfo',
       component: BoatInfo
+    }
+    ,
+
+    {
+      path: '/ChangeAdminPass/:id',
+      name: 'ChangeAdminPass',
+      component: ChangeAdminPass
     }
     ,
 

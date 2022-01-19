@@ -16,16 +16,14 @@
                <input type="text" v-model="inputCity" class="form-control" placeholder="City" required>
                <input type="text" v-model="inputCountry" class="form-control" placeholder="Country" required>
                 <input type="email" v-model="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <input type="password" v-model="inputPassword" class="form-control" placeholder="Password" required>
-                <input type="password" v-model="inputRepeatPassword" class="form-control" placeholder="Repeat Password" required>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click.prevent="registrateNewUser();"> Create account </button>
+                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click.prevent="registrateNewUser();"> Create account </button>
             
 
 
    
                   
             </form><!-- /form -->
-
+<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="$router.go(-1)"> Go Back</button>
               
             
         </div><!-- /card-container -->
@@ -77,24 +75,16 @@ export default {
 
             if(this.inputName != "" && this.inputSurName != "" && this.inputAddress != ""
             && this.inputCity != "" && this.inputCountry != "" && this.inputEmail != "" 
-            && this.inputPassword != "" && this.inputRepeatPassword != "" && this.inputPhoneNum != "")
+            && this.inputPhoneNum != "")
             {
-                    if(this.inputPassword != this.inputRepeatPassword) 
-                    {
-                        alert("Password are not the same!");
-                        this.inputRepeatPassword = "";
-                        this.inputPassword = "";
-                        event.preventDefault();
-                    }
-                    else
-                {
+                    
+                
                     console.log("SVE POPUNJENO? " ); 
                 const user = 
                             {
                                 name : this.inputName,
                                 surname : this.inputSurName,
-                                email : this.inputEmail,   
-                                password: this.inputPassword,             
+                                email : this.inputEmail,                                               
                                 address : this.inputAddress,
                                 phoneNumber : this.inputPhoneNum,
                                 city : this.inputCity,
@@ -103,16 +93,15 @@ export default {
 
                     console.log(user); 
                 
-                this.axios.post('user/saveUser', user,
-                {
+                this.axios.post('admin/saveAdmin', user,{
                     headers: 
                     {
-                        //'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                        'Authorization': `Bearer ` + localStorage.getItem('accessToken')
                     }}).then(response => 
                     {
-                        alert("Success! Email verification is send to " + this.inputEmail);
+                        alert("Success! Please check your email:" + this.inputEmail);
                         console.log(response);
-                        this.$router.push('/LoginPage');  
+                        this.$router.go(-1);  
 
                     }).catch(res => {
                         console.log(res);
@@ -120,7 +109,7 @@ export default {
                         event.preventDefault();
 
                     });     
-                }
+                
 
             }
             else

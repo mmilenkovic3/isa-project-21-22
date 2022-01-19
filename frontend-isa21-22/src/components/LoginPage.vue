@@ -69,7 +69,12 @@ export default{
                                     {
                                         console.log("Prijava admina");
                                         console.log(response.data);
-                                        this.$router.push('HomePageAdmin/' + response.data.id);
+                                        if(response.data.accountEnabled == true)
+                                            {this.$router.push('HomePageAdmin/' + response.data.id);}
+                                        else
+                                        {
+                                            this.$router.push('ChangeAdminPass/' + response.data.id);
+                                        }
                                         
                                     }
                                     else if(response.data.authorityRole === "ROLE_USERS")
@@ -90,7 +95,7 @@ export default{
                                 });       
                                  }).catch(res => { 
                         if(res.response.status === 401)
-                           alert("Wrong password or email.");
+                           alert("Wrong password or email, or you didnt activate your account! Check your email!");
                         
                         console.log(res.response);
                         this.errorMessage = res.response.data.message;
