@@ -9,6 +9,7 @@ import com.example.isa212.Model.Enums.ReservationStatus;
 import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Model.Reservation;
 import com.example.isa212.Repositories.CottageRepository;
+import com.example.isa212.Repositories.ReservationRepository;
 import com.example.isa212.Services.IServices.ICottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -24,6 +25,8 @@ public class CottageService implements ICottageService {
 
     @Autowired
     private CottageRepository cottageRepository;
+    @Autowired
+    private ReservationService reservationService;
 
     @Override
     public List<Cottage> findAll() {
@@ -80,74 +83,156 @@ public class CottageService implements ICottageService {
         return null;
     }
 
-    public List<Cottage> getFreeReservationDate(ReservationParamsDTO reservationParamsDTO)
-    {
-        Time timeReservation = java.sql.Time.valueOf(reservationParamsDTO.getTime());
+    public List<Cottage> getFreeReservationDate(ReservationParamsDTO reservationParamsDTO) {
+        List<Reservation> reservations = getReservationList(reservationParamsDTO, ReservationType.COTTAGE);
+
+
+        List<Cottage> returnVal = new ArrayList<Cottage>();
+        List<Cottage> cottages = findAll();
+        for (Cottage c : cottages) {
+            for (Reservation r : c.getReservations()) {
+                Reservation res = reservations.stream().filter(rr -> rr.getId_reservation() == r.getId_reservation()).findAny().orElse(null);
+                if (res != null) {
+                    returnVal.add(c);
+                }
+
+            }
+        }
+
+        List<Cottage> byAddress = new ArrayList<Cottage>();
+
+        if (reservationParamsDTO.getAddress() != "") {
+            for (Cottage cottage : returnVal) {
+                if (cottage.getAddress().contains(reservationParamsDTO.getAddress()))
+                    byAddress.add(cottage);
+            }
+            if (byAddress.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byAddress);
+            }else
+            {
+                returnVal.clear();
+            }
+        }
+
+
+
+        List<Cottage> byGrade = new ArrayList<Cottage>();
+
+        if (reservationParamsDTO.getGrade() != 0) {
+            for (Cottage cottage : returnVal) {
+                if (cottage.getGrade() == reservationParamsDTO.getGrade())
+                    byGrade.add(cottage);
+            }
+
+            if (byGrade.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byGrade);
+            }
+            else
+            {
+                returnVal.clear();
+            }
+
+
+        }
+
+
+        return returnVal;
+    }
+
+    public List<Reservation> getReservationList(ReservationParamsDTO reservationParamsDTO, ReservationType reservationType) {
+        Time timeReservation = Time.valueOf(reservationParamsDTO.getTime());
 
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateResrvation = formatter.format(reservationParamsDTO.getDate());
 
 
-
-        List<Cottage> cottageFromFront = findAll();
-        List<Cottage> searchCottage = new ArrayList<Cottage>();
-        for (Cottage c: cottageFromFront) {
-            for (Reservation res: c.getReservations()) {
+        List<Reservation> reservations = reservationService.reservationStandardFree(reservationType);
+        List<Reservation> reservationsSearch = new ArrayList<Reservation>();
+        if (!reservationParamsDTO.getDate().equals("")) {
+            //Search by date
+            for (Reservation res : reservations) {
 
                 String dateFromListRes = formatter.format(res.getStartDate());
-
-                if(dateFromListRes.equals(dateFromListRes)
-                        && res.getStartTime().equals(timeReservation)
-                        && res.getNumDays() == reservationParamsDTO.getNumDays()
-                        && res.getReservationType().equals( ReservationType.COTTAGE)
-                        && res.getReservationStatus().equals(ReservationStatus.FREE)
-                        && res.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL)
-                        && res.getReservationFastType().equals(ReservationFatsType.STANDARD))
-                {
-                    searchCottage.add(c);
+                if (dateResrvation.equals(dateFromListRes)) {
+                    reservationsSearch.add(res);
                 }
             }
+
+            checkForList(reservations, reservationsSearch);
+
         }
 
-        List<Cottage> byAddress = new ArrayList<Cottage>();
 
-        if(reservationParamsDTO.getAddress() != "")
-        {
-            for(Cottage cottage : searchCottage)
-            {
-                if(cottage.getAddress().contains(reservationParamsDTO.getAddress()))
-                    byAddress.add(cottage);
+        if (!reservationParamsDTO.getTime().equals("")) {
+            //search by time
+            for (Reservation res : reservations) {
+                if (res.getStartTime().equals(timeReservation)) {
+                    reservationsSearch.add(res);
+                }
             }
-        }
-        if(byAddress.size() != 0)
-        {
-            searchCottage.clear();
-            searchCottage.addAll(byAddress);
+            checkForList(reservations, reservationsSearch);
+
+
         }
 
 
-        List<Cottage> byGrade = new ArrayList<Cottage>();
-
-        if(reservationParamsDTO.getGrade() != 0)
-        {
-            for(Cottage cottage : searchCottage)
-            {
-                if(cottage.getGrade() == reservationParamsDTO.getGrade())
-                    byGrade.add(cottage);
+        if (reservationParamsDTO.getNumDays() != 0) {
+            //search by time
+            for (Reservation res : reservations) {
+                if (res.getNumDays() == reservationParamsDTO.getNumDays()) {
+                    reservationsSearch.add(res);
+                }
             }
-        }
-        if(byGrade.size() != 0)
-        {
-            searchCottage.clear();
-            searchCottage.addAll(byGrade);
+            checkForList(reservations, reservationsSearch);
+
         }
 
-        return searchCottage;
+
+        if (reservationParamsDTO.getNumPersons() != 0) {
+            //search by time
+            for (Reservation res : reservations) {
+                if (res.getMaxPersons() == reservationParamsDTO.getNumPersons()) {
+                    reservationsSearch.add(res);
+                }
+            }
+            checkForList(reservations, reservationsSearch);
+
+        }
+        return reservations;
+    }
+
+    private void checkForList(List<Reservation> reservations, List<Reservation> reservationsSearch) {
+        if(reservationsSearch.size() == 0)
+        {
+            reservations.clear();
+        }
+        else
+        {
+            reservations.clear();
+            reservations.addAll(reservationsSearch);
+            reservationsSearch.clear();
+
+        }
+    }
+
+
+    private void emptyTheListSearch(List<Reservation> a, List<Reservation> b) {
+        if(b.size() != 0)
+        {
+            a.clear();
+            a.addAll(b);
+            b.clear();
+        }
     }
 
     public List<Cottage> freeReservationCottageAction()
     {
+
+
+
         List<Cottage> cottages = findAll();
         List<Cottage> returnCottages = new ArrayList<Cottage>();
         for(Cottage cottage : cottages)
@@ -156,8 +241,10 @@ public class CottageService implements ICottageService {
             {
                 if(reservation.getReservationType().equals(ReservationType.COTTAGE)
                 && reservation.getReservationStatus().equals(ReservationStatus.FREE)
-                && reservation.getReservationFastType().equals(ReservationFatsType.ACTION))
+                && reservation.getReservationFastType().equals(ReservationFatsType.ACTION)
+                && reservation.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL))
                 {
+
                     returnCottages.add(cottage);
                 }
             }

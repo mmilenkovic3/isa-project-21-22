@@ -14,19 +14,16 @@ public class ReservationParamsDTO {
     private Date date;
     private LocalTime time;
     private int numDays;
+    private int numPersons;
 
     private String address;
     private double grade;
 
     public ReservationParamsDTO() {
     }
-    public ReservationParamsDTO(int numDays) {
-        this.numDays = numDays;
-    }
 
-    public ReservationParamsDTO(Date date) {
-        this.date = date;
-    }
+
+
     public ReservationParamsDTO(Date date, LocalTime time, int numDays) {
 
         this.date = date;
@@ -35,16 +32,14 @@ public class ReservationParamsDTO {
     }
 
 
-    public ReservationParamsDTO(Date date, LocalTime time, int numDays, String address, double grade) {
-
+    public ReservationParamsDTO(Date date , LocalTime time, int numDays , int numPersons, String address, double grade) {
         this.date = date;
         this.time = time;
         this.numDays = numDays;
+        this.numPersons = numPersons;
         this.address = address;
         this.grade = grade;
     }
-
-
 
     public Date getDate() {
         return date;
@@ -85,5 +80,13 @@ public class ReservationParamsDTO {
 
     public void setGrade(double grade) {
         this.grade = grade;
+    }
+
+    public int getNumPersons() {
+        return numPersons;
+    }
+
+    public void setNumPersons(int numPersons) {
+        this.numPersons = numPersons;
     }
 }

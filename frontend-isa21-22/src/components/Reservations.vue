@@ -14,7 +14,9 @@
     <input type="date"  v-model="date" class="form-control" placeholder="Date of reservation" required>
     <input type="time" v-model="time" class="form-control" placeholder="Time" >
     <input type="text" v-model="numDays" class="form-control" placeholder="Number of days">
+    
     <h4>Addition for serach: </h4>
+    <input type="text" v-model="numPersons" class="form-control" placeholder="Number of persons">
     <input type="text" v-model="address" class="form-control" placeholder="Address" >
     <input type="text" v-model="grade" class="form-control" placeholder="Grade" >
     <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="getFreeReservation()"> Search reservation </button>
@@ -35,20 +37,31 @@
     <hr/>
     <!-- COTTAGE SHOW FOR RESERVATION --> 
     <div v-show="this.reservationType === 'COTTAGE'">
-        <div v-for="a in this.Cottages" v-bind:key="a.id_cottage" style="background-color:orange;">
-        <table>
+        <div v-for="a in this.Cottages" v-bind:key="a.id_cottage"        
+        style="width:50%; border: 1px solid black; margin: 0 auto; background-color:white; font-size: 22px">
+        <table class="table" style="margin:-5px;" >
         <tr>
             <td> <p> Cottage name: </p> </td>
-            <td> <p> {{a.name}} </p></td>
-        </tr>
-        <tr>
-            <td> <p> Cottage info: </p> </td>
-            <td> <p> {{ a.info }} </p> </td>
+            <td> <p> {{ a.name }} </p> </td>
         </tr>
         <tr>
             <td> <p> Cottage grade: </p> </td>
             <td> <p> {{ a.grade }} </p> </td>
         </tr>
+        <tr>
+            <td> <p> Date start: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), 0) }}</p></td>
+        </tr>
+        <tr>
+            <td> <p> Date end: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), numDays*24) }}  </p></td>
+        </tr>
+        <tr>
+            <td> <p> Cottage info: </p> </td>
+            <td> <p> {{a.info}} </p></td>
+        </tr>
+        
+        
         <tr>
             <td> <p> Cottage reservation price: </p> </td>
             <td> <p> {{ showPriceCottage(a)}} e </p> </td>
@@ -60,23 +73,31 @@
         <tr>
             <td> <p> Number of bed: </p> </td>
             <td> <p> {{  a.numBed }} </p> </td>
-        </tr>
+        </tr>        
         <tr>
             <td> <p>Promo description: </p> </td>
             <td> <p> {{  a.promoDescription }} </p> </td>
         </tr>   
         </table>     
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(a)"> Reserve </button>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" style="font-size: 22px; height: 50px;"  v-on:click="reserve(a)"> Reserve </button>
         </div>
     </div>
     
     <!-- BOAT SHOW FOR RESERVATION --> 
     <div v-show="this.reservationType === 'BOAT'">
-        <div v-for="a in this.Boats" v-bind:key="a.id_boat" style="background-color:orange;">
-        <table>
+        <div v-for="a in this.Boats" v-bind:key="a.id_boat" style="width:50%; border: 1px solid black; margin: 0 auto; background-color:white; font-size: 22px">
+        <table class="table">
         <tr>
             <td> <p> Boat name: </p> </td>
             <td> <p> {{a.name}} </p></td>
+        </tr>
+        <tr>
+            <td> <p> Date start: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), 0) }}</p></td>
+        </tr>
+        <tr>
+            <td> <p> Date end: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), numDays*24) }}  </p></td>
         </tr>
         <tr>
             <td> <p> Boat max speed: </p> </td>
@@ -109,8 +130,8 @@
 
     <!-- BOAT SHOW FOR RESERVATION --> 
     <div v-show="this.reservationType === 'ADVENTURE'">
-        <div v-for="adv in this.Adventures" v-bind:key="adv.id_adventure" style="background-color:orange;">
-        <table>
+        <div v-for="adv in this.Adventures" v-bind:key="adv.id_adventure" style="width:50%; border: 1px solid black; margin: 0 auto; background-color:white; font-size: 22px">
+        <table class="table">
         <tr>
             <td> <p> Adventure name: </p> </td>
             <td> <p> {{adv.name}} </p></td>
@@ -120,8 +141,17 @@
             <td> <p> Adventure grade: </p> </td>
             <td> <p> {{ adv.grade }} </p> </td>
         </tr>
+            <tr>
+            <td> <p> Date start: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), 0) }}</p></td>
+        </tr>
         <tr>
-            <td> <p> Boat reservation price: </p> </td>
+            <td> <p> Date end: </p> </td>
+            <td> <p> {{ dateFormat(new Date(date), numDays*24) }}  </p></td>
+        </tr>
+
+        <tr>
+            <td> <p> Adventure reservation price: </p> </td>
             <td> <p> {{ showPriceAdventure(adv) }}  </p> </td>
         </tr>
         <tr>
@@ -160,7 +190,7 @@ export default {
       Cottages: [],
       Boats: [],
       Adventures: [],
-
+      numPersons: "",
 
       reservationType: "",
       date: "",
@@ -176,6 +206,7 @@ export default {
       sortByNameAsc: true,
       sortByAddress: true,
       sortByGrade: true,
+
       
       
     }
@@ -184,8 +215,23 @@ export default {
   {
     
   },
-  
-     methods:{ 
+
+
+
+     methods:{
+
+            dateFormat: function(date, numDays)
+            {
+                return this.subtractTimeFromDate(date,numDays).getDate()+"."+(this.subtractTimeFromDate(date,numDays).getMonth()+1)+"."+ this.subtractTimeFromDate(date,numDays).getFullYear();
+
+            } ,
+           subtractTimeFromDate: function(objDate, intHours) {
+    var numberOfMlSeconds = objDate.getTime();
+    var addMlSeconds = (intHours * 60) * 60 * 1000;
+    var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+
+    return newDateObj;
+},
          emptyList: function()
          {
                 this.Cottages = [];
@@ -201,7 +247,11 @@ export default {
                 console.log(dateFront.getDate());
                 console.log(dateRes.getDate());
                 
-                if(dateFront.getDate() === dateRes.getDate() && cottage.reservations[r].reservationStatus == "FREE" && cottage.reservations[r].reservationType == "COTTAGE")
+                if(dateFront.getDate() === dateRes.getDate() 
+                && cottage.reservations[r].reservationStatus == "FREE"
+                && dateFront.getMonth() === dateRes.getMonth() 
+                && dateFront.getFullYear() === dateRes.getFullYear()
+                && cottage.reservations[r].reservationType == "COTTAGE")
                 { 
                     return cottage.reservations[r].price;                  
                 }
@@ -215,7 +265,11 @@ export default {
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(adventure.reservationsAdventure[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate() && adventure.reservationsAdventure[r].reservationStatus == "FREE" && adventure.reservationsAdventure[r].reservationType == "ADVENTURE")
+                if(dateFront.getDate() === dateRes.getDate()
+                && dateFront.getMonth() === dateRes.getMonth()
+                && dateFront.getFullYear() === dateRes.getFullYear()
+                 && adventure.reservationsAdventure[r].reservationStatus == "FREE" 
+                 && adventure.reservationsAdventure[r].reservationType == "ADVENTURE")
                 { 
                     return adventure.reservationsAdventure[r].price;                  
                 }
@@ -229,7 +283,11 @@ export default {
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(boat.reservationsBoat[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate() && boat.reservationsBoat[r].reservationStatus == "FREE" && boat.reservationsBoat[r].reservationType == "BOAT")
+                if(dateFront.getDate() === dateRes.getDate() 
+                && dateFront.getMonth() === dateRes.getMonth()
+                && dateFront.getFullYear() === dateRes.getFullYear()
+                && boat.reservationsBoat[r].reservationStatus == "FREE" 
+                && boat.reservationsBoat[r].reservationType == "BOAT")
                 { 
                     return boat.reservationsBoat[r].price;                  
                 }
@@ -238,11 +296,18 @@ export default {
         }, 
         getFreeReservation: function()
         {
+
+            if(this.reservationType=="" || this.date == "" || this.time == "" || this.numDays == "")
+            {
+                alert("Please fill date, time and number of day you want to stay!");
+            }else
+            {
             const infoRes = 
             {
                 date: this.date,
                 time: this.time,
                 numDays: this.numDays,
+                numPersons: this.numPersons,
                 address: this.address,
                 grade: this.grade,
 
@@ -308,6 +373,8 @@ export default {
 
                     });     
             }
+            }
+            
             
         },
         getAllCottage: function()
@@ -740,7 +807,10 @@ export default {
                 var dateFront = new Date(this.date);
                 var dateRes = new Date(entity.reservations[r].startDate)
                 
-                if(dateFront.getDate() === dateRes.getDate() && entity.reservations[r].reservationStatus == "FREE" && entity.reservations[r].reservationType == "COTTAGE")
+                if(dateFront.getDate() === dateRes.getDate() 
+                 && dateFront.getMonth() === dateRes.getMonth()
+                     && dateFront.getFullYear() === dateRes.getFullYear()  
+                && entity.reservations[r].reservationStatus == "FREE" && entity.reservations[r].reservationType == "COTTAGE")
                 { 
                     reservation_id = entity.reservations[r].id_reservation;                  
                 }
@@ -753,7 +823,10 @@ export default {
                 var dateFrontBoat = new Date(this.date);
                 var dateResBoat = new Date(entity.reservationsBoat[bo].startDate)
                 
-                if(dateFrontBoat.getDate() === dateResBoat.getDate() && entity.reservationsBoat[bo].reservationStatus == "FREE" && entity.reservationsBoat[bo].reservationType == "BOAT")
+                if(dateFrontBoat.getDate() === dateResBoat.getDate()
+                && dateFrontBoat.getMonth() === dateResBoat.getMonth()
+                     && dateFrontBoat.getFullYear() === dateResBoat.getFullYear()
+                 && entity.reservationsBoat[bo].reservationStatus == "FREE" && entity.reservationsBoat[bo].reservationType == "BOAT")
                 { 
                     reservation_id = entity.reservationsBoat[bo].id_reservation;                  
                 }
@@ -769,7 +842,12 @@ export default {
                 var dateFrontAdv= new Date(this.date);
                 var dateResAdv = new Date(entity.reservationsAdventure[adv].startDate)
                 
-                if(dateFrontAdv.getDate() === dateResAdv.getDate() && entity.reservationsAdventure[adv].reservationStatus == "FREE" && entity.reservationsAdventure[adv].reservationType == "ADVENTURE")
+                if(dateFrontAdv.getDate() === dateResAdv.getDate() 
+                    && dateFrontAdv.getMonth() === dateResAdv.getMonth()
+                     && dateFrontAdv.getFullYear() === dateResAdv.getFullYear()  
+                
+                && entity.reservationsAdventure[adv].reservationStatus == "FREE"
+                 && entity.reservationsAdventure[adv].reservationType == "ADVENTURE")
                 { 
                     reservation_id = entity.reservationsAdventure[adv].id_reservation;                  
                 }
@@ -788,7 +866,7 @@ export default {
                        
                         alert("Success!"); 
                          console.log(response.data); 
-                        this.$router.go();              
+                        this.$router.go(-1);              
                         event.preventDefault(); 
 
                     }).catch(res => {

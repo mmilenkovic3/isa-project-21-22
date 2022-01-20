@@ -1,5 +1,9 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.Adventure;
+import com.example.isa212.Model.Boat;
+import com.example.isa212.Model.Cottage;
+import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Users;
 import com.google.zxing.WriterException;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 @Component
@@ -157,6 +162,159 @@ public class ServiceForEmail {
         transport.sendMessage(message,
                 message.getRecipients(Message.RecipientType.TO));
         transport.close();
+    }
+
+
+    public void SendInformationAboutReservationCottage(Users user, Reservation r, Cottage cottage) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Reserved successeffully!");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(user.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Successeffully reservec Cottage! <h1>"
+                +"<p> Cottage name:"+ cottage.getName() + " </p>"
+                +"<p> Cottage address:"+ cottage.getAddress() + " </p>"
+                +"<p> Reservation date:"+ r.getStartDate() + " </p>"
+                +"<p> Num day:"+ r.getNumDays() + " </p>";
+
+
+
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+
+
+
+
+
+    }
+
+    public void SendInformationAboutReservationBoat(Users user, Reservation r, Boat boats) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Reserved successeffully!");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(user.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Successeffully reservec Boat! <h1>"
+                +"<p> Cottage name:"+ boats.getName() + " </p>"
+                +"<p> Cottage address:"+ boats.getAddress() + " </p>"
+                +"<p> Reservation date:"+ r.getStartDate() + " </p>"
+                +"<p> Num day:"+ r.getNumDays() + " </p>";
+
+
+
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+
+
+
+    }
+
+    public void SendInformationAboutReservationAdventure(Users user, Reservation r, Adventure adventure) throws MessagingException {
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Reserved successeffully!");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(user.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Successeffully reservec Boat! <h1>"
+                +"<p> Cottage name:"+ adventure.getName() + " </p>"
+                +"<p> Cottage address:"+ adventure.getAddress() + " </p>"
+                +"<p> Reservation date:"+ r.getStartDate() + " </p>"
+                +"<p> Num day:"+ r.getNumDays() + " </p>";
+
+
+
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+
     }
 
     /*public void sendingAnEmailToAcceptTheOffer (DrugOrder order, Offer offer) throws MessagingException {

@@ -26,6 +26,9 @@ public class AdventureService implements IAdventureService {
     @Autowired
     private AdventureRepository adventureRepository;
 
+    @Autowired
+    private  CottageService cottageService;
+
     @Override
     public List<Adventure> findAll() {
         return adventureRepository.findAll();
@@ -79,65 +82,58 @@ public class AdventureService implements IAdventureService {
 
     public List<Adventure> getFreeReservationDate(ReservationParamsDTO reservationParamsDTO)
     {
-        Time timeReservation = java.sql.Time.valueOf(reservationParamsDTO.getTime());
+        List<Reservation> reservations = cottageService.getReservationList(reservationParamsDTO, ReservationType.ADVENTURE);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateResrvation = formatter.format(reservationParamsDTO.getDate());
 
-        List<Adventure> adventureList = findAll();
-        List<Adventure> searchAdventure = new ArrayList<Adventure>();
-        for (Adventure a: adventureList) {
-            for (Reservation res: a.getReservationsAdventure()) {
-
-                String dateFromListRes = formatter.format(res.getStartDate());
-
-                if(dateFromListRes.equals(dateFromListRes)
-                        && res.getStartTime().equals(timeReservation)
-                        && res.getNumDays() == reservationParamsDTO.getNumDays()
-                        && res.getReservationType().equals( ReservationType.ADVENTURE)
-                        && res.getReservationStatus().equals(ReservationStatus.FREE)
-                        && res.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL)
-                        && res.getReservationFastType().equals(ReservationFatsType.STANDARD))
-                {
-                    searchAdventure.add(a);
+        List<Adventure> returnVal = new ArrayList<Adventure>();
+        List<Adventure> adv = findAll();
+        for (Adventure c : adv) {
+            for (Reservation r : c.getReservationsAdventure()) {
+                Reservation res = reservations.stream().filter(rr -> rr.getId_reservation() == r.getId_reservation()).findAny().orElse(null);
+                if (res != null) {
+                    returnVal.add(c);
                 }
+
             }
         }
 
         List<Adventure> byAddress = new ArrayList<Adventure>();
 
-        if(reservationParamsDTO.getAddress() != "")
-        {
-            for(Adventure adventure : searchAdventure)
+        if (reservationParamsDTO.getAddress() != "") {
+            for (Adventure cottage : returnVal) {
+                if (cottage.getAddress().contains(reservationParamsDTO.getAddress()))
+                    byAddress.add(cottage);
+            }
+            if (byAddress.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byAddress);
+            }else
             {
-                if(adventure.getAddress().contains(reservationParamsDTO.getAddress()))
-                    byAddress.add(adventure);
+                returnVal.clear();
             }
         }
-        if(byAddress.size() != 0)
-        {
-            searchAdventure.clear();
-            searchAdventure.addAll(byAddress);
-        }
+
 
 
         List<Adventure> byGrade = new ArrayList<Adventure>();
 
-        if(reservationParamsDTO.getGrade() != 0)
-        {
-            for(Adventure adventure : searchAdventure)
+        if (reservationParamsDTO.getGrade() != 0) {
+            for (Adventure cottage : returnVal) {
+                if (cottage.getGrade() == reservationParamsDTO.getGrade())
+                    byGrade.add(cottage);
+            }
+            if (byGrade.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byGrade);
+            }
+            else
             {
-                if(adventure.getGrade() == reservationParamsDTO.getGrade())
-                    byGrade.add(adventure);
+                returnVal.clear();
             }
         }
-        if(byGrade.size() != 0)
-        {
-            searchAdventure.clear();
-            searchAdventure.addAll(byGrade);
-        }
 
-        return searchAdventure;
+
+        return returnVal;
     }
 
 

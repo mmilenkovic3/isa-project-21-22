@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -87,8 +88,7 @@ public class ClientController {
 
     @PostMapping(value = "/reservation/{client_id}/{reservation_id}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity reserveCottage(@PathVariable int client_id, @PathVariable int reservation_id)
-    {
+    public ResponseEntity reserveCottage(@PathVariable int client_id, @PathVariable int reservation_id) throws MessagingException {
         clientService.reserve(client_id, reservation_id);
         return new ResponseEntity("Successeffully reserved cottage.", HttpStatus.OK);
     }

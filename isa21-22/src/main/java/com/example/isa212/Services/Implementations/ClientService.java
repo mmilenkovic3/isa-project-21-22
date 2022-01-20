@@ -4,6 +4,7 @@ import com.example.isa212.Model.Adventure;
 import com.example.isa212.Model.Boat;
 import com.example.isa212.Model.Cottage;
 import com.example.isa212.Model.Enums.ReservationStatus;
+import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Model.Users.Users;
@@ -15,6 +16,7 @@ import com.example.isa212.Services.IServices.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,9 @@ public class ClientService implements IClientService {
     private AdventureRepository adventureRepository;
     @Autowired
     private BoatRepository boatRepository;
+
+    @Autowired
+    private ServiceForEmail serviceForEmail;
 
 
 
@@ -75,7 +80,9 @@ public class ClientService implements IClientService {
         return clientRepository.save(client);
     }
 
-    public void reserve(int client_id,  int reservation_id) {
+
+
+    public void reserve(int client_id,  int reservation_id) throws MessagingException {
         Client c = findById(client_id);
         Users user = userService.getUserByID(client_id);
         Reservation r = reservationService.findById_reservation(reservation_id);
@@ -86,6 +93,65 @@ public class ClientService implements IClientService {
         r.setReservationStatus(ReservationStatus.RESERVED);
         clientRepository.save(c);
         reservationService.save(r);
+
+
+        if(r.getReservationType().equals(ReservationType.COTTAGE))
+        {
+            Cottage cottage = null;
+            List<Cottage> cottages = cottageService.findAll();
+            for(Cottage cot : cottages)
+            {
+                for (Reservation res : cot.getReservations())
+                {
+                    if(res.getId_reservation() == r.getId_reservation())
+                    {
+                        cottage = cot;
+                        break;
+                    }
+                }
+            }
+
+            serviceForEmail.SendInformationAboutReservationCottage(user, r, cottage);
+
+        }else if(r.getReservationType().equals(ReservationType.BOAT))
+        {
+            Boat b = null;
+            List<Boat> boats = boatRepository.findAll();
+            for(Boat boat : boats)
+            {
+                for (Reservation res : boat.getReservationsBoat())
+                {
+                    if(res.getId_reservation() == r.getId_reservation())
+                    {
+                        b = boat;
+                        break;
+                    }
+                }
+            }
+
+            serviceForEmail.SendInformationAboutReservationBoat(user, r, b);
+        }else
+        {
+            Adventure adventure = null;
+            List<Adventure> adventures = adventureRepository.findAll();
+            for(Adventure adve : adventures)
+            {
+                for (Reservation res : adve.getReservationsAdventure())
+                {
+                    if(res.getId_reservation() == r.getId_reservation())
+                    {
+                        adventure = adve;
+                        break;
+                    }
+                }
+            }
+
+            serviceForEmail.SendInformationAboutReservationAdventure(user, r, adventure);
+        }
+
+
+
+
 
     }
 

@@ -24,7 +24,8 @@ import java.util.Locale;
 public class BoatService implements IBoatService {
     @Autowired
     private BoatRepository boatRepository;
-
+    @Autowired
+    private CottageService cottageService;
     @Override
     public List<Boat> findAll() {
         return  boatRepository.findAll();
@@ -75,68 +76,59 @@ public class BoatService implements IBoatService {
     //Boat list of free reservation
     public List<Boat> getFreeBoatReservation(ReservationParamsDTO reservationParamsDTO)
     {
-        Time timeReservation = java.sql.Time.valueOf(reservationParamsDTO.getTime());
+        List<Reservation> reservations = cottageService.getReservationList(reservationParamsDTO, ReservationType.BOAT);
 
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateResrvation = formatter.format(reservationParamsDTO.getDate());
-
-
-
-        List<Boat> boatsFromFront = findAll();
-        List<Boat> searchBoat = new ArrayList<Boat>();
-        for (Boat boat: boatsFromFront) {
-            for (Reservation res: boat.getReservationsBoat()) {
-
-                String dateFromListRes = formatter.format(res.getStartDate());
-
-                if(dateFromListRes.equals(dateFromListRes)
-                        && res.getStartTime().equals(timeReservation)
-                        && res.getNumDays() == reservationParamsDTO.getNumDays()
-                        && res.getReservationType().equals( ReservationType.BOAT)
-                        && res.getReservationStatus().equals(ReservationStatus.FREE)
-                        && res.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL)
-                        && res.getReservationFastType().equals(ReservationFatsType.STANDARD))
-                {
-                    searchBoat.add(boat);
+        List<Boat> returnVal = new ArrayList<Boat>();
+        List<Boat> boats = findAll();
+        for (Boat c : boats) {
+            for (Reservation r : c.getReservationsBoat()) {
+                Reservation res = reservations.stream().filter(rr -> rr.getId_reservation() == r.getId_reservation()).findAny().orElse(null);
+                if (res != null) {
+                    returnVal.add(c);
                 }
+
             }
         }
 
         List<Boat> byAddress = new ArrayList<Boat>();
 
-        if(reservationParamsDTO.getAddress() != "")
-        {
-            for(Boat boat : searchBoat)
+        if (reservationParamsDTO.getAddress() != "") {
+            for (Boat b : returnVal) {
+                if (b.getAddress().contains(reservationParamsDTO.getAddress()))
+                    byAddress.add(b);
+            }
+            if (byAddress.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byAddress);
+            }else
             {
-                if(boat.getAddress().contains(reservationParamsDTO.getAddress()))
-                    byAddress.add(boat);
+                returnVal.clear();
             }
         }
-        if(byAddress.size() != 0)
-        {
-            searchBoat.clear();
-            searchBoat.addAll(byAddress);
-        }
+
 
 
         List<Boat> byGrade = new ArrayList<Boat>();
 
-        if(reservationParamsDTO.getGrade() != 0)
-        {
-            for(Boat boat : searchBoat)
+        if (reservationParamsDTO.getGrade() != 0) {
+            for (Boat bb : returnVal) {
+                if (bb.getGrade() == reservationParamsDTO.getGrade())
+                    byGrade.add(bb);
+            }
+            if (byGrade.size() != 0) {
+                returnVal.clear();
+                returnVal.addAll(byGrade);
+            }
+            else
             {
-                if(boat.getGrade() == reservationParamsDTO.getGrade())
-                    byGrade.add(boat);
+                returnVal.clear();
             }
         }
-        if(byGrade.size() != 0)
-        {
-            searchBoat.clear();
-            searchBoat.addAll(byGrade);
-        }
 
-        return searchBoat;
+
+        return returnVal;
+
     }
 
     public List<Boat> freeReservationBoatAction()

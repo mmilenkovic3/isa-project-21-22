@@ -66,6 +66,7 @@ INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES (17, 'NOT_PAYBACK', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'ADVENTURE', '2022-02-01 00:00:00.000000', '09:00:00', '0');
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES (18, 'PAYBACK', '2', '3', '250', 'NOT_CANCEL', 'STANDARD', 'FREE', 'ADVENTURE', '2022-02-01 00:00:00.000000', '09:00:00', '0');
 
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('19', 'PAYBACK', '3', '1', '300', 'NOT_CANCEL', 'ACTION', 'FREE', 'COTTAGE', '2022-01-01', '13:00', '0');
 
 #cottage_reservation
 insert into booking_db.cottage_reservation (`cottage_id`, `reservation_id`) values (1, 2);
@@ -144,6 +145,14 @@ INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fis
 INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('2', '5');
 INSERT INTO `booking_db`.`adventure_fishing_kit` (`adventure_id_adventure`, `fishing_kits_id_fishing_kit`) VALUES ('2', '7');
 
+INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `price`, `price_with_discount`, `start_date`, `id_reservation`)
+ VALUES ('1', '2022-01-27', '300', '250', '2022-01-25', '4');
+
+ INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `price`, `price_with_discount`, `start_date`, `id_reservation`)
+ VALUES ('2', '2022-02-21', '600', '400', '2022-02-17', '6');
+
+ INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `price`, `price_with_discount`, `start_date`, `id_reservation`)
+ VALUES ('3', '2022-01-28', '800', '400', '2022-01-25', '11');
 
 
 
