@@ -2,6 +2,7 @@ package com.example.isa212.Model.Users;
 
 import com.example.isa212.Model.*;
 import com.example.isa212.Model.Enums.RoyalType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -30,9 +31,8 @@ public class Client extends Users{
             inverseJoinColumns = @JoinColumn(name = "adventure_id", referencedColumnName = "id_adventure"))
     private Set<Adventure> adventureClientSubscribe = new HashSet<>();
 
-
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Reservation> reservations;
 
     @Column

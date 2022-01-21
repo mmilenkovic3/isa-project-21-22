@@ -17,6 +17,7 @@ import BoatInfo from '../components/BoatInfo.vue'
 import AdventureInfo from '../components/AdventureInfo.vue'
 import AddNewAdmins from '../components/AddNewAdmins.vue'
 import ChangeAdminPass from '../components/ChangeAdminPass.vue'
+import ClientReservation from '../components/ClientReservation.vue'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -109,6 +110,12 @@ const routes = [
       path: '/AdventureInfo/:id',
       name: 'AdventureInfo',
       component: AdventureInfo
+    } ,
+
+    {
+      path: '/ClientReservation/:id',
+      name: 'ClientReservation',
+      component: ClientReservation
     }
 ]
     

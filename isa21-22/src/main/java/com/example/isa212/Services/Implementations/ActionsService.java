@@ -179,10 +179,6 @@ public class ActionsService implements IActionsService {
         return list;
     }
 
-
-
-
-
     public Actions findByIDReservation(int id_reservation)
     {
         List<Actions> actionsList = actionsRepository.findAll();

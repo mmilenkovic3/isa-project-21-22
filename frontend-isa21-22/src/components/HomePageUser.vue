@@ -9,6 +9,7 @@
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Change password </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="fasteResPage();"> Fast reservation </button>
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="myReservation();"> My reservation  </button>
        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="logOut()"> Log out </button>
     </div>
     <div class="col">
@@ -522,6 +523,10 @@ export default {
             localStorage.removeItem('accessToken');
             this.$router.push('/');
 
+         },
+         myReservation: function()
+         {
+                    this.$router.push('/ClientReservation/'+this.id); 
          },
          deleteAcc: function()
          {
@@ -1313,6 +1318,9 @@ export default {
                                     this.inputCity = this.user.city;
                                     this.inputCountry = this.user.country;
                                     this.inputPhoneNum = this.user.phoneNumber;
+
+
+
 
                                     this.getAllCottage();
 

@@ -8,8 +8,10 @@ import javax.mail.MessagingException;
 
 public interface IClientService {
     Client subsribeOnCottage(int cottage_id ,int user_id);
-    Client findById(int id);
-    Client save(Client client);
 
-   // Client save(UserDTO client) throws MessagingException;
+    Client save(Client client);
+    Client findById(int id);
+
+
+    // Client save(UserDTO client) throws MessagingException;
 }

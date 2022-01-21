@@ -1,8 +1,10 @@
 package com.example.isa212.Controllers;
 
-import com.example.isa212.Model.Boat;
-import com.example.isa212.Model.Cottage;
+import com.example.isa212.Model.ClientReservation;
+import com.example.isa212.Model.DTOs.ClientAllReservationDTO;
+import com.example.isa212.Model.Enums.ReservationCancelType;
 import com.example.isa212.Model.Users.Client;
+import com.example.isa212.Repositories.ClientReservationService;
 import com.example.isa212.Services.Implementations.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -22,6 +23,8 @@ import java.util.List;
 public class ClientController {
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private ClientReservationService clientReservationService;
 
 
     @PostMapping(value = "/subscribeCottage/{cottage_id}/{user_id}")
@@ -92,6 +95,26 @@ public class ClientController {
         clientService.reserve(client_id, reservation_id);
         return new ResponseEntity("Successeffully reserved cottage.", HttpStatus.OK);
     }
+
+    @PostMapping(value = "/getLoggedClient/{client_id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<ClientAllReservationDTO> getLoggedClient(@PathVariable int client_id){
+        ClientAllReservationDTO bigList =  clientService.findAllClientReservation(client_id);
+        return bigList != null ? new ResponseEntity(bigList, HttpStatus.OK) :
+                new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
+    @PostMapping(value = "/reservationStatus/{client_id}/{reservation_id")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<String> reservationStatus(@PathVariable int client_id, @PathVariable int reservation_id){
+        ReservationCancelType cancelTyp =  clientReservationService.getReservationCancelType(client_id, reservation_id);
+        return cancelTyp.name() != null ? new ResponseEntity(cancelTyp.name(), HttpStatus.OK) :
+                new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
+
 
 
 

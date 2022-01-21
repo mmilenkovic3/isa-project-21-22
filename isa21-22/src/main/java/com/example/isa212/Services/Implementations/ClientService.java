@@ -1,17 +1,18 @@
 package com.example.isa212.Services.Implementations;
 
-import com.example.isa212.Model.Adventure;
-import com.example.isa212.Model.Boat;
-import com.example.isa212.Model.Cottage;
+import com.example.isa212.Model.*;
+import com.example.isa212.Model.DTOs.ActionReservationAdventureDTO;
+import com.example.isa212.Model.DTOs.ActionReservationBoatDTO;
+import com.example.isa212.Model.DTOs.ActionReservationCottageDTO;
+import com.example.isa212.Model.DTOs.ClientAllReservationDTO;
+import com.example.isa212.Model.Enums.ReservationCancelType;
+import com.example.isa212.Model.Enums.ReservationFatsType;
 import com.example.isa212.Model.Enums.ReservationStatus;
 import com.example.isa212.Model.Enums.ReservationType;
-import com.example.isa212.Model.Reservation;
+import com.example.isa212.Model.Users.Actions;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Model.Users.Users;
-import com.example.isa212.Repositories.AdventureRepository;
-import com.example.isa212.Repositories.BoatRepository;
-import com.example.isa212.Repositories.ClientRepository;
-import com.example.isa212.Repositories.CottageRepository;
+import com.example.isa212.Repositories.*;
 import com.example.isa212.Services.IServices.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,10 @@ public class ClientService implements IClientService {
 
     @Autowired
     private ServiceForEmail serviceForEmail;
+    @Autowired
+    private ActionsService actionsService;
+    @Autowired
+    private ClientReservationService clientReservationService;
 
 
 
@@ -72,12 +77,131 @@ public class ClientService implements IClientService {
         return clientRepository.getOne(id);
     }
 
+
+
+    public ClientAllReservationDTO findAllClientReservation(int id)
+    {
+        ClientAllReservationDTO clientAllReservation = new ClientAllReservationDTO();
+        List<ActionReservationCottageDTO> actionReservationCottageDTOS = new ArrayList<ActionReservationCottageDTO>();
+        List<ActionReservationBoatDTO> actionReservationBoatDTOS = new ArrayList<ActionReservationBoatDTO>();
+        List<ActionReservationAdventureDTO> actionReservationAdventureDTOS = new ArrayList<ActionReservationAdventureDTO>();
+
+        Client client = findById(id);
+        for(Reservation reservation : client.getReservations())
+        {
+            if(reservation.getReservationType().equals(ReservationType.COTTAGE))
+                actionReservationCottageDTOS.add(returnARCottageDTO(reservation));
+            else if(reservation.getReservationType().equals(ReservationType.BOAT))
+                actionReservationBoatDTOS.add(returnARBoatDTO(reservation));
+            else if(reservation.getReservationType().equals(ReservationType.ADVENTURE))
+               actionReservationAdventureDTOS.add(returnARAdventureDTO(reservation));
+
+        }
+        clientAllReservation.setActionReservationCottageDTOS(actionReservationCottageDTOS);
+        clientAllReservation.setActionReservationBoatDTOS(actionReservationBoatDTOS);
+        clientAllReservation.setActionReservationAdventureDTOS(actionReservationAdventureDTOS);
+        return  clientAllReservation;
+    }
+
+    private ActionReservationAdventureDTO returnARAdventureDTO(Reservation reservation) {
+        ActionReservationAdventureDTO actionReservationAdventureDTO = new ActionReservationAdventureDTO();
+        List<Adventure> adventures = adventureRepository.findAll();
+        for(Adventure adve : adventures)
+        {
+            for (Reservation res : adve.getReservationsAdventure())
+            {
+                if(res.getId_reservation() == reservation.getId_reservation())
+                {
+                    actionReservationAdventureDTO.setAdventure(adve);
+                    actionReservationAdventureDTO.setReservation(res);
+                    if(res.getReservationFastType().equals(ReservationFatsType.ACTION))
+                    {
+                        Actions action = actionsService.findByIDReservation(res.getId_reservation());
+                        if(action != null)
+                            actionReservationAdventureDTO.setAction(action);
+                    }
+                }
+            }
+        }
+
+        return  actionReservationAdventureDTO;
+    }
+
+    private ActionReservationBoatDTO returnARBoatDTO(Reservation reservation) {
+
+        ActionReservationBoatDTO actionReservationBoatDTO = new ActionReservationBoatDTO();
+        List<Boat> boats = boatRepository.findAll();
+        for(Boat boat : boats)
+        {
+            for (Reservation res : boat.getReservationsBoat())
+            {
+                if(res.getId_reservation() == reservation.getId_reservation())
+                {
+                    actionReservationBoatDTO.setBoat(boat);
+                    actionReservationBoatDTO.setReservation(res);
+                    if(res.getReservationFastType().equals(ReservationFatsType.ACTION))
+                    {
+                        Actions action = actionsService.findByIDReservation(res.getId_reservation());
+                        if(action != null)
+                            actionReservationBoatDTO.setAction(action);
+                    }
+                }
+            }
+        }
+
+        return  actionReservationBoatDTO;
+    }
+
+
+    private ActionReservationCottageDTO returnARCottageDTO(Reservation reservation)
+    {
+        ActionReservationCottageDTO actionReservationCottageDTO = new ActionReservationCottageDTO();
+        List<Cottage> cottages = cottageService.findAll();
+        for(Cottage cottage : cottages)
+        {
+            for (Reservation res : cottage.getReservations())
+            {
+                if(res.getId_reservation() == reservation.getId_reservation())
+                {
+                    actionReservationCottageDTO.setCottage(cottage);
+                    actionReservationCottageDTO.setReservation(res);
+                    if(res.getReservationFastType().equals(ReservationFatsType.ACTION))
+                    {
+                        Actions action = actionsService.findByIDReservation(res.getId_reservation());
+                        if(action != null)
+                            actionReservationCottageDTO.setAction(action);
+
+                    }
+
+                    /*if(checkIfCottageReservationExists(actionReservationCottageDTOS, actionReservationCottageDTO))
+                    {
+                        actionReservationCottageDTOS.add(actionReservationCottageDTO);
+                    }*/
+                }
+            }
+        }
+
+        return  actionReservationCottageDTO;
+    }
+
+
+    private boolean checkIfCottageReservationExists(List<ActionReservationCottageDTO> actionReservationCottageDTOS, ActionReservationCottageDTO actionReservationCottageDTO) {
+
+        for(ActionReservationCottageDTO arCottage : actionReservationCottageDTOS)
+        {
+            if(arCottage.getReservation().getId_reservation() == actionReservationCottageDTO.getReservation().getId_reservation())
+            {
+                return  false;
+            }
+        }
+        return true;
+    }
+
+
     @Override
     public Client save(Client client) {
         return clientRepository.save(client);
     }
-
-
 
     public void reserve(int client_id,  int reservation_id) throws MessagingException {
         Client c = findById(client_id);
@@ -91,7 +215,8 @@ public class ClientService implements IClientService {
         r.setDateWhenIsReserved(new Date());
         clientRepository.save(c);
         reservationService.save(r);
-
+        ClientReservation clientReservation = new ClientReservation(c, r, ReservationCancelType.NOT_CANCEL);
+        clientReservationService.save(clientReservation);
 
         if(r.getReservationType().equals(ReservationType.COTTAGE))
         {
@@ -152,7 +277,6 @@ public class ClientService implements IClientService {
 
 
     }
-
 
     public Client unsubsribeOnCottage(int cottage_id, int user_id) {
         Cottage cottage = cottageService.findOneById(cottage_id);
@@ -226,8 +350,6 @@ public class ClientService implements IClientService {
         return client;
     }
 
-
-
     public Client unsubsribeOnBoat(int boat_id, int user_id) {
         Optional<Boat> boat = boatRepository.findById(boat_id);
         Users user = userService.getUserByID(user_id);
@@ -279,6 +401,9 @@ public class ClientService implements IClientService {
         return client;
 
     }
+
+
+
 
 
 
