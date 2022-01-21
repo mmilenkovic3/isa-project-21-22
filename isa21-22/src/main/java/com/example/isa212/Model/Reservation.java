@@ -1,6 +1,7 @@
 package com.example.isa212.Model;
 
 import com.example.isa212.Model.Enums.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "Reservation")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Reservation {
     @Id
     @Column
@@ -56,8 +58,20 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private CancellationType cancellationType;
 
+
     @Column
     private double grade;
+
+
+    @Column(nullable = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Date dateWhenIsReserved;
+    @Column(nullable = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private double procent;
+
+    @Column
+    private double points;
 
     public Reservation(){}
 
@@ -74,6 +88,43 @@ public class Reservation {
         this.reservationFastType = reservationFastType;
         this.reservationCancelType = reservationCancelType;
         this.cancellationType = cancellationType;
+    }
+
+    public Reservation(int id_reservation, Date startDate, Time startTime, int numDays, int maxPersons, List<Staff> staffs, double price, ReservationStatus reservationStatus, ReservationType reservationType, ReservationFatsType reservationFastType, ReservationCancelType reservationCancelType, CancellationType cancellationType, double grade, Date dateWhenIsReserved, double procent) {
+        this.id_reservation = id_reservation;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.numDays = numDays;
+        this.maxPersons = maxPersons;
+        this.staffs = staffs;
+        this.price = price;
+        this.reservationStatus = reservationStatus;
+        this.reservationType = reservationType;
+        this.reservationFastType = reservationFastType;
+        this.reservationCancelType = reservationCancelType;
+        this.cancellationType = cancellationType;
+        this.grade = grade;
+        this.dateWhenIsReserved = dateWhenIsReserved;
+        this.procent = procent;
+    }
+
+    public Date getDateWhenIsReserved() {
+        return dateWhenIsReserved;
+    }
+
+    public void setDateWhenIsReserved(Date dateWhenIsReserved) {
+        this.dateWhenIsReserved = dateWhenIsReserved;
+    }
+
+    public double getProcent() {
+        return procent;
+    }
+
+    public void setProcent(double procent) {
+        if(procent != 0)
+            this.procent = procent;
+        else
+            this.procent = 0;
     }
 
     public Reservation(int id_reservation, Date startDate, Time startTime, int numDays, int maxPersons, List<Staff> staffs, double price, ReservationStatus reservationStatus, ReservationType reservationType, ReservationFatsType reservationFastType, ReservationCancelType reservationCancelType, CancellationType cancellationType, double grade) {

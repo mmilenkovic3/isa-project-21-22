@@ -196,7 +196,8 @@ public class ServiceForEmail {
                 +"<p> Cottage name:"+ cottage.getName() + " </p>"
                 +"<p> Cottage address:"+ cottage.getAddress() + " </p>"
                 +"<p> Reservation date:"+ r.getStartDate() + " </p>"
-                +"<p> Num day:"+ r.getNumDays() + " </p>";
+                +"<p> Num day:"+ r.getNumDays() + " </p>"
+                +"<p> Reservation type Action/Standard"+ r.getReservationFastType() + " </p>";
 
 
 
@@ -246,10 +247,11 @@ public class ServiceForEmail {
 
         BodyPart messageBodyPart = new MimeBodyPart();
         String htmlText = "<H1>Successeffully reservec Boat! <h1>"
-                +"<p> Cottage name:"+ boats.getName() + " </p>"
-                +"<p> Cottage address:"+ boats.getAddress() + " </p>"
+                +"<p> Boat name:"+ boats.getName() + " </p>"
+                +"<p> Boat address:"+ boats.getAddress() + " </p>"
                 +"<p> Reservation date:"+ r.getStartDate() + " </p>"
-                +"<p> Num day:"+ r.getNumDays() + " </p>";
+                +"<p> Num day:"+ r.getNumDays() + " </p>"
+                +"<p> Reservation type Action/Standard"+ r.getReservationFastType() + " </p>";
 
 
 
@@ -295,11 +297,12 @@ public class ServiceForEmail {
         MimeMultipart multipart = new MimeMultipart("alternative");
 
         BodyPart messageBodyPart = new MimeBodyPart();
-        String htmlText = "<H1>Successeffully reservec Boat! <h1>"
-                +"<p> Cottage name:"+ adventure.getName() + " </p>"
-                +"<p> Cottage address:"+ adventure.getAddress() + " </p>"
+        String htmlText = "<H1>Successeffully reservec Adventure! <h1>"
+                +"<p> Adventure name:"+ adventure.getName() + " </p>"
+                +"<p> Adventure address:"+ adventure.getAddress() + " </p>"
                 +"<p> Reservation date:"+ r.getStartDate() + " </p>"
-                +"<p> Num day:"+ r.getNumDays() + " </p>";
+                +"<p> Num day:"+ r.getNumDays() + " </p>"
+                +"<p> Reservation type Action/Standard"+ r.getReservationFastType() + " </p>";
 
 
 

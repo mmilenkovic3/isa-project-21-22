@@ -1,12 +1,16 @@
 package com.example.isa212.Model.Users;
 
 import com.example.isa212.Model.Reservation;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Table
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Actions {
 
     @Id
@@ -23,21 +27,27 @@ public class Actions {
     private double priceWithDiscount;
     @Column
     private double price;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_reservation", referencedColumnName = "id_reservation")
-    private Reservation reservation;
+    @Column
+    private int id_reservation;
 
     public Actions() {
     }
 
-    public Actions(int id_action, LocalDate startDate, LocalDate endDate, double priceWithDiscount, double price, Reservation reservation) {
+    public Actions(int id_action, LocalDate startDate, LocalDate endDate, double priceWithDiscount, double price, int id_reservation) {
         this.id_action = id_action;
         this.startDate = startDate;
         this.endDate = endDate;
         this.priceWithDiscount = priceWithDiscount;
         this.price = price;
-        this.reservation = reservation;
+        this.id_reservation = id_reservation;
+    }
+
+    public int getId_reservation() {
+        return id_reservation;
+    }
+
+    public void setId_reservation(int id_reservation) {
+        this.id_reservation = id_reservation;
     }
 
     public int getId_action() {
@@ -80,11 +90,5 @@ public class Actions {
         this.price = price;
     }
 
-    public Reservation getReservation() {
-        return reservation;
-    }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
 }

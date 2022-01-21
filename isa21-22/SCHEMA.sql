@@ -155,7 +155,13 @@ INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `price`, `price_wit
  VALUES ('3', '2022-01-28', '800', '400', '2022-01-25', '11');
 
 
+INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `price`, `price_with_discount`, `start_date`, `id_reservation`) VALUES ('4', '2022-01-10', '610', '500', '2022-01-01', '19');
 
-
-
+insert into cottage_reservation values (3,6)
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('20', 'PAYBACK', '2', '5', '400', 'NOT_CANCEL', 'ACTION', 'FREE', 'BOAT', '2022-02-01', '12:00', '0');
+INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `max_persons`, `num_days`, `price`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`, `grade`) VALUES ('21', 'NOT_PAYBACK', '5', '10', '800', 'NOT_CANCEL', 'ACTION', 'FREE', 'ADVENTURE', '2022-01-29', '13:00', '0');
+insert into boat_reservation values (1,20);
+INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `price`, `price_with_discount`, `start_date`) VALUES ('5', '2022-02-10', '20', '300', '200', '2022-02-01');
+insert into adventure_reservation values(2,21);
+INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `price`, `price_with_discount`, `start_date`) VALUES ('6', '2022-02-8', '20', '800', '500', '2022-01-29');
 

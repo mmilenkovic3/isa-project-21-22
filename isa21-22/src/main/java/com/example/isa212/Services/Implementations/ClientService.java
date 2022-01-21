@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ClientService implements IClientService {
@@ -91,6 +88,7 @@ public class ClientService implements IClientService {
         clientReservationList.add(r);
 
         r.setReservationStatus(ReservationStatus.RESERVED);
+        r.setDateWhenIsReserved(new Date());
         clientRepository.save(c);
         reservationService.save(r);
 

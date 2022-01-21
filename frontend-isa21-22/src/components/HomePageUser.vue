@@ -502,6 +502,22 @@ export default {
   },
   
      methods:{  
+         showMoreCottage: function(cottage_id)
+        {
+                console.log(cottage_id);
+                this.$router.push('/CottageInfo/'+cottage_id); 
+        },
+        showMoreBoat: function(boat_id)
+        {
+            console.log(boat_id);
+            this.$router.push('/BoatInfo/'+boat_id); 
+        },
+        
+        showMoreAdventure: function(adventure_id)
+        {
+            console.log(adventure_id);
+             this.$router.push('/AdventureInfo/'+adventure_id); 
+        },
          logOut: function()
          {
             localStorage.removeItem('accessToken');
