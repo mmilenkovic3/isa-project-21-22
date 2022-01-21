@@ -503,19 +503,18 @@ export default {
   
      methods:{  
          showMoreCottage: function(cottage_id)
-        {
-                console.log(cottage_id);
+        {                
                 this.$router.push('/CottageInfo/'+cottage_id); 
         },
         showMoreBoat: function(boat_id)
         {
-            console.log(boat_id);
+          
             this.$router.push('/BoatInfo/'+boat_id); 
         },
         
         showMoreAdventure: function(adventure_id)
         {
-            console.log(adventure_id);
+            
              this.$router.push('/AdventureInfo/'+adventure_id); 
         },
          logOut: function()
@@ -1003,7 +1002,7 @@ export default {
          } ,
          unsubscribe: function(id_cottage)
          {
-            console.log(id_cottage);
+           
 
             this.axios.post('/client/unsubscribeCottage/'+id_cottage+'/'+this.id, {
                     headers: 
@@ -1023,8 +1022,7 @@ export default {
                     });
          },
          unsubscribeBoat: function(id_boat)
-         {
-            console.log(id_boat);
+         {            
 
             this.axios.post('/client/unsubscribeBoat/'+id_boat+'/'+this.id, {
                     headers: 
@@ -1045,8 +1043,6 @@ export default {
          },
           unsubscribeAdventure: function(id_adventure)
          {
-            console.log(id_adventure);
-
             this.axios.post('/client/unsubscribeAdventure/'+id_adventure+'/'+this.id, {
                     headers: 
                     {
@@ -1066,9 +1062,6 @@ export default {
          },
          subscribe: function(id_cottage)
          {
-             console.log(id_cottage);
-
-
               this.axios.post('/client/subscribeCottage/'+id_cottage+'/'+this.id, {
                     headers: 
                     {
@@ -1088,10 +1081,7 @@ export default {
                     });
          },
          subscribeBoat: function(id_boat)
-         {
-             console.log(id_boat);
-
-
+         {            
               this.axios.post('/client/subscribeBoat/'+id_boat+'/'+this.id, {
                     headers: 
                     {
@@ -1145,7 +1135,6 @@ export default {
             this.CottagesShow = false;
             this.pass = false;
             this.entityInfo = false;
-            console.log("INFO");
         },
         infoEntity: function()
          {
@@ -1153,19 +1142,16 @@ export default {
             this.CottagesShow = false;
             this.pass = false;
             this.entityInfo = true;
-            console.log("infoEntity");
          },
         cottagesFunction: function()
         {
             this.info = false;
             this.CottagesShow = true;
             this.pass = false;
-            console.log("Cottages");
         },
         enabledFields: function()
         {
             this.disabledButtons = false;
-            console.log(this.disabledButtons);
         },
         changePass: function()
         {
@@ -1188,8 +1174,7 @@ export default {
         },
         saveEdit: function()
         {
-            const user = 
-                            {
+            const user =    {
                                 name : this.inputName,
                                 surname : this.inputSurName,
                                 email : this.inputEmail,                                            
@@ -1198,8 +1183,6 @@ export default {
                                 city : this.inputCity,
                                 country : this.inputCountry
                             }  
-
-                    console.log(user); 
                 
                 this.axios.post('user/editUser', user,
                 {
@@ -1238,8 +1221,8 @@ export default {
                         'Authorization': `Bearer ` + localStorage.getItem('accessToken')
                     }}).then(response => 
                     {
-                        alert("Successeffully changed password!");
-                        console.log(response);
+                        alert("Successeffully changed password!");  
+                         console.log(response);                      
                         this.password = "";
                         this.newPasswordRepeat = "";
                         this.newPassword = "";
@@ -1253,8 +1236,7 @@ export default {
                     }); 
         },
         getAllCottage: function()
-        { 
-            console.log("Token: " + localStorage.getItem('accessToken'));
+        {             
             this.axios.get('/cottage/findAll',
                 {
                     headers: 
@@ -1274,8 +1256,7 @@ export default {
                     }); 
         },
         getAllBoats: function()
-        { 
-            console.log("Token: " + localStorage.getItem('accessToken'));
+        {             
             this.axios.get('/boat/findAll',
                 {
                     headers: 
@@ -1285,7 +1266,7 @@ export default {
                     }}).then(response => 
                     {
                         this.Boats = response.data;
-                        console.log(this.Boats);
+                       
 
                     }).catch(res => {
                         console.log(res);                       
@@ -1296,8 +1277,7 @@ export default {
 
         getAllAdventure: function()
         { 
-            console.log("Token: " + localStorage.getItem('accessToken'));
-            this.axios.get('/adventure/findAll',
+               this.axios.get('/adventure/findAll',
                 {
                     headers: 
                     {
@@ -1306,7 +1286,7 @@ export default {
                     }}).then(response => 
                     {
                         this.Adventures = response.data;
-                        console.log(this.Adventures);
+                       
 
                     }).catch(res => {
                         console.log(res);                       
@@ -1322,12 +1302,10 @@ export default {
                                 {
                                 
                                 }}).then(response => 
-                                {   console.log("USER");  
-                                    console.log(response.data);            
+                                {               
                                     
-                                    this.user = response.data;     
-                                    console.log("THIS.USER");  
-                                    console.log(this.user); 
+                                    this.user = response.data;  
+                                   
                                     this.inputName = this.user.name;
                                     this.inputSurName = this.user.surname;
                                     this.inputEmail = this.user.email;

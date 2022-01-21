@@ -2,6 +2,7 @@ package com.example.isa212.Services.Implementations;
 
 import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
+import com.example.isa212.Model.Enums.RoyalType;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.Authority;
 import com.example.isa212.Model.Users.Client;
@@ -70,6 +71,9 @@ public class UserService implements IUserService {
         user.setAccountEnabled(false);
         user.setAuthorities(authority);
         user.setApprovedByAdmin(true);
+        user.setPenality(0);
+        user.setPoints(0);
+        user.setRoyalType(RoyalType.NONE);
         clientService.save(user);
         serviceForEmail.emailForValidationAccount(user);
         return user;

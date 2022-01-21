@@ -855,7 +855,7 @@ export default {
 
             }
                 
-
+        alert("Please just wait a few minut... you will get status of reservation!");
         this.axios.post('/client/reservation/'+this.id+'/'+reservation_id,{
                     headers: 
                     {

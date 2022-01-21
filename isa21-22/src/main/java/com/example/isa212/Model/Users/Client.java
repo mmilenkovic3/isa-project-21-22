@@ -1,6 +1,7 @@
 package com.example.isa212.Model.Users;
 
 import com.example.isa212.Model.*;
+import com.example.isa212.Model.Enums.RoyalType;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -34,8 +35,15 @@ public class Client extends Users{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
-    /*@Column
-    private int penality;*/
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RoyalType royalType;
+
+    @Column
+    private int penality;
+
+    @Column
+    private double points;
 
     public Client() {
     }
@@ -77,11 +85,46 @@ public class Client extends Users{
         this.reservations = reservations;
     }
 
+    public Client(String name, String surname, String email, String password, String address, String phoneNumber, String city, String country, Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, Set<Adventure> adventureClientSubscribe, List<Reservation> reservations, RoyalType royalType, int penality, double points) {
+        super(name, surname, email, password, address, phoneNumber, city, country);
+        this.cottageClientSubscribes = cottageClientSubscribes;
+        this.boatClientSubscribe = boatClientSubscribe;
+        this.adventureClientSubscribe = adventureClientSubscribe;
+        this.reservations = reservations;
+        this.royalType = royalType;
+        this.penality = penality;
+        this.points = points;
+    }
+
     public Set<Adventure> getAdventureClientSubscribe() {
         return adventureClientSubscribe;
     }
 
     public void setAdventureClientSubscribe(Set<Adventure> adventureClientSubscribe) {
         this.adventureClientSubscribe = adventureClientSubscribe;
+    }
+
+    public RoyalType getRoyalType() {
+        return royalType;
+    }
+
+    public void setRoyalType(RoyalType royalType) {
+        this.royalType = royalType;
+    }
+
+    public int getPenality() {
+        return penality;
+    }
+
+    public void setPenality(int penality) {
+        this.penality = penality;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
     }
 }

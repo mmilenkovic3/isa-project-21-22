@@ -24,31 +24,31 @@ public class ActionsController {
     @Autowired
     private ActionsService actionsService;
 
-    @PostMapping(value = "/getAllAction")
+    @PostMapping(value = "/getAllAction/{id}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<List<ActionReservationCottageDTO>> getAllAction()
+    public ResponseEntity<List<ActionReservationCottageDTO>> getAllAction(@PathVariable int id)
     {
-        List<ActionReservationCottageDTO> actionsList = actionsService.findAll();
+        List<ActionReservationCottageDTO> actionsList = actionsService.findAll(id);
 
         return actionsList != null ? new ResponseEntity<List<ActionReservationCottageDTO>>( actionsList, HttpStatus.OK) :
                 new ResponseEntity("Actions doesnt exists", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "/getAllBoatAction")
+    @PostMapping(value = "/getAllBoatAction/{id}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<List<ActionReservationBoatDTO>> getAllBoatAction()
+    public ResponseEntity<List<ActionReservationBoatDTO>> getAllBoatAction(@PathVariable int id)
     {
-        List<ActionReservationBoatDTO> actionsList = actionsService.findAllBoat();
+        List<ActionReservationBoatDTO> actionsList = actionsService.findAllBoat(id);
 
         return actionsList != null ? new ResponseEntity<List<ActionReservationBoatDTO>>( actionsList, HttpStatus.OK) :
                 new ResponseEntity("Actions doesnt exists", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "/getAllAdventureAction")
+    @PostMapping(value = "/getAllAdventureAction/{id}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<List<ActionReservationAdventureDTO>> getAllAdventureAction()
+    public ResponseEntity<List<ActionReservationAdventureDTO>> getAllAdventureAction(@PathVariable int id)
     {
-        List<ActionReservationAdventureDTO> actionsList = actionsService.findAllAdventure();
+        List<ActionReservationAdventureDTO> actionsList = actionsService.findAllAdventure(id);
 
         return actionsList != null ? new ResponseEntity<List<ActionReservationAdventureDTO>>( actionsList, HttpStatus.OK) :
                 new ResponseEntity("Actions doesnt exists", HttpStatus.BAD_REQUEST);
