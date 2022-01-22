@@ -32,6 +32,7 @@ export default{
     },
     methods:
     {
+       
         signIn: function()
       {
           if(this.inputEmail!="" && this.inputPassword != "")
@@ -79,6 +80,8 @@ export default{
                                     }
                                     else if(response.data.authorityRole === "ROLE_USERS")
                                     {
+                                                this.clientByID();
+                                                this.changePenality(response.data.id)
                                             this.$router.push('HomePageUser/'+ response.data.id);
                                     }                                    
                                     else
@@ -107,6 +110,24 @@ export default{
               alert("Please, you didnt fill the fields!");
           }
       },
+      changePenality: function(id)
+      {
+             this.axios.post('/client/deletePenality/'+ id,
+                            {
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                }}).then(response => 
+                                {   
+                                  
+                                   console.log(response.status);
+                                   
+
+                                }).catch(res => {
+                                    console.log(res);
+                                    event.preventDefault();
+                                });
+      }
     }
 
 }

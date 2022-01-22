@@ -36,8 +36,8 @@
                         </div>
                     </div>
                     </div>
-    <h2> penality </h2>
-    <h2> loyaliti program </h2>
+    <h2 class="form-control"> penality: {{ this.client.penality}}</h2>
+    <h2 class="form-control"> loyaliti program:  {{ this.client.royalType}}</h2>
     <!-- delete acc -->
         <div>
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="textForDelete = !textForDelete"> Delete Account </button>
@@ -479,6 +479,7 @@ export default {
       type: "",
       textForDelete: false,
       messageDelete: "",
+      client: {},
 
       inputName: "",
       inputSurName: "",
@@ -1299,6 +1300,23 @@ export default {
 
                     }); 
         },
+        clientByID: function()
+        {
+                 this.axios.post('/client/clientByID/'+ this.$route.params.id,
+                            {
+                                headers: 
+                                {
+                                
+                                }}).then(response => 
+                                {   
+                                   this.client = response.data;
+                                   this.getAllCottage();
+
+                                }).catch(res => {
+                                    console.log(res);
+                                    event.preventDefault();
+                                });
+        },
         loggedUser: function()
         {
             this.axios.post('/user/getUserByID/'+ this.$route.params.id,
@@ -1320,6 +1338,7 @@ export default {
                                     this.inputPhoneNum = this.user.phoneNumber;
 
 
+                                    this.clientByID();
 
 
                                     this.getAllCottage();
@@ -1347,7 +1366,7 @@ mounted() {
     
     margin-right: 10px;
     padding: 10px;
-    background: rgb(124, 207, 133);
+    background: white;
 }
 .container-home
 {
@@ -1362,7 +1381,8 @@ mounted() {
 }
 
 .container-Cottages
-{       
+{   
+    
     margin-right: 10px;
 }
 </style>

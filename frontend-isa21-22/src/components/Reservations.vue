@@ -79,7 +79,7 @@
             <td> <p> {{  a.promoDescription }} </p> </td>
         </tr>   
         </table>     
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" style="font-size: 22px; height: 50px;"  v-on:click="reserve(a)"> Reserve </button>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" style="font-size: 22px; height: 50px;" :disabled="client.penality >= 3"   v-on:click="reserve(a)"> Reserve </button>
         </div>
     </div>
     
@@ -124,7 +124,7 @@
             <td> <p> {{  a.promoDescriptionBoat }} </p> </td>
         </tr>   
         </table>     
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(a)"> Reserve </button>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" :disabled="client.penality >= 3"   v-on:click="reserve(a)"> Reserve </button>
         </div>
     </div>
 
@@ -167,7 +167,7 @@
             <td> <p> {{  adv.promoDescriptionAdventure }} </p> </td>
         </tr>   
         </table>     
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(adv)"> Reserve </button>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" :disabled="client.penality >= 3"   v-on:click="reserve(adv)"> Reserve </button>
         </div>
     </div>
     
@@ -190,6 +190,7 @@ export default {
       Cottages: [],
       Boats: [],
       Adventures: [],
+      client: {},
       numPersons: "",
 
       reservationType: "",
@@ -875,13 +876,31 @@ export default {
 
                     });
           
-    }
+    },
+    clientByID: function()
+        {
+                 this.axios.post('/client/clientByID/'+ this.$route.params.id,
+                            {
+                                headers: 
+                                {
+                                
+                                }}).then(response => 
+                                {   
+                                   this.client = response.data;
+                                   console.log(this.client);
+                                   
+
+                                }).catch(res => {
+                                    console.log(res);
+                                    event.preventDefault();
+                                });
+        },
       
    
 },
 mounted() {
         
-        //this.getAllCottage();
+        this.clientByID();
 
     
     },

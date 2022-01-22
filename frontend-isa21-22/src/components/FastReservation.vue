@@ -48,7 +48,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
+                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"   :disabled="client.penality >= 3"  v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
                                         </td>
                                     </tr>
                         </table>                        
@@ -87,7 +87,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
+                                           
+                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"   :disabled="client.penality >= 3"  v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
                                         </td>
                                     </tr>
                         </table>                        
@@ -126,7 +127,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"  v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
+
+                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" :disabled="client.penality >= 3"   v-on:click="reserve(res.reservation.id_reservation)"> Reserve </button>
                                         </td>
                                     </tr>
                         </table>                        
@@ -158,6 +160,7 @@ export default{
        this.getActions(); 
        this.getBoatActions();  
        this.getAdventure();
+       this.clientByID();
         
     },
     methods:
@@ -170,11 +173,8 @@ export default{
                         'Authorization': `Bearer ` + localStorage.getItem('accessToken')
                         
                     }}).then(response => 
-                    {
-                       
-                       console.log("VIKENDICE"); 
-                        this.ActionsCottage = response.data;
-                        console.log(this.ActionsCottage);    
+                    {                      
+                        this.ActionsCottage = response.data;                           
                         event.preventDefault(); 
 
                     }).catch(res => {
@@ -193,9 +193,7 @@ export default{
                     }}).then(response => 
                     {
                        
-                        this.ActionBoats = response.data;
-                        console.log("BRODOVI");    
-                        console.log(this.ActionBoats);    
+                        this.ActionBoats = response.data;                          
                         event.preventDefault(); 
 
                     }).catch(res => {
@@ -204,6 +202,24 @@ export default{
 
                     });
       },
+      clientByID: function()
+        {
+                 this.axios.post('/client/clientByID/'+ this.$route.params.id,
+                            {
+                                headers: 
+                                {
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
+                                }}).then(response => 
+                                {   
+                                   this.client = response.data;
+                                   console.log(this.client);
+                                   
+
+                                }).catch(res => {
+                                    console.log(res);
+                                    event.preventDefault();
+                                });
+        },
       getAdventure: function()
       {
         this.axios.post('/action/getAllAdventureAction/'+this.user_id, {
@@ -213,8 +229,7 @@ export default{
                                 
                             }}).then(response => 
                             {                           
-                                this.ActionAdventures = response.data;
-                                console.log(this.ActionAdventures);    
+                                this.ActionAdventures = response.data;                               
                                 event.preventDefault(); 
 
                             }).catch(res => {

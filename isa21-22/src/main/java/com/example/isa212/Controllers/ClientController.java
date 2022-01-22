@@ -2,6 +2,7 @@ package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.ClientReservation;
 import com.example.isa212.Model.DTOs.ClientAllReservationDTO;
+import com.example.isa212.Model.DTOs.ClientDTO;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Services.Implementations.ClientReservationService;
 import com.example.isa212.Services.Implementations.ClientService;
@@ -119,6 +120,24 @@ public class ClientController {
         return  c!=null? new ResponseEntity(HttpStatus.OK): new ResponseEntity(HttpStatus.BAD_REQUEST);
 
     }
+
+    @PostMapping(value = "/clientByID/{id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity<ClientDTO> clientByID(@PathVariable int id){
+        ClientDTO c =  clientService.clientByID(id);
+        return  c!=null? new ResponseEntity<ClientDTO>(c,HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @PostMapping(value = "/deletePenality/{id}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity deletePenality(@PathVariable int id){
+        clientService.deletePenality(id);
+        return  new ResponseEntity(HttpStatus.OK);
+
+    }
+
 
 
 

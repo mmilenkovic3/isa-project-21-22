@@ -1,10 +1,7 @@
 package com.example.isa212.Services.Implementations;
 
 import com.example.isa212.Model.*;
-import com.example.isa212.Model.DTOs.ActionReservationAdventureDTO;
-import com.example.isa212.Model.DTOs.ActionReservationBoatDTO;
-import com.example.isa212.Model.DTOs.ActionReservationCottageDTO;
-import com.example.isa212.Model.DTOs.ClientAllReservationDTO;
+import com.example.isa212.Model.DTOs.*;
 import com.example.isa212.Model.Enums.ReservationCancelType;
 import com.example.isa212.Model.Enums.ReservationFatsType;
 import com.example.isa212.Model.Enums.ReservationStatus;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -404,9 +402,21 @@ public class ClientService implements IClientService {
     }
 
 
+    public ClientDTO clientByID(int id) {
+        Client c = clientRepository.findById(id).get();
+        ClientDTO clientDTO = new ClientDTO(c.getPenality(), c.getRoyalType());
+        return  clientDTO;
+    }
 
-
-
-
-
+    public void deletePenality(int id) {
+        Client client = clientRepository.findById(id).get();
+        if(client!=null)
+        {
+            if(LocalDate.now().getDayOfMonth() == 1)
+            {
+                client.setPenality(0);
+                clientRepository.save(client);
+            }
+        }
+    }
 }
