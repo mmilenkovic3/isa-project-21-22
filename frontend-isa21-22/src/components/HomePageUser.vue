@@ -10,6 +10,7 @@
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Reservation </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="fasteResPage();"> Fast reservation </button>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="myReservation();"> My reservation  </button>
+       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="complainsWriting()"> Write complain </button>
        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="logOut()"> Log out </button>
     </div>
     <div class="col">
@@ -1027,6 +1028,10 @@ export default {
 
                     });
          },
+         complainsWriting: function()
+         {
+             this.$router.push('/WriteComplain/'+ this.id);
+         },
          unsubscribeBoat: function(id_boat)
          {            
 
@@ -1306,7 +1311,7 @@ export default {
                             {
                                 headers: 
                                 {
-                                
+                                    'Authorization': `Bearer ` + localStorage.getItem('accessToken')
                                 }}).then(response => 
                                 {   
                                    this.client = response.data;

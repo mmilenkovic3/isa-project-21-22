@@ -1,9 +1,6 @@
 package com.example.isa212.Services.Implementations;
 
-import com.example.isa212.Model.Adventure;
-import com.example.isa212.Model.Boat;
-import com.example.isa212.Model.Cottage;
-import com.example.isa212.Model.Reservation;
+import com.example.isa212.Model.*;
 import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Users;
 import com.google.zxing.WriterException;
@@ -318,6 +315,51 @@ public class ServiceForEmail {
                 message.getRecipients(Message.RecipientType.TO));
         transport.close();
 
+    }
+
+    public void sendComplainToAdmin(Complains complains) throws MessagingException {
+
+        Users u = userService.getUserByID(1);
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("You have new complain!");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(u.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Complain:  <h1>"
+                +"<p> Text:"+ complains.getTextComplain() + " </p>"
+                +"<p> Client: "+ complains.getClient().getName() +" "+ complains.getClient().getSurname()+ " </p>"
+                +"<p> Type:"+ complains.getReservationType() + " </p>"
+                +"<p> Name: "+ complains.getName() + " </p>";
+
+        messageBodyPart.setContent(htmlText, "text/html");
+        multipart.addBodyPart(messageBodyPart);
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
     }
 
     /*public void sendingAnEmailToAcceptTheOffer (DrugOrder order, Offer offer) throws MessagingException {
