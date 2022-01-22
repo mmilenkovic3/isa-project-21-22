@@ -18,7 +18,9 @@ import AdventureInfo from '../components/AdventureInfo.vue'
 import AddNewAdmins from '../components/AddNewAdmins.vue'
 import ChangeAdminPass from '../components/ChangeAdminPass.vue'
 import ClientReservation from '../components/ClientReservation.vue'
+import AdminAnswerComplain from '../components/AdminAnswerComplain.vue'
 import WriteComplain from '../components/WriteComplain.vue'
+import DeleteAccount from '../components/DeleteAccount.vue'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -123,7 +125,20 @@ const routes = [
       path: '/WriteComplain/:id',
       name: 'WriteComplain',
       component: WriteComplain
-    }
+    },
+    {
+      path: '/AdminAnswerComplain/:id',
+      name: 'AdminAnswerComplain',
+      component: AdminAnswerComplain
+    },
+    {
+      path: '/DeleteAccount/:id',
+      name: 'DeleteAccount',
+      component: DeleteAccount
+    },
+
+    
+    
 ]
     
 const router = new VueRouter({

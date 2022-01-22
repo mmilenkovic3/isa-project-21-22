@@ -2,6 +2,7 @@ package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.Complains;
 import com.example.isa212.Model.Cottage;
+import com.example.isa212.Model.DTOs.ComplainsAdminDTO;
 import com.example.isa212.Model.DTOs.ComplainsDTO;
 import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Services.Implementations.ComplainsService;
@@ -53,11 +54,18 @@ public class ComplainsController {
 
     @PostMapping(value = "/answerComplain/{id}/{text}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity answerComplain(@PathVariable int id,@PathVariable String text)
-    {
+    public ResponseEntity answerComplain(@PathVariable int id,@PathVariable String text) throws MessagingException {
         complainsService.setAnswer(id, text);
         return  new ResponseEntity<>( HttpStatus.OK);
 
+    }
+
+    @GetMapping(value = "/getAllComplains")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ComplainsAdminDTO>> getAllComplains()  {
+        List<ComplainsAdminDTO> List = complainsService.getAllComplains();
+        return List != null ? new ResponseEntity<List<ComplainsAdminDTO>>( List, HttpStatus.OK):
+                new ResponseEntity<>(HttpStatus.BAD_REQUEST );
     }
 
 }

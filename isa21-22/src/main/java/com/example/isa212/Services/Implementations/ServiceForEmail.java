@@ -3,6 +3,7 @@ package com.example.isa212.Services.Implementations;
 import com.example.isa212.Model.*;
 import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Users;
+import com.example.isa212.Repositories.UserRepository;
 import com.google.zxing.WriterException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,168 @@ import java.util.Properties;
 @Component
 public class ServiceForEmail {
     @Autowired
+    private static UserService userService;
+    @Autowired
     private JavaMailSender javaMailSender;
 
-    @Autowired
-    private UserService userService;
+
 
     @Autowired
     private Environment environment;
+
+
+
+
+
+    public static void sendEmailToClientAboutAnswer(Complains complains) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Answer about complain");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(complains.getClient().getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Hello dear user.." +
+                "<p>" + complains.getClient().getName() + " "+ complains.getClient().getSurname()  +"</p>"
+                +"<p> About" + complains.getReservationType() + ": "+ complains.getName() +"</p>"
+                +"<p> Answer: </p>"
+                +"<p>" + complains.getAnswer() +"</p>"
+                +"<p> Your admin... </p>";
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+    }
+
+    public static void sentToAdmin(DeleteAccountRequest newDAC) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+        Users us = userService.getUserByID(1);
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Delete account?");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(us.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Hellou..</H1>" +
+                "<p> I want to delete my account because: </p>"
+                +"<p>" + newDAC.getText() +"</p>"
+                +"<p> User: " + newDAC.getClient().getEmail() +"</p>"
+
+                ;
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+
+    }
+
+    public static void SendEmailDeleteACC(DeleteAccountRequest deleteAccountRequest, String text) throws MessagingException {
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("Request for delete, admin.");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(deleteAccountRequest.getClient().getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "";
+        if(deleteAccountRequest.isApproved())
+             htmlText = "<H1>Hellou!.</H1>"
+                     + "<p> SUCCESEFFULY DELETED ACCOUNT. </p> "
+                     + "<p> "+ text+ "</p>";
+        else
+            htmlText = "<H1>Hellou!.</H1>"
+                    + "<p> We wond delete yout account!. </p> "
+                    + "<p> Why? -->  "+ text+ "</p>";
+
+
+
+
+
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+
+
+
+    }
 
     //https://docs.spring.io/spring-framework/docs/3.0.0.M3/reference/html/ch26s03.html
 

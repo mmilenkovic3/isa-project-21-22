@@ -1,8 +1,10 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.Adventure;
 import com.example.isa212.Model.DTOs.PasswordDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.Enums.RoyalType;
+import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.UserTokenState;
 import com.example.isa212.Model.Users.Authority;
 import com.example.isa212.Model.Users.Client;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -59,7 +63,7 @@ public class UserService implements IUserService {
         }
 
         Client user = new Client(
-                userDTO.getName(),
+               userDTO.getName(),
                 userDTO.getSurname(),
                 userDTO.getEmail(),
                 passwordEncoder.encode(userDTO.getPassword()),
@@ -70,10 +74,16 @@ public class UserService implements IUserService {
 
         user.setAccountEnabled(false);
         user.setAuthorities(authority);
+        userRepository.save(user);
+
         user.setApprovedByAdmin(true);
         user.setPenality(0);
         user.setPoints(0);
         user.setRoyalType(RoyalType.NONE);
+        user.setReservations(new ArrayList<Reservation>());
+        user.setAdventureClientSubscribe(new HashSet<>());
+        user.setBoatClientSubscribe(new HashSet<>());
+        user.setCottageClientSubscribes(new HashSet<>());
         clientService.save(user);
         serviceForEmail.emailForValidationAccount(user);
         return user;

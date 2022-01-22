@@ -34,6 +34,9 @@ public class DeleteAccountRequest {
         this.isApproved = isApproved;
     }
 
+
+
+
     public DeleteAccountRequest(Client client, String text, boolean isApproved) {
         this.client = client;
         this.text = text;
@@ -50,6 +53,11 @@ public class DeleteAccountRequest {
 
     public Client getClient() {
         return client;
+    }
+
+    public String getEmail()
+    {
+        return getClient().getEmail();
     }
 
     public void setClient(Client client) {

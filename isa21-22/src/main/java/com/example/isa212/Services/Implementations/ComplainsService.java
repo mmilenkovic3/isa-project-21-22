@@ -1,6 +1,7 @@
 package com.example.isa212.Services.Implementations;
 
 import com.example.isa212.Model.*;
+import com.example.isa212.Model.DTOs.ComplainsAdminDTO;
 import com.example.isa212.Model.DTOs.ComplainsDTO;
 import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Model.Users.Client;
@@ -131,17 +132,33 @@ public class ComplainsService implements IComplainsService {
         return  complains;
     }
 
-    public List<Complains> getAllComplains()
+    public List<ComplainsAdminDTO> getAllComplains()
     {
-        return complainsRepository.findAll();
+        List<Complains> complains = complainsRepository.findAll();
+        List<ComplainsAdminDTO> complainsAdminDTOS = new ArrayList<ComplainsAdminDTO>();
+        for(Complains comp : complains)
+        {
+            ComplainsAdminDTO complainsAdminDTO = new ComplainsAdminDTO();
+            complainsAdminDTO.setId_complain(comp.getId_complain());
+            complainsAdminDTO.setClient_name(comp.getClient().getName() + " " + comp.getClient().getSurname());
+            complainsAdminDTO.setTextComplain(comp.getTextComplain());
+            complainsAdminDTO.setReservationType(comp.getReservationType());
+            complainsAdminDTO.setEntityName(comp.getName());
+            complainsAdminDTO.setAnswered(comp.isAnswered());
+            complainsAdminDTO.setAnswer(comp.getAnswer());
+            complainsAdminDTOS.add(complainsAdminDTO);
+        }
+
+        return complainsAdminDTOS;
     }
 
-    public void setAnswer(int id_complain, String text)
-    {
+    public void setAnswer(int id_complain, String text) throws MessagingException {
         Complains complains = complainsRepository.findById(id_complain).get();
         complains.setAnswer(text);
         complains.setAnswered(true);
         complainsRepository.save(complains);
+
+        ServiceForEmail.sendEmailToClientAboutAnswer(complains);
     }
 
 

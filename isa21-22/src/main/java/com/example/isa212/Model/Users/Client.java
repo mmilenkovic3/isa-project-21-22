@@ -96,12 +96,23 @@ public class Client extends Users{
         this.points = points;
     }
 
+
     public Set<Adventure> getAdventureClientSubscribe() {
         return adventureClientSubscribe;
     }
 
     public void setAdventureClientSubscribe(Set<Adventure> adventureClientSubscribe) {
         this.adventureClientSubscribe = adventureClientSubscribe;
+    }
+
+    public Client(Set<Cottage> cottageClientSubscribes, Set<Boat> boatClientSubscribe, Set<Adventure> adventureClientSubscribe, List<Reservation> reservations, RoyalType royalType, int penality, double points) {
+        this.cottageClientSubscribes = cottageClientSubscribes;
+        this.boatClientSubscribe = boatClientSubscribe;
+        this.adventureClientSubscribe = adventureClientSubscribe;
+        this.reservations = reservations;
+        this.royalType = royalType;
+        this.penality = penality;
+        this.points = points;
     }
 
     public RoyalType getRoyalType() {

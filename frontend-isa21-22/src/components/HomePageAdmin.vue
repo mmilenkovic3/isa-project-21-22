@@ -3,10 +3,10 @@
     <div class="container-home">
     <div class="row">
         <div class="col-8 col-md-3">
-          <button class="btn btn-lg btn-primary btn-block btn-signin" v-if="this.id == 1" type="submit" v-on:click="addNewAdmin();"> Add new admin </button>
-          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="infoFunction();"> Request for delete </button>
-          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"> Prihodi po rezervaciji </button>
-          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="changePass();"> Procenat </button>
+          <button class="btn btn-lg btn-primary btn-block btn-signin" v-if="this.id == 1" type="submit" v-on:click="addNewAdmin();"> Add new admin </button>          
+          <!--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"> Prihodi po rezervaciji </button>-->
+          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="  $router.push('/AdminAnswerComplain/'+ id);"> Complains </button>
+          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="  $router.push('/DeleteAccount/'+ id);"> Delete requests </button>
           <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" v-on:click="reservationPage();"> Prihodi </button>
                  
       </div>
@@ -229,6 +229,10 @@ export default {
                     });     
         }
 ,
+comp: function()
+{
+      this.$router.push('/AdminAnswerComplain/'+ this.id);
+},
         loggedUser: function()
         {
             this.axios.post('/user/getUserByID/'+ this.$route.params.id,

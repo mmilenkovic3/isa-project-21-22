@@ -41,7 +41,7 @@ export default {
       },
       signIn: function()
       {
-        this.$router.push('/SignIn'); 
+        this.$router.push('/LoginPage'); 
       },
       accountEnabled: function()
       {
@@ -53,6 +53,7 @@ export default {
                     }}).then(response => 
                     {                        
                         alert("Success");
+                        this.$route.push('/LoginPage');
                         console.log(response.data);                                             
 
                     }).catch(res => {
