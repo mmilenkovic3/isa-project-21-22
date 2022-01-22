@@ -3,7 +3,7 @@
 Autor: Maja Milenkovic RA 96/2017
        Student 1        
        
-Mejlovi korisnika (mejlovi su kreirani za potrebe proslog 19/20)
+Mejlovi korisnika (mejlovi su kreirani za potrebe proslog projekta 19/20)
 
 ADMIN (ID 1) pharmacistpharmacy33@gmail.com (lozinka email-a:  pharmacist*1)
 
@@ -81,7 +81,7 @@ Baza:
 
 Dodatno:
 
-Prilikom testiranja aplikacije, prilikom klikna na dugmice, potrebno je sacekati par sekundi da bi aplikacija obavila postao.
+Prilikom testiranja aplikacije, prilikom klikna na dugmice, potrebno je sacekati par sekundi da bi aplikacija obavila posa. :)
       
        
        
