@@ -80,8 +80,7 @@ export default{
                                     }
                                     else if(response.data.authorityRole === "ROLE_USERS")
                                     {
-                                                this.clientByID();
-                                                this.changePenality(response.data.id)
+                                            this.changePenality(response.data.id)
                                             this.$router.push('HomePageUser/'+ response.data.id);
                                     }                                    
                                     else

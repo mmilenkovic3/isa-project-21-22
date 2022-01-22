@@ -1,11 +1,12 @@
 <template>
 <div>
+    
     <div>
         <h3> Reservations: </h3>
         <select v-model="type" id="type" class="form-control" 
                                           aria-label="Select reservation type.."
                                           :select="type" style="font-size:22px; width: 50%; margin:0 auto;"                                         
-                                          
+                                         
                                     aria-describedby="addon-wrapping">
                                     
                                     <option  value="" > Selet entity to show... </option>
@@ -43,7 +44,9 @@
                          <tr v-if="cottageRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Cancel the reservation:  </td>
                             <td>  <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" 
-                                          style="width:60% height:40px;" v-on:click="cancelReservation(cottageRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
+                                          style="width:60% height:40px;"
+                                          :disabled="!canBeCanceled(new Date(cottageRes.reservation.startDate), 0)"
+                                           v-on:click="cancelReservation(cottageRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
                         </tr>
                         <tr v-if="cottageRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Set your grade for this reservation: </td>
@@ -87,7 +90,7 @@
                          <tr v-if="boatRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Cancel the reservation:  </td>
                             <td>  <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" 
-                                          style="width:60% height:40px;" v-on:click="cancelReservation(boatRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
+                                          style="width:60% height:40px;" :disabled="!canBeCanceled(new Date(boatRes.reservation.startDate), 0)" v-on:click="cancelReservation(boatRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
                         </tr>
                         <tr v-if="boatRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Set your grade for this reservation: </td>
@@ -134,14 +137,17 @@
                          <tr v-if="adveRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Cancel the reservation:  </td>
                             <td>  <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" 
-                                          style="width:60% height:40px;" v-on:click="cancelReservation(adveRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
+                                          style="width:60% height:40px;" 
+                                          :disabled="!canBeCanceled(new Date(adveRes.reservation.startDate), 0)" 
+                                           v-on:click="cancelReservation(adveRes.reservation.id_reservation,user_id )"> CANCEL </button> </td>
                         </tr>
                         <tr v-if="adveRes.reservationCancelType == 'NOT_CANCEL'">
                             <td> Set your grade for this reservation: </td>
                             <td>  <input type = "text" class="form-control" v-model="adveRes.reservation.grade"/>
                             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" 
                                           style="width:60% height:40px;"
-                                          v-on:click="setGrade(adveRes.reservation.id_reservation,adveRes.reservation.grade )"> Set grade </button> 
+                                          
+                                          v-on:click="setGrade(adveRes.reservation.id_reservation,adveRes.reservation.grade)"> Set grade </button> 
                              </td>
                         </tr>
                         
@@ -181,13 +187,22 @@ export default{
     mounted()
     {
       this.getClient();
+     
     
       
         
     },
+   
     methods:
     {
-        
+         canBeCanceled: function(startDate)
+    {       console.log(startDate);
+            console.log(new Date());
+            console.log(this.canReserve(startDate, 3*24));
+            console.log(new Date() <= this.canReserve(startDate, 3*24)  );  
+           return new Date() <= this.canReserve(startDate, 3*24)     
+
+    },
         setGrade: function(id_reservation,grade )    
     {
        this.axios.post('/client/setGradeToReservation/'+id_reservation+'/'+grade, {
@@ -260,6 +275,13 @@ export default{
             var numberOfMlSeconds = objDate.getTime();
             var addMlSeconds = (intHours * 60) * 60 * 1000;
             var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+            return newDateObj;
+        },
+
+         canReserve: function(objDate, intHours) {
+            var numberOfMlSeconds = objDate.getTime();
+            var addMlSeconds = (intHours * 60) * 60 * 1000;
+            var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
             return newDateObj;
         },
         
