@@ -76,7 +76,8 @@ export default {
                                     }}).then(response => 
                                     {
                                     this.entity = response.data;   
-                                    console.log(this.entity);                                    
+                                    console.log(this.entity);
+                                    this.$router.go(-1);                                    
 
                                     }).catch(res => {
                                         console.log(res);                       
@@ -87,6 +88,7 @@ export default {
         },
         sendComplain: function(txt, entity, type)
         {
+            alert("Please wait a few minutes....");
             const complaint =
             {
                 id_client: this.id,
@@ -107,7 +109,7 @@ export default {
                                     }}).then(response => 
                                     {
                                         alert("Send successeffully!");
-                                    console.log(response.data);  
+                                        console.log(response.data);  
                                                                        
 
                                     }).catch(res => {
