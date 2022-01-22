@@ -31,9 +31,9 @@ INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_
 INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (5 ,1, 'Tepsija 1', 1, 'Beograd','Srbija', 'instruktor@gmail.com', 'Ivan', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '063/811-00-52', 'Srbic');
 
 
-INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (6, 1,'Eon 33',1, 'Novi Sad', 'Srbija', 'vlasnikvikendice1@gmail.com', 'Medina', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '061/11-91-121', 'Grgic');
-INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (7 ,1, 'Pirotska 19', 1, 'Zrenjanin','Srbija', 'vlasnikbroda1@gmail.com', 'Gorana', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '063/87-50-434', 'Radic');
-INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (8 ,1, 'Krba Like 1', 1, 'Beograd','Srbija', 'instruktor1@gmail.com', 'Fahreta', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '063/431-65-12', 'Bregic');
+INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (6, 0,'Eon 33',0, 'Novi Sad', 'Srbija', 'vlasnikvikendice1@gmail.com', 'Medina', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '061/11-91-121', 'Grgic');
+INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (7 ,0, 'Pirotska 19', 0, 'Zrenjanin','Srbija', 'vlasnikbroda1@gmail.com', 'Gorana', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '063/87-50-434', 'Radic');
+INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (8 ,0, 'Krba Like 1', 0, 'Beograd','Srbija', 'instruktor1@gmail.com', 'Fahreta', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '063/431-65-12', 'Bregic');
 
 INSERT INTO `booking_db`.`users` (`id`, `account_enabled`, `address`, `approved_by_admin`, `city`, `country`, `email`, `name`, `password`, `phone_number`, `surname`) VALUES (9, 1,'Ambasadorska 199',1, 'Novi Sad', 'Srbija', 'vlasnikvikendice2@gmail.com', 'Lana', '$2a$10$sqes3IpPL4mBgAAmimisyOWj5DlqPRndrJFNFw9zWiJjyNa5ozKS6', '064/56-91-123', 'Amidzic');
 
@@ -257,7 +257,9 @@ INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `
 INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `price`, `price_with_discount`, `start_date`) VALUES ('9', '2022-03-02', '26', '500', '350', '2022-03-02');
 INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `price`, `price_with_discount`, `start_date`) VALUES ('10', '2022-01-05', '28', '200', '150', '2022-01-02');
 
-
+INSERT INTO `booking_db`.`registration_approval` (`id_registration_approval`, `autority`, `id_user`, `is_approved`) VALUES (1, 'COTTAGE_OWNER', 6, 0);
+INSERT INTO `booking_db`.`registration_approval` (`id_registration_approval`, `autority`, `id_user`, `is_approved`) VALUES (2, 'BOAT_OWNER', 7, 0);
+INSERT INTO `booking_db`.`registration_approval` (`id_registration_approval`, `autority`, `id_user`, `is_approved`) VALUES (3 ,'INSTRUCTOR', 8, 0);
 
 
 

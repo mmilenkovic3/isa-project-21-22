@@ -1,12 +1,12 @@
 package com.example.isa212.Controllers;
 
+import com.example.isa212.Model.DTOs.RegistrationApprovalDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
 import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Services.Implementations.AdminService;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,7 +45,7 @@ public class AdminController {
     }
     @PostMapping(value =  "/approve/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity approve(@PathVariable int id) {
+    public ResponseEntity approve(@PathVariable int id) throws MessagingException {
         adminService.approveRequst(id);
         return  new ResponseEntity<>(HttpStatus.OK);
 
@@ -56,6 +56,14 @@ public class AdminController {
     public ResponseEntity disapprove(@PathVariable int id,@PathVariable String text) throws MessagingException {
         adminService.disapprove(id,text);
         return  new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @GetMapping(value =  "/getRequestReg")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<RegistrationApprovalDTO>> getRequestReg() throws MessagingException {
+        List<RegistrationApprovalDTO> registrationApprovalDTOS = adminService.getRequestReg();
+        return  new ResponseEntity<List<RegistrationApprovalDTO>>(registrationApprovalDTOS, HttpStatus.OK);
 
     }
 }

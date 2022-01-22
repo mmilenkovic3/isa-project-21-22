@@ -1,10 +1,13 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.DTOs.RegistrationApprovalDTO;
 import com.example.isa212.Model.DTOs.UserDTO;
+import com.example.isa212.Model.RegistrationApproval;
 import com.example.isa212.Model.Users.Admin;
 import com.example.isa212.Model.Users.Authority;
 import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Repositories.AdminRepository;
+import com.example.isa212.Repositories.RegistrationApprovalRepository;
 import com.example.isa212.Repositories.UserRepository;
 import com.example.isa212.Services.IServices.IAdminService;
 import org.apache.catalina.User;
@@ -28,6 +31,8 @@ public class AdminService implements IAdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ServiceForEmail serviceForEmail;
+    @Autowired
+    private RegistrationApprovalRepository registrationApprovalRepository;
 
     public Admin save(UserDTO userDTO) throws MessagingException {
         List<Authority> authority = authorityService.findByName("ROLE_ADMIN");
@@ -71,11 +76,13 @@ public class AdminService implements IAdminService {
         return requests;
     }
 
-    public void approveRequst(int userID)
-    {
+    public void approveRequst(int userID) throws MessagingException {
         Users users = userRepository.findOneById(userID);
         users.setApprovedByAdmin(true);
+        users.setAccountEnabled(true);
         userRepository.save(users);
+        serviceForEmail.approvedEmail(users);
+
     }
     public void disapprove(int userID, String text) throws MessagingException {
         Users users = userRepository.findOneById(userID);
@@ -84,4 +91,25 @@ public class AdminService implements IAdminService {
 
     }
 
+    public List<RegistrationApprovalDTO> getRequestReg() {
+        List<RegistrationApproval> registrationApprovals = registrationApprovalRepository.findAll();
+        List<RegistrationApprovalDTO> re = new ArrayList<RegistrationApprovalDTO>();
+        for(RegistrationApproval r : registrationApprovals)
+        {
+            RegistrationApprovalDTO registrationApprovalDTO = new RegistrationApprovalDTO();
+            registrationApprovalDTO.setId(r.getId_registrationApproval());
+            registrationApprovalDTO.setType(r.getAutority());
+            Users u = userRepository.findOneById(r.getId_user());
+            registrationApprovalDTO.setEmail(u.getEmail());
+            registrationApprovalDTO.setUser_name(u.getName() + " " + u.getSurname());
+            registrationApprovalDTO.setAprove(r.getApproved());
+
+            re.add(registrationApprovalDTO);
+        }
+
+        return re;
+
+
+
+    }
 }

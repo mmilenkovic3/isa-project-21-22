@@ -518,6 +518,47 @@ public class ServiceForEmail {
         transport.close();
     }
 
+    public void approvedEmail(Users users) throws MessagingException {
+
+        Users u = userService.getUserByID(1);
+
+        Properties props = new Properties();
+        //props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session mailSession = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("blackcetkica@gmail.com", "maja.maja98");
+                    }
+                });
+        mailSession.setDebug(true);
+        Transport transport = mailSession.getTransport();
+
+        MimeMessage message = new MimeMessage(mailSession);
+        message.setSubject("You have new complain!");
+        message.setFrom(new InternetAddress("me@sender.com"));
+        message.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(u.getEmail()));
+
+        MimeMultipart multipart = new MimeMultipart("alternative");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "<H1>Account accepted:" + users.getEmail() + "  <h1> ";
+
+        messageBodyPart.setContent(htmlText, "text/html");
+        multipart.addBodyPart(messageBodyPart);
+        message.setContent(multipart);
+
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
+    }
+
     /*public void sendingAnEmailToAcceptTheOffer (DrugOrder order, Offer offer) throws MessagingException {
         // TODO Auto-generated method stub
         System.out.println("usao u funkc za slanje mejla "+offer.getSupplier().getEmail() );
