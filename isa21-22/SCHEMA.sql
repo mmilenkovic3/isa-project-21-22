@@ -230,9 +230,9 @@ INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `
 INSERT INTO `booking_db`.`actions` (`id_action`, `end_date`, `id_reservation`, `price`, `price_with_discount`, `start_date`) VALUES ('7', '2022-03-12', '21', '500', '150', '2022-01-10');
 
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `grade`, `max_persons`, `num_days`, `points`, `price`, `procent`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`)
- VALUES (	22,	'NOT_PAYBACK',		0,	4	,10	,0,	600	,0,	'NOT_CANCEL'	,'STANDARD',	'FREE	','ADVENTURE',	'2022-01-28',	'16:00:00');
+ VALUES 											(22,        'NOT_PAYBACK',       0,	       4	,        10	,         0,	600	,         0,	     'NOT_CANCEL'	  ,              'STANDARD',			'FREE	','ADVENTURE',	'2022-01-28',	'16:00:00');
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `grade`, `max_persons`, `num_days`, `points`, `price`, `procent`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`)
-VALUES (	23	,'PAYBACK',		0	,2	,3,	0,	450	,0,	'NOT_CANCEL',	'STANDARD',	'FREE',	'ADVENTURE',	'2022-02-02' ,	'13:00:0',0);
+VALUES (									23,						'PAYBACK',		0 ,         2	,      3,	      0,	  450	,    0,               	'NOT_CANCEL',	            'STANDARD',	              'FREE',	     'ADVENTURE',	'2022-02-02' ,	'13:00:00');
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `grade`, `max_persons`, `num_days`, `points`, `price`, `procent`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`)
 VALUES (		24	,'PAYBACK'	,	0	, 4,	6	,0,	1500,	0,'NOT_CANCEL','STANDARD','FREE','ADVENTURE','2022-02-10','19:00:00');
 INSERT INTO `booking_db`.`reservation` (`id_reservation`, `cancellation_type`, `grade`, `max_persons`, `num_days`, `points`, `price`, `procent`, `reservation_cancel_type`, `reservation_fast_type`, `reservation_status`, `reservation_type`, `start_date`, `start_time`)
