@@ -1,12 +1,16 @@
 package com.example.isa212.Services.Implementations;
 
+import com.example.isa212.Model.ClientReservation;
 import com.example.isa212.Model.DTOs.DeleteReqDTO;
 import com.example.isa212.Model.DeleteAccountRequest;
+import com.example.isa212.Model.Enums.ReservationCancelType;
 import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.Users.Client;
 import com.example.isa212.Model.Users.Users;
 import com.example.isa212.Repositories.ClientRepository;
+import com.example.isa212.Repositories.ClientResetvationRepository;
 import com.example.isa212.Repositories.DeleteAccountRequestRepository;
+import com.example.isa212.Repositories.UserRepository;
 import com.example.isa212.Services.IServices.IDeleteAccountRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,12 @@ public class DeleteAccountRequestService implements IDeleteAccountRequestService
     private  UserService userService;
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ClientReservationService clientReservationSerivce;
 
     @Override
     public DeleteAccountRequest deleteAccountRequest(int id) {
@@ -61,7 +71,11 @@ public class DeleteAccountRequestService implements IDeleteAccountRequestService
                     .toLocalDate();
 
             if(reservationStartDate.isAfter(LocalDate.now()))
-                return  false;
+            {
+                ClientReservation clientReservation = clientReservationSerivce.getReservationByID(client.getId(), r.getId_reservation());
+                if(clientReservation.getReservationCancelType().equals(ReservationCancelType.NOT_CANCEL))
+                    return  false;
+            }
 
         }
 
@@ -76,7 +90,10 @@ public class DeleteAccountRequestService implements IDeleteAccountRequestService
         DeleteAccountRequest deleteAccountRequest = deleteAccountRequestRepository.findById(id_delete).get();
         deleteAccountRequest.setApproved(true);
         deleteAccountRequestRepository.save(deleteAccountRequest);
+        Users u = userRepository.getOne(deleteAccountRequest.getClient().getId());
         clientRepository.delete(deleteAccountRequest.getClient());
+
+        userRepository.delete(u);
 
         ServiceForEmail.SendEmailDeleteACC(deleteAccountRequest, text);
     }

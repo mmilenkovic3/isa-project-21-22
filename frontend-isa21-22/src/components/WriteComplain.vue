@@ -77,7 +77,8 @@ export default {
                                     {
                                     this.entity = response.data;   
                                     console.log(this.entity);
-                                    this.$router.go(-1);                                    
+                                   
+
 
                                     }).catch(res => {
                                         console.log(res);                       
@@ -108,7 +109,7 @@ export default {
                                         
                                     }}).then(response => 
                                     {
-                                        alert("Send successeffully!");
+                                        //alert("Send successeffully!");
                                         console.log(response.data);  
                                                                        
 
