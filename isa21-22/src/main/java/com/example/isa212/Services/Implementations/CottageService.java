@@ -1,6 +1,7 @@
 package com.example.isa212.Services.Implementations;
 
 import com.example.isa212.Model.Boat;
+import com.example.isa212.Model.ClientReservation;
 import com.example.isa212.Model.Cottage;
 import com.example.isa212.Model.DTOs.ReservationParamsDTO;
 import com.example.isa212.Model.Enums.ReservationCancelType;
@@ -8,6 +9,7 @@ import com.example.isa212.Model.Enums.ReservationFatsType;
 import com.example.isa212.Model.Enums.ReservationStatus;
 import com.example.isa212.Model.Enums.ReservationType;
 import com.example.isa212.Model.Reservation;
+import com.example.isa212.Repositories.ClientResetvationRepository;
 import com.example.isa212.Repositories.CottageRepository;
 import com.example.isa212.Repositories.ReservationRepository;
 import com.example.isa212.Services.IServices.ICottageService;
@@ -83,6 +85,8 @@ public class CottageService implements ICottageService {
         return null;
     }
 
+    @Autowired
+    private ClientReservationService clientReservationService;
     public List<Cottage> getFreeReservationDate(ReservationParamsDTO reservationParamsDTO) {
         List<Reservation> reservations = getReservationList(reservationParamsDTO, ReservationType.COTTAGE);
 
@@ -93,7 +97,10 @@ public class CottageService implements ICottageService {
             for (Reservation r : c.getReservations()) {
                 Reservation res = reservations.stream().filter(rr -> rr.getId_reservation() == r.getId_reservation()).findAny().orElse(null);
                 if (res != null) {
-                    returnVal.add(c);
+                    //proveriti da li je vec imao rezervisanu
+                    ClientReservation cr = clientReservationService.getReservationByID( reservationParamsDTO.getId_client(), res.getId_reservation());
+                    if(cr.getReservationCancelType().equals(ReservationCancelType.CANCELED))
+                        returnVal.add(c);
                 }
 
             }

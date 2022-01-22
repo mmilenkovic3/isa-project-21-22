@@ -311,6 +311,7 @@ export default {
                 numPersons: this.numPersons,
                 address: this.address,
                 grade: this.grade,
+                id_client: this.id
 
             }  
             if(this.reservationType == "COTTAGE")
