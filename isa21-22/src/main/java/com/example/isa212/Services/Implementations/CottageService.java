@@ -97,9 +97,7 @@ public class CottageService implements ICottageService {
             for (Reservation r : c.getReservations()) {
                 Reservation res = reservations.stream().filter(rr -> rr.getId_reservation() == r.getId_reservation()).findAny().orElse(null);
                 if (res != null) {
-                    //proveriti da li je vec imao rezervisanu
-                    ClientReservation cr = clientReservationService.getReservationByID( reservationParamsDTO.getId_client(), res.getId_reservation());
-                    if(cr.getReservationCancelType().equals(ReservationCancelType.CANCELED))
+
                         returnVal.add(c);
                 }
 
