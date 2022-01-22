@@ -1,6 +1,7 @@
 package com.example.isa212.Model.DTOs;
 
 import com.example.isa212.Model.Boat;
+import com.example.isa212.Model.Enums.ReservationCancelType;
 import com.example.isa212.Model.Reservation;
 import com.example.isa212.Model.Users.Actions;
 
@@ -9,6 +10,7 @@ public class ActionReservationBoatDTO {
     private Actions action;
     private Reservation reservation;
     private Boat boat;
+    private ReservationCancelType reservationCancelType;
 
     public ActionReservationBoatDTO() {
     }
@@ -17,6 +19,21 @@ public class ActionReservationBoatDTO {
         this.action = action;
         this.reservation = reservation;
         this.boat = boat;
+    }
+
+    public ActionReservationBoatDTO(Actions action, Reservation reservation, Boat boat, ReservationCancelType reservationCancelType) {
+        this.action = action;
+        this.reservation = reservation;
+        this.boat = boat;
+        this.reservationCancelType = reservationCancelType;
+    }
+
+    public ReservationCancelType getReservationCancelType() {
+        return reservationCancelType;
+    }
+
+    public void setReservationCancelType(ReservationCancelType reservationCancelType) {
+        this.reservationCancelType = reservationCancelType;
     }
 
     public Boat getBoat() {

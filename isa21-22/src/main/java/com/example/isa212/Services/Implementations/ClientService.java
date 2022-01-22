@@ -48,6 +48,7 @@ public class ClientService implements IClientService {
 
 
 
+
     @Override
     public Client subsribeOnCottage(int cottage_id, int user_id) {
         Optional<Cottage> cottage = cottageRepository.findById(cottage_id);
@@ -90,11 +91,11 @@ public class ClientService implements IClientService {
         for(Reservation reservation : client.getReservations())
         {
             if(reservation.getReservationType().equals(ReservationType.COTTAGE))
-                actionReservationCottageDTOS.add(returnARCottageDTO(reservation));
+                actionReservationCottageDTOS.add(returnARCottageDTO(reservation, client.getId()));
             else if(reservation.getReservationType().equals(ReservationType.BOAT))
-                actionReservationBoatDTOS.add(returnARBoatDTO(reservation));
+                actionReservationBoatDTOS.add(returnARBoatDTO(reservation,client.getId()));
             else if(reservation.getReservationType().equals(ReservationType.ADVENTURE))
-               actionReservationAdventureDTOS.add(returnARAdventureDTO(reservation));
+               actionReservationAdventureDTOS.add(returnARAdventureDTO(reservation,client.getId()));
 
         }
         clientAllReservation.setActionReservationCottageDTOS(actionReservationCottageDTOS);
@@ -103,7 +104,7 @@ public class ClientService implements IClientService {
         return  clientAllReservation;
     }
 
-    private ActionReservationAdventureDTO returnARAdventureDTO(Reservation reservation) {
+    private ActionReservationAdventureDTO returnARAdventureDTO(Reservation reservation,int id) {
         ActionReservationAdventureDTO actionReservationAdventureDTO = new ActionReservationAdventureDTO();
         List<Adventure> adventures = adventureRepository.findAll();
         for(Adventure adve : adventures)
@@ -120,6 +121,7 @@ public class ClientService implements IClientService {
                         if(action != null)
                             actionReservationAdventureDTO.setAction(action);
                     }
+                    actionReservationAdventureDTO.setReservationCancelType(clientReservationService.getClientResType(id, res.getId_reservation()));
                 }
             }
         }
@@ -127,7 +129,7 @@ public class ClientService implements IClientService {
         return  actionReservationAdventureDTO;
     }
 
-    private ActionReservationBoatDTO returnARBoatDTO(Reservation reservation) {
+    private ActionReservationBoatDTO returnARBoatDTO(Reservation reservation,int id) {
 
         ActionReservationBoatDTO actionReservationBoatDTO = new ActionReservationBoatDTO();
         List<Boat> boats = boatRepository.findAll();
@@ -145,6 +147,7 @@ public class ClientService implements IClientService {
                         if(action != null)
                             actionReservationBoatDTO.setAction(action);
                     }
+                    actionReservationBoatDTO.setReservationCancelType(clientReservationService.getClientResType(id, res.getId_reservation()));
                 }
             }
         }
@@ -153,7 +156,7 @@ public class ClientService implements IClientService {
     }
 
 
-    private ActionReservationCottageDTO returnARCottageDTO(Reservation reservation)
+    private ActionReservationCottageDTO returnARCottageDTO(Reservation reservation, int id)
     {
         ActionReservationCottageDTO actionReservationCottageDTO = new ActionReservationCottageDTO();
         List<Cottage> cottages = cottageService.findAll();
@@ -173,10 +176,8 @@ public class ClientService implements IClientService {
 
                     }
 
-                    /*if(checkIfCottageReservationExists(actionReservationCottageDTOS, actionReservationCottageDTO))
-                    {
-                        actionReservationCottageDTOS.add(actionReservationCottageDTO);
-                    }*/
+                    actionReservationCottageDTO.setReservationCancelType(clientReservationService.getClientResType(id, res.getId_reservation()));
+
                 }
             }
         }

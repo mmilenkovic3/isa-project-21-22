@@ -2,9 +2,8 @@ package com.example.isa212.Controllers;
 
 import com.example.isa212.Model.ClientReservation;
 import com.example.isa212.Model.DTOs.ClientAllReservationDTO;
-import com.example.isa212.Model.Enums.ReservationCancelType;
 import com.example.isa212.Model.Users.Client;
-import com.example.isa212.Repositories.ClientReservationService;
+import com.example.isa212.Services.Implementations.ClientReservationService;
 import com.example.isa212.Services.Implementations.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,14 +104,23 @@ public class ClientController {
 
     }
 
-    @PostMapping(value = "/reservationStatus/{client_id}/{reservation_id")
+    @PostMapping(value = "/setGradeToReservation/{id}/{grade}")
     @PreAuthorize("hasRole('USERS')")
-    public ResponseEntity<String> reservationStatus(@PathVariable int client_id, @PathVariable int reservation_id){
-        ReservationCancelType cancelTyp =  clientReservationService.getReservationCancelType(client_id, reservation_id);
-        return cancelTyp.name() != null ? new ResponseEntity(cancelTyp.name(), HttpStatus.OK) :
-                new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity setGradeToReservation(@PathVariable int id, @PathVariable double grade){
+        clientReservationService.setGradeToReservation(grade, id);
+        return  new ResponseEntity(HttpStatus.OK);
 
     }
+
+    @PostMapping(value = "/cancelReservation/{id_res}/{id_client}")
+    @PreAuthorize("hasRole('USERS')")
+    public ResponseEntity cancelReservation(@PathVariable int id_res, @PathVariable int id_client){
+        ClientReservation c =  clientReservationService.cancelReservation(id_client,id_res);
+        return  c!=null? new ResponseEntity(HttpStatus.OK): new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
+
 
 
 
